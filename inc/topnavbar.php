@@ -154,7 +154,7 @@
 												<h2 class="megamenu-title">Column 1</h2>
 												<ul class="vertical-menu">
 													<li><a href="./?p=books/book1">A Theory of Lay Ministry Praxis</a></li>
-													<li><a href="./?p=503">Book 2</a></li>
+													<li><a href="./?p=books/miracle-of-genuine-confession">The Miracle of Genuine Confession</a></li>
 													<li><a href="./?p=503">Book 3</a></li>
 													<li><a href="./?p=503">Book 4</a></li>
 													<li><a href="./?p=503">Book 5</a></li>
