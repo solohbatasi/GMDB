@@ -35,7 +35,7 @@
 						<?php include_once 'inc/breadcrumbs.php'; ?>
 						<article class="article main-article">
 							<header>
-								<h1>A Theory of Lay Ministry Praxis</h1>
+								<h1>The Miracle of a Genuine Confession</h1>
 								<ul class="details">
 									<li>Posted on 4 June, 2026</li>
 									<li><a>Recent Book</a></li>
