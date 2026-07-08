@@ -166,21 +166,21 @@
 													<li><a href="./?p=books/look">The Look</a></li>
 													<li><a href="./?p=books/marriage-made-in-heaven">Marriage Made in Heaven</a></li>
 													<li><a href="./?p=books/when-heaven-touches-earth">When Heaven Touches Earth</a></li>
-													<li><a href="./?p=503">Book 9</a></li>
-													<li><a href="./?p=503">Book 10</a></li>
+													<li><a href="./?p=books/prayer-that-works">Prayer That Works</a></li>
+													<li><a href="./?p=books/pasis-model"> The Pasis Model</a></li>
 												</ul>
 											</div>
 											<div class="col-md-3">
 												<h2 class="megamenu-title">Column 3</h2>
 												<ul class="vertical-menu">
-													<li><a href="./?p=503">Book 11</a></li>
-													<li><a href="./?p=503">Book 12</a></li>
+													<li><a href="./?p=books/kingdom-leadership">Kingdom Leadership of Empowering Stewards</a></li>
+													<!-- <li><a href="./?p=503">Book 12</a></li>
 													<li><a href="./?p=503">Book 13</a></li>
 													<li><a href="./?p=503">Book 14</a></li>
-													<li><a href="./?p=503">Book 15</a></li>
+													<li><a href="./?p=503">Book 15</a></li> -->
 												</ul>
 											</div>
-											<div class="col-md-3">
+											<!-- <div class="col-md-3">
 												<h2 class="megamenu-title">Column 4</h2>
 												<ul class="vertical-menu">
 													<li><a href="./?p=503">Book 16</a></li>
@@ -189,7 +189,7 @@
 													<li><a href="./?p=503">Book 19</a></li>
 													<li><a href="./?p=503">Book 20</a></li>
 												</ul>
-											</div>
+											</div> -->
 										</div>
 									</div>
 								</div>
