@@ -155,17 +155,17 @@
 												<ul class="vertical-menu">
 													<li><a href="./?p=books/book1">A Theory of Lay Ministry Praxis</a></li>
 													<li><a href="./?p=books/miracle-of-genuine-confession">The Miracle of Genuine Confession</a></li>
-													<li><a href="./?p=503">Book 3</a></li>
-													<li><a href="./?p=503">Book 4</a></li>
-													<li><a href="./?p=503">Book 5</a></li>
+													<li><a href="./?p=books/calling-of-god">Calling Of God and Its Coordinates</a></li>
+													<li><a href="./?p=books/body-over-brand">Body Over Brand</a></li>
+													<li><a href="./?p=books/12cs">The 12 Cs of Christ</a></li>
 												</ul>
 											</div>
 											<div class="col-md-3">
 												<h2 class="megamenu-title">Column 2</h2>
 												<ul class="vertical-menu">
-													<li><a href="./?p=503">Book 6</a></li>
-													<li><a href="./?p=503">Book 7</a></li>
-													<li><a href="./?p=503">Book 8</a></li>
+													<li><a href="./?p=books/look">The Look</a></li>
+													<li><a href="./?p=books/marriage-made-in-heaven">Marriage Made in Heaven</a></li>
+													<li><a href="./?p=books/when-heaven-touches-earth">When Heaven Touches Earth</a></li>
 													<li><a href="./?p=503">Book 9</a></li>
 													<li><a href="./?p=503">Book 10</a></li>
 												</ul>
