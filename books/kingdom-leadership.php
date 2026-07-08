@@ -35,7 +35,7 @@
 						<?php include_once 'inc/breadcrumbs.php'; ?>
 						<article class="article main-article">
 							<header>
-								<h1>The 12 Cs of Christ: Christ At the Center</h1>
+								<h1>KINGDOM LEADERSHIP OF EMPOWERING STEWARDS: The KLOES manifesto </h1>
 								<ul class="details">
 									<li>Posted on 3 Feb, 2026</li>
 									<li><a>Recent Book</a></li>
