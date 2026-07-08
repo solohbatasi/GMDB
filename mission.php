@@ -12,8 +12,7 @@
 					
 					<p>
 						The general framework that underpins Global Ministries Daily Bread is the belief that everyone engaging in their roles does so as a calling or purpose of existence. This framework revolves around three steps: <strong>Character, Competence, and Calling</strong>, which correspond to the Church, College, and Company.
-					</p>
-					
+					</p>				
 					<p>
 						At level one, we aim to transform individuals and communities through building churches in various locations.
 					</p>
