@@ -78,20 +78,13 @@ class Phase4PayHeroTest extends TestCase
         $this->assertDatabaseCount('payments', 1);
         $this->assertDatabaseCount('inventory_reservations', 1);
         Http::assertSentCount(1);
+        Http::assertSent(fn (Request $request) => $request['callback_url'] === 'https://example.test/backend/api/payments/payhero/callback');
     }
 
     public function test_verified_callback_is_idempotent_and_commits_stock_once(): void
     {
         [$order, $payment] = $this->payableOrderAndPayment('CALLBACK-EXT');
-        Http::fake([
-            'https://status.payhero.test/api/global/transaction-status' => Http::response($this->successfulPayload($payment), 200),
-        ]);
-        $callback = [
-            'status' => 'success',
-            'success' => true,
-            'reference' => $payment->payhero_reference,
-            'external_reference' => $payment->external_reference,
-        ];
+        $callback = $this->successfulPayload($payment);
 
         $this->postJson('/api/payments/payhero/callback', $callback)->assertOk();
         $this->postJson('/api/payments/payhero/callback', $callback)->assertOk();
@@ -101,6 +94,7 @@ class Phase4PayHeroTest extends TestCase
         $this->assertDatabaseHas('inventory_reservations', ['order_id' => $order->id, 'status' => 'committed']);
         $this->assertDatabaseCount('stock_movements', 1);
         $this->assertDatabaseCount('order_status_histories', 1);
+        Http::assertNothingSent();
     }
 
     public function test_amount_mismatch_is_flagged_for_review_without_committing_stock(): void
@@ -108,12 +102,7 @@ class Phase4PayHeroTest extends TestCase
         [$order, $payment] = $this->payableOrderAndPayment('MISMATCH-EXT');
         $payload = $this->successfulPayload($payment);
         $payload['amount'] = 900;
-        Http::fake(['https://status.payhero.test/*' => Http::response($payload)]);
-
-        $this->postJson('/api/payments/payhero/callback', [
-            'external_reference' => $payment->external_reference,
-            'reference' => $payment->payhero_reference,
-        ])->assertOk();
+        $this->postJson('/api/payments/payhero/callback', $payload)->assertOk();
 
         $this->assertDatabaseHas('payments', ['id' => $payment->id, 'status' => 'review_required']);
         $this->assertDatabaseHas('inventory_reservations', ['order_id' => $order->id, 'status' => 'active']);
@@ -127,12 +116,7 @@ class Phase4PayHeroTest extends TestCase
         $failed['status'] = 'failed';
         $failed['success'] = false;
         $failed['message'] = 'Customer cancelled the M-Pesa prompt.';
-        Http::fake(['https://status.payhero.test/*' => Http::response($failed)]);
-
-        $this->postJson('/api/payments/payhero/callback', [
-            'external_reference' => $payment->external_reference,
-            'reference' => $payment->payhero_reference,
-        ])->assertOk();
+        $this->postJson('/api/payments/payhero/callback', $failed)->assertOk();
 
         $this->assertDatabaseHas('payments', ['id' => $payment->id, 'status' => 'failed']);
         $this->assertDatabaseHas('orders', ['id' => $order->id, 'payment_status' => 'unpaid']);

@@ -11,7 +11,7 @@ class PayHeroCallbackController extends Controller
 {
     public function __invoke(Request $request, PayHeroCallbackService $callbacks): JsonResponse
     {
-        $payload = $request->json()->all();
+        $payload = $request->all();
 
         if ($payload === []) {
             return response()->json(['message' => 'Invalid callback payload.'], 422);
