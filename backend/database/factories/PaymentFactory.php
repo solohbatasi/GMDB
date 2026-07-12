@@ -16,13 +16,13 @@ class PaymentFactory extends Factory
     {
         return [
             'order_id' => Order::factory(),
-            'provider' => 'paystack',
-            'method' => 'hosted_checkout',
-            'source' => 'paystack_checkout',
+            'provider' => 'payhero',
+            'method' => 'mpesa_stk',
+            'source' => 'store_checkout',
             'amount' => '1000.00',
             'currency' => 'KES',
             'status' => 'created',
-            'channel' => 'card',
+            'channel' => 'mpesa',
             'external_reference' => 'GMD-TEST-'.Str::upper(Str::random(8)),
         ];
     }

@@ -23,6 +23,7 @@ class CheckoutRequest extends FormRequest
             'customer.name' => ['required', 'string', 'max:255'],
             'customer.email' => ['required', 'email', 'max:255'],
             'customer.phone' => ['required', 'string', 'max:30'],
+            'payment.phone' => ['required', 'string', 'max:30'],
             'fulfillment.method' => ['required', Rule::in(['delivery', 'pickup'])],
             'fulfillment.address' => ['required_if:fulfillment.method,delivery', 'nullable', 'string', 'max:1000'],
             'fulfillment.city' => ['required_if:fulfillment.method,delivery', 'nullable', 'string', 'max:255'],

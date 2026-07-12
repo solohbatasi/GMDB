@@ -6,13 +6,12 @@ $token = $_GET['token'] ?? '';
 $response = ($orderNumber && $token) ? gdmb_store_api_get('orders/' . rawurlencode($orderNumber), ['token' => $token]) : null;
 $order = is_array($response['data'] ?? null) ? $response['data'] : null;
 $orderLookupUrl = $order ? gdmb_store_api_base_url() . '/orders/' . rawurlencode($order['order_number']) . '?token=' . rawurlencode($token) : '';
-$paymentUrl = $order ? gdmb_store_api_base_url() . '/orders/' . rawurlencode($order['order_number']) . '/payments/paystack' : '';
 $pickupLocation = is_array($order['fulfillment']['pickup_location'] ?? null) ? $order['fulfillment']['pickup_location'] : null;
 $pickupMapUrl = $pickupLocation ? gdmb_pickup_map_url($pickupLocation) : '';
 ?>
 <section class="books-page"><div class="container"><?php include_once 'inc/breadcrumbs.php'; ?>
 <?php if (! $order): ?><?php include '404.html'; ?><?php else: ?>
-<div class="books-page-header"><div><span class="books-eyebrow" id="payment-eyebrow"><?php echo $order['payment_status'] === 'paid' ? 'Payment Successful' : 'Awaiting Payment'; ?></span><h1 id="payment-heading"><?php echo $order['payment_status'] === 'paid' ? 'Your order is confirmed.' : 'Complete Your Payment'; ?></h1><p id="payment-copy"><?php echo $order['payment_status'] === 'paid' ? 'Your payment has been verified and your books are confirmed.' : 'Your books are reserved while payment is completed.'; ?></p></div><a href="./?p=books" class="btn btn-primary">Continue Shopping</a></div>
+<div class="books-page-header"><div><span class="books-eyebrow" id="payment-eyebrow"><?php echo $order['payment_status'] === 'paid' ? 'Payment Successful' : 'Awaiting M-Pesa'; ?></span><h1 id="payment-heading"><?php echo $order['payment_status'] === 'paid' ? 'Your order is confirmed.' : 'Check your phone'; ?></h1><p id="payment-copy"><?php echo $order['payment_status'] === 'paid' ? 'Your payment has been verified and your books are confirmed.' : 'Enter your M-Pesa PIN when prompted. Your books remain reserved while we confirm payment.'; ?></p></div><a href="./?p=books" class="btn btn-primary">Continue Shopping</a></div>
 
 <div class="row">
     <div class="col-md-7">
@@ -34,10 +33,9 @@ $pickupMapUrl = $pickupLocation ? gdmb_pickup_map_url($pickupLocation) : '';
 
         <?php if ($order['payment_status'] !== 'paid' && ! empty($order['can_retry_payment'])): ?>
             <div id="payment-panel" class="book-card" style="padding:20px; margin:20px 0;">
-                <h3>Payment Method</h3>
-                <p>Secure card and mobile checkout powered by Paystack.</p>
-                <button id="pay-now-button" class="book-btn book-btn-solid" type="button">Pay Securely with Paystack</button>
-                <p id="payment-message" style="margin-top:12px;"></p>
+                <h3>M-Pesa Payment</h3>
+                <p id="payment-message">We are checking the payment status. If the prompt failed or was cancelled, return to checkout to retry this same order.</p>
+                <a class="book-btn book-btn-solid" href="./?p=checkout">Return to Checkout</a>
             </div>
         <?php elseif ($order['payment_status'] !== 'paid'): ?>
             <div class="book-card" style="padding:20px; margin:20px 0;">
@@ -57,9 +55,7 @@ $pickupMapUrl = $pickupLocation ? gdmb_pickup_map_url($pickupLocation) : '';
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var lookupUrl = <?php echo json_encode($orderLookupUrl); ?>;
-    var paymentUrl = <?php echo json_encode($paymentUrl); ?>;
     var token = <?php echo json_encode($token); ?>;
-    var button = document.getElementById('pay-now-button');
     var message = document.getElementById('payment-message');
     var statusText = document.getElementById('payment-status');
     var heading = document.getElementById('payment-heading');
@@ -68,8 +64,20 @@ document.addEventListener('DOMContentLoaded', function () {
     var providerReference = document.getElementById('provider-reference');
     var providerReferenceLine = document.getElementById('provider-reference-line');
     var paymentPanel = document.getElementById('payment-panel');
-    var pollsRemaining = 40;
+    var pollsRemaining = 100;
     var pollTimer = null;
+    var cartCleared = false;
+
+    function clearPaidCart() {
+        if (cartCleared) return;
+        cartCleared = true;
+        var body = new URLSearchParams({ action: 'complete_checkout', order: <?php echo json_encode($orderNumber); ?>, token: token });
+        fetch('./?p=checkout', {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: body.toString()
+        }).catch(function () {});
+    }
 
     function applyOrder(order) {
         statusText.textContent = order.payment_status;
@@ -85,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (paymentPanel) {
                 paymentPanel.style.display = 'none';
             }
+            clearPaidCart();
             window.clearTimeout(pollTimer);
         } else if (!order.can_retry_payment) {
             if (paymentPanel) {
@@ -116,40 +125,8 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    if (button) {
-        button.addEventListener('click', function () {
-            button.disabled = true;
-            message.textContent = 'Preparing secure checkout...';
-
-            fetch(paymentUrl, {
-                method: 'POST',
-                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: token })
-            })
-                .then(function (response) {
-                    return response.json().then(function (payload) {
-                        if (!response.ok) {
-                            throw new Error(payload.message || 'We could not start your payment request.');
-                        }
-
-                        return payload;
-                    });
-                })
-                .then(function (payload) {
-                    if (payload.data && payload.data.authorization_url) {
-                        window.location.href = payload.data.authorization_url;
-                        return;
-                    }
-
-                    message.textContent = payload.message || 'Checkout is ready, but no redirect URL was returned.';
-                    button.disabled = false;
-                })
-                .catch(function (error) {
-                    message.textContent = error.message;
-                    button.disabled = false;
-                });
-        });
-    }
+    applyOrder(<?php echo json_encode($order, JSON_UNESCAPED_SLASHES); ?>);
+    if (<?php echo json_encode($order['payment_status'] !== 'paid'); ?>) pollOrder();
 });
 </script>
 <?php endif; ?></div></section>

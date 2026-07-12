@@ -15,6 +15,7 @@ class PaymentController extends Controller
             'status' => $request->string('status')->toString(),
             'search' => $request->string('search')->toString(),
             'source' => $request->string('source')->toString(),
+            'provider' => $request->string('provider')->toString(),
             'review_required' => $request->boolean('review_required'),
         ];
 
@@ -24,10 +25,12 @@ class PaymentController extends Controller
                 ->with('order:id,order_number,customer_name,customer_email,customer_phone')
                 ->when($filters['status'], fn ($query, $status) => $query->where('status', $status))
                 ->when($filters['source'], fn ($query, $source) => $query->where('source', $source))
+                ->when($filters['provider'], fn ($query, $provider) => $query->where('provider', $provider))
                 ->when($filters['review_required'], fn ($query) => $query->where('status', 'review_required'))
                 ->when($filters['search'], function ($query, $search) {
                     $query->where(function ($searchQuery) use ($search) {
                         $searchQuery->where('external_reference', 'like', "%{$search}%")
+                            ->orWhere('payhero_reference', 'like', "%{$search}%")
                             ->orWhere('provider_reference', 'like', "%{$search}%")
                             ->orWhere('provider_transaction_id', 'like', "%{$search}%")
                             ->orWhereHas('order', fn ($orderQuery) => $orderQuery
@@ -40,10 +43,10 @@ class PaymentController extends Controller
                 ->paginate(15)
                 ->withQueryString(),
             'providerConfig' => [
-                'provider' => 'paystack',
-                'currency' => config('paystack.currency'),
-                'public_key_configured' => filled(config('paystack.public_key')),
-                'secret_key_configured' => filled(config('paystack.secret_key')),
+                'provider' => 'payhero',
+                'currency' => 'KES',
+                'channel_id_configured' => filled(config('payhero.channel_id')),
+                'credentials_configured' => filled(config('payhero.username')) && filled(config('payhero.password')),
             ],
         ]);
     }

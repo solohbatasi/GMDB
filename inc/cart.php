@@ -141,6 +141,27 @@ function gdmb_checkout_handle_request(): void
         return;
     }
 
+    gdmb_session_start();
+
+    if (($_POST['action'] ?? '') === 'complete_checkout') {
+        $orderNumber = trim((string) ($_POST['order'] ?? ''));
+        $token = trim((string) ($_POST['token'] ?? ''));
+        $response = ($orderNumber !== '' && $token !== '')
+            ? gdmb_store_api_get('orders/'.rawurlencode($orderNumber), ['token' => $token])
+            : null;
+        $paid = ($response['data']['payment_status'] ?? null) === 'paid';
+
+        if ($paid) {
+            gdmb_cart_clear();
+            unset($_SESSION['gdmb_checkout_token']);
+        }
+
+        header('Content-Type: application/json');
+        http_response_code($paid ? 200 : 409);
+        echo json_encode(['completed' => $paid]);
+        exit;
+    }
+
     $quote = gdmb_cart_quote();
     $GLOBALS['gdmb_checkout_quote'] = $quote;
 
@@ -156,7 +177,6 @@ function gdmb_checkout_handle_request(): void
         return;
     }
 
-    gdmb_session_start();
     $_SESSION['gdmb_checkout_token'] ??= bin2hex(random_bytes(24));
 
     $response = gdmb_store_api_post('checkout', [
@@ -166,6 +186,9 @@ function gdmb_checkout_handle_request(): void
             'name' => $_POST['name'] ?? '',
             'email' => $_POST['email'] ?? '',
             'phone' => $_POST['phone'] ?? '',
+        ],
+        'payment' => [
+            'phone' => $_POST['mpesa_phone'] ?? $_POST['phone'] ?? '',
         ],
         'fulfillment' => [
             'method' => 'pickup',
@@ -178,8 +201,6 @@ function gdmb_checkout_handle_request(): void
     ]);
 
     if (isset($response['data']['order_number'], $response['data']['public_token'])) {
-        gdmb_cart_clear();
-        unset($_SESSION['gdmb_checkout_token']);
         header('Location: ./?p=order-confirmation&order=' . rawurlencode($response['data']['order_number']) . '&token=' . rawurlencode($response['data']['public_token']));
         exit;
     }

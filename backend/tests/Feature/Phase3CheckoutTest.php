@@ -10,11 +10,35 @@ use App\Models\PickupLocation;
 use App\Models\User;
 use App\Services\InventoryService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class Phase3CheckoutTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config([
+            'payhero.base_url' => 'https://payhero.test',
+            'payhero.payments_path' => '/api/v2/payments/initiate-stk-push',
+            'payhero.username' => 'username',
+            'payhero.password' => 'password',
+            'payhero.channel_id' => 123,
+            'payhero.callback_url' => 'https://example.test/backend/api/payments/payhero/callback',
+        ]);
+
+        Http::fake(fn (Request $request) => Http::response([
+            'success' => true,
+            'status' => 'QUEUED',
+            'reference' => 'PH-'.substr(sha1((string) $request['external_reference']), 0, 12),
+            'CheckoutRequestID' => 'ws_CO_'.substr(sha1((string) $request['external_reference']), 0, 12),
+            'external_reference' => $request['external_reference'],
+        ], 201));
+    }
 
     public function test_valid_quote_returns_authoritative_pricing_and_totals(): void
     {
@@ -84,7 +108,7 @@ class Phase3CheckoutTest extends TestCase
 
         $this->postJson('/api/store/checkout', $this->checkoutPayload($book, fulfillment: 'delivery'))
             ->assertCreated()
-            ->assertJsonPath('data.payment_status', 'unpaid')
+            ->assertJsonPath('data.payment_status', 'pending')
             ->assertJsonPath('data.order_status', 'pending')
             ->assertJsonPath('data.total', '3000.00');
 
@@ -225,6 +249,7 @@ class Phase3CheckoutTest extends TestCase
                 'email' => 'jane@example.com',
                 'phone' => '0712345678',
             ],
+            'payment' => ['phone' => '0712345678'],
             'fulfillment' => $fulfillment === 'pickup'
                 ? ['method' => 'pickup', 'pickup_location_id' => $pickupLocationId]
                 : ['method' => 'delivery', 'address' => 'Moi Avenue', 'city' => 'Nairobi', 'county' => 'Nairobi'],
