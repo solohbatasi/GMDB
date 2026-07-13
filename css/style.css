@@ -3547,7 +3547,13 @@ body .gdmb-ministry-panel .gdmb-ministry-panel-copy a:focus {
   }
   .gdmb-hero-stage { height: clamp(560px, calc(100vh - 68px), 720px); }
   .gdmb-hero-stage { border-radius: 0; }
-  .gdmb-ministry-panel { display: none; }
+  body .gdmb-hero .gdmb-ministry-panel {
+    display: none !important;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+  }
   .gdmb-hero-slide { display: block; }
   .gdmb-hero-media,
   .gdmb-hero-copy {
