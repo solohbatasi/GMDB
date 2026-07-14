@@ -10,7 +10,7 @@ require_once 'inc/books_data.php';
             <div>
                 <span class="books-eyebrow">Bookshelf</span>
                 <h1>Explore Books by Duke Fitz-Theodore Randolph</h1>
-                <p>Browse the full collection, read more about each title, or go straight to purchase from the available store link.</p>
+                <p>Browse the full collection, read more about each title, or click Purchase to order through Amazon and have the book delivered to your preferred location.</p>
             </div>
             <a href="./" class="btn btn-primary"><i class="ion-ios-home"></i> Back Home</a>
         </div>

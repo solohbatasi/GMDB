@@ -4354,11 +4354,15 @@ blockquote {
 
 .book-btn-solid {
   background: #d35400;
-  color: #fff;
+  color: #fff !important;
 }
 
 .book-btn-solid:hover {
   background: #000;
+  color: #fff !important;
+}
+
+.book-btn-solid i {
   color: #fff;
 }
 

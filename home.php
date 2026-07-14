@@ -132,7 +132,7 @@
 					<div>
 						<span class="books-eyebrow">Featured Books</span>
 						<h1>Books for Faith, Ministry, and Everyday Formation</h1>
-						<p>Explore practical resources written to equip believers, leaders, families, and communities for deeper Christian service.</p>
+						<p>Explore practical resources written to equip believers, leaders, families, and communities for deeper Christian service. Click Purchase on any book to order through Amazon and have it delivered to your preferred location.</p>
 					</div>
 					<div class="books-header-actions">
 						<a href="./?p=books" class="book-link">View all books</a>

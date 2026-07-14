@@ -338,6 +338,10 @@ $(function(){
 		$("#books-carousel-nav .prev").click(function(){
 			carousel.trigger('prev.owl.carousel');
 		});
+
+		$("#books-carousel").on("mouseleave", function(){
+			carousel.trigger("play.owl.autoplay", [4500]);
+		});
 	}
 
 	var youtubeAPI = function() {
