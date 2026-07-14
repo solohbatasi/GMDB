@@ -1,5 +1,5 @@
 <?php
-require_once 'inc/books_data.php';
+require 'inc/books_data.php';
 ?>
 
 <section class="books-page">

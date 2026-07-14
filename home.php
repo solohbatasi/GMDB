@@ -167,7 +167,7 @@
 			</div>
 		</section>
 
-		<?php require_once 'inc/books_data.php'; ?>
+		<?php require 'inc/books_data.php'; ?>
 		<section class="books-showcase">
 			<div class="container">
 				<div class="books-showcase-header">
