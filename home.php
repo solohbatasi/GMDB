@@ -1,4 +1,4 @@
-		<section class="home">
+		<section class="home home-hero-section">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-8 col-sm-12 col-xs-12">
@@ -219,7 +219,7 @@
 			</div>
 		</section>
 
-		<section class="best-of-the-week">
+		<section class="best-of-the-week home-week-section">
 			<div class="container">
 				<h1><div class="text-center">Best Of The Week</div>
 					<div class="carousel-nav" id="best-of-the-week-nav">
@@ -440,7 +440,7 @@
 				</div>
 			</div>
 		</section>
-		<section class="home">
+		<section class="home home-news-section">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-8 col-sm-12 col-xs-12">

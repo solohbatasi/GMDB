@@ -234,6 +234,7 @@ body {
   font-weight: 300;
   color: #191E21;
   font-size: 1.4em;
+  background: #f6f8fb;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -571,6 +572,67 @@ header.primary.up nav.menu .dropdown-menu .dropdown-menu {
 
 section {
   padding-bottom: 40px;
+}
+
+.home-hero-section {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(252, 98, 77, .12), transparent 28%),
+    radial-gradient(circle at 86% 20%, rgba(17, 34, 67, .12), transparent 30%),
+    linear-gradient(180deg, #f7f9fc 0%, #ffffff 86%);
+  padding-bottom: 54px;
+  position: relative;
+}
+
+.home-hero-section:after {
+  background: linear-gradient(90deg, transparent, rgba(17, 34, 67, .08), transparent);
+  bottom: 0;
+  content: " ";
+  height: 1px;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.home-hero-section .featured,
+.home-hero-section .featured-author,
+.home-news-section .article-mini .inner,
+.home-news-section .body-col,
+.home-news-section .newsletter {
+  box-shadow: 0 16px 38px rgba(17, 34, 67, .07);
+}
+
+.home-hero-section .featured {
+  border: 1px solid rgba(17, 34, 67, .08);
+}
+
+.home-week-section {
+  background: linear-gradient(180deg, #fff 0%, #fff 58%, #f7f8fb 100%);
+  padding-top: 48px;
+  padding-bottom: 58px;
+}
+
+.home-week-section .article .inner {
+  background: #fff;
+  border: 1px solid #eef0f4;
+  box-shadow: 0 12px 28px rgba(17, 34, 67, .06);
+}
+
+.home-news-section {
+  background:
+    radial-gradient(circle at 95% 10%, rgba(252, 98, 77, .09), transparent 24%),
+    linear-gradient(180deg, #f7f8fb 0%, #ffffff 100%);
+  padding-top: 52px;
+}
+
+.home-news-section .body-col,
+.home-news-section .newsletter {
+  background-color: #fff;
+  border: 1px solid #eef0f4;
+  padding: 22px;
+}
+
+.home-news-section .newsletter {
+  border: 0;
 }
 section.first {
   padding-top: 240px;
@@ -4304,7 +4366,9 @@ blockquote {
 
 .videos-showcase,
 .videos-page {
-  background: #fff;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(17, 34, 67, .08), transparent 24%),
+    linear-gradient(180deg, #f4f7fb 0%, #ffffff 100%);
   padding: 50px 0;
 }
 
@@ -4397,6 +4461,7 @@ blockquote {
 .video-catalog-list li a {
   background: #fff;
   border: 1px solid #f0f0f0;
+  box-shadow: 0 12px 28px rgba(17, 34, 67, .06);
   display: block;
   min-height: 100%;
   position: relative;
@@ -4823,7 +4888,9 @@ blockquote {
 
 .books-showcase,
 .books-page {
-  background: #fff;
+  background:
+    radial-gradient(circle at 86% 12%, rgba(252, 98, 77, .1), transparent 24%),
+    linear-gradient(180deg, #fff8f5 0%, #ffffff 100%);
   padding: 50px 0;
 }
 
@@ -4936,7 +5003,7 @@ blockquote {
   background: #fff;
   border: 1px solid #f0f0f0;
   border-radius: 0;
-  box-shadow: none;
+  box-shadow: 0 12px 28px rgba(17, 34, 67, .06);
   display: flex;
   flex-direction: column;
   min-height: 100%;
