@@ -367,6 +367,36 @@
 				</div>
 			</div>
 		</section>
+
+		<?php require_once 'inc/videos_data.php'; ?>
+		<section class="videos-showcase">
+			<div class="container">
+				<div class="videos-showcase-header">
+					<div>
+						<span class="videos-eyebrow">Latest Videos</span>
+						<h1>Preachings and Ministry Events</h1>
+						<p>Watch selected preachings, teachings, and event moments from Global Ministries Daily Bread. Click any video to play it instantly.</p>
+					</div>
+					<div class="videos-header-actions">
+						<a href="./?p=videos" class="video-link">View all videos</a>
+						<div class="carousel-nav" id="preaching-videos-nav">
+							<div class="prev"><i class="ion-ios-arrow-left"></i></div>
+							<div class="next"><i class="ion-ios-arrow-right"></i></div>
+						</div>
+					</div>
+				</div>
+
+				<ul class="video-list videos-carousel-list" data-youtube='"carousel":true, "nav":"#preaching-videos-nav", "items":4, "margin":12, "autoplay":true'>
+					<?php foreach ($videos as $video): ?>
+						<li>
+							<a data-youtube-id="<?php echo htmlspecialchars($video['id']); ?>" data-action="magnific">
+								<span class="video-type"><?php echo htmlspecialchars($video['type']); ?></span>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+		</section>
 		<section class="home">
 			<div class="container">
 				<div class="row">

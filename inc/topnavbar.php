@@ -205,6 +205,7 @@
 								
 								</ul>
 							</li>
+							<li><a href="./?p=videos">Videos</a></li>
 							<li><a href="./?p=contact">Contact us</a></li>
 
 						</ul>

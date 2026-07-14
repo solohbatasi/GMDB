@@ -354,8 +354,35 @@ $(function(){
 						dots: false,
 					};
 
+			if($options.items) {
+				options['items'] = $options.items;
+			}
+
+			if($options.margin) {
+				options['margin'] = $options.margin;
+			}
+
 			if($options.autoplay == true) {
 				options['autoplay'] = true;
+				options['autoplayTimeout'] = 4500;
+				options['autoplayHoverPause'] = true;
+			}
+
+			if($options.items && $options.items > 1) {
+				options['responsive'] = {
+					1200: {
+						items: $options.items
+					},
+					992: {
+						items: Math.min($options.items, 3)
+					},
+					640: {
+						items: 2
+					},
+					0: {
+						items: 1
+					}
+				};
 			}
 
 			var $id = "";
@@ -421,6 +448,9 @@ $(function(){
 				});
 				$($options.nav).find(".next").click(function(){
 					video_list.trigger('next.owl.carousel');
+				});
+				$this.on("mouseleave", function(){
+					video_list.trigger("play.owl.autoplay", [4500]);
 				});
 			}
 		});		

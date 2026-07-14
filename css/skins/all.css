@@ -393,6 +393,17 @@
 .skin-purple #books-carousel-nav .next:hover {
   background-color: #8e44ad;
 }
+.skin-purple .videos-eyebrow,
+.skin-purple .video-link:hover,
+.skin-purple .videos-carousel-list li a .desc .title:hover,
+.skin-purple .video-catalog-list li a .desc .title:hover {
+  color: #8e44ad;
+}
+.skin-purple .video-type,
+.skin-purple #preaching-videos-nav .prev:hover,
+.skin-purple #preaching-videos-nav .next:hover {
+  background-color: #8e44ad;
+}
 
 /*
  * Variable
@@ -787,6 +798,17 @@
 .skin-blue .books-carousel-progress span,
 .skin-blue #books-carousel-nav .prev:hover,
 .skin-blue #books-carousel-nav .next:hover {
+  background-color: #626eef;
+}
+.skin-blue .videos-eyebrow,
+.skin-blue .video-link:hover,
+.skin-blue .videos-carousel-list li a .desc .title:hover,
+.skin-blue .video-catalog-list li a .desc .title:hover {
+  color: #626eef;
+}
+.skin-blue .video-type,
+.skin-blue #preaching-videos-nav .prev:hover,
+.skin-blue #preaching-videos-nav .next:hover {
   background-color: #626eef;
 }
 
@@ -1184,6 +1206,17 @@
 .skin-orange .books-carousel-progress span,
 .skin-orange #books-carousel-nav .prev:hover,
 .skin-orange #books-carousel-nav .next:hover {
+  background-color: #fc624d;
+}
+.skin-orange .videos-eyebrow,
+.skin-orange .video-link:hover,
+.skin-orange .videos-carousel-list li a .desc .title:hover,
+.skin-orange .video-catalog-list li a .desc .title:hover {
+  color: #fc624d;
+}
+.skin-orange .video-type,
+.skin-orange #preaching-videos-nav .prev:hover,
+.skin-orange #preaching-videos-nav .next:hover {
   background-color: #fc624d;
 }
 
