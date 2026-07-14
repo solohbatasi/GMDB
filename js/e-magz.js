@@ -443,6 +443,27 @@ $(function(){
 			if($options.carousel == true) {
 				$this.addClass('owl-carousel owl-theme');
 				var video_list = $this.owlCarousel(options);
+				var updateVideoProgress = function(event) {
+					if(!$this.hasClass("videos-carousel-list")) {
+						return;
+					}
+
+					var count = event.item.count || 1;
+					var visible = event.page && event.page.size ? event.page.size : 1;
+					var maxIndex = Math.max(count - visible, 0);
+					var clones = event.relatedTarget && event.relatedTarget._clones ? event.relatedTarget._clones.length : 0;
+					var current = event.item.index - clones / 2;
+
+					current = ((current % count) + count) % count;
+					current = Math.min(current, maxIndex);
+
+					var width = maxIndex === 0 ? 100 : ((current + visible) / count) * 100;
+					$(".videos-carousel-progress span").css("width", width + "%");
+				}
+
+				video_list.on("initialized.owl.carousel changed.owl.carousel refreshed.owl.carousel", updateVideoProgress);
+				video_list.trigger("refresh.owl.carousel");
+
 				$($options.nav).find(".prev").click(function(){
 					video_list.trigger('prev.owl.carousel');
 				});

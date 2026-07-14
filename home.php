@@ -386,15 +386,16 @@
 					</div>
 				</div>
 
-				<ul class="video-list videos-carousel-list" data-youtube='"carousel":true, "nav":"#preaching-videos-nav", "items":4, "margin":12, "autoplay":true'>
+				<ul class="video-list videos-carousel-list" data-youtube='"carousel":true, "nav":"#preaching-videos-nav", "items":3, "margin":12, "autoplay":true'>
 					<?php foreach ($videos as $video): ?>
 						<li>
-							<a data-youtube-id="<?php echo htmlspecialchars($video['id']); ?>" data-action="magnific">
-								<span class="video-type"><?php echo htmlspecialchars($video['type']); ?></span>
-							</a>
+							<a data-youtube-id="<?php echo htmlspecialchars($video['id']); ?>" data-action="magnific"></a>
 						</li>
 					<?php endforeach; ?>
 				</ul>
+				<div class="videos-carousel-progress" aria-hidden="true">
+					<span></span>
+				</div>
 			</div>
 		</section>
 		<section class="home">

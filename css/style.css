@@ -3797,6 +3797,10 @@ blockquote {
   padding: 50px 0;
 }
 
+.videos-showcase {
+  padding-top: 28px;
+}
+
 .videos-showcase-header,
 .videos-page-header {
   align-items: flex-end;
@@ -3884,7 +3888,6 @@ blockquote {
   border: 1px solid #f0f0f0;
   display: block;
   min-height: 100%;
-  padding-bottom: 16px;
   position: relative;
 }
 
@@ -3913,16 +3916,20 @@ blockquote {
   line-height: 1.35;
 }
 
-.video-type {
-  background: #000;
-  color: #fff;
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .7px;
-  margin: 16px 16px 0;
-  padding: 5px 9px;
-  text-transform: uppercase;
+.videos-carousel-progress {
+  background: #ececec;
+  height: 4px;
+  margin-top: 18px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.videos-carousel-progress span {
+  background: #d35400;
+  display: block;
+  height: 100%;
+  transition: width .35s ease;
+  width: 0;
 }
 
 .video-catalog-list {

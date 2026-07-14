@@ -20,9 +20,7 @@ require_once 'inc/videos_data.php';
         <ul class="video-list video-catalog-list" data-youtube='"carousel":false'>
             <?php foreach ($videos as $video): ?>
                 <li>
-                    <a data-youtube-id="<?php echo htmlspecialchars($video['id']); ?>" data-action="magnific">
-                        <span class="video-type"><?php echo htmlspecialchars($video['type']); ?></span>
-                    </a>
+                    <a data-youtube-id="<?php echo htmlspecialchars($video['id']); ?>" data-action="magnific"></a>
                 </li>
             <?php endforeach; ?>
         </ul>

@@ -399,7 +399,7 @@
 .skin-purple .video-catalog-list li a .desc .title:hover {
   color: #8e44ad;
 }
-.skin-purple .video-type,
+.skin-purple .videos-carousel-progress span,
 .skin-purple #preaching-videos-nav .prev:hover,
 .skin-purple #preaching-videos-nav .next:hover {
   background-color: #8e44ad;
@@ -806,7 +806,7 @@
 .skin-blue .video-catalog-list li a .desc .title:hover {
   color: #626eef;
 }
-.skin-blue .video-type,
+.skin-blue .videos-carousel-progress span,
 .skin-blue #preaching-videos-nav .prev:hover,
 .skin-blue #preaching-videos-nav .next:hover {
   background-color: #626eef;
@@ -1214,7 +1214,7 @@
 .skin-orange .video-catalog-list li a .desc .title:hover {
   color: #fc624d;
 }
-.skin-orange .video-type,
+.skin-orange .videos-carousel-progress span,
 .skin-orange #preaching-videos-nav .prev:hover,
 .skin-orange #preaching-videos-nav .next:hover {
   background-color: #fc624d;
