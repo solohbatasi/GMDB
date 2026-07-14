@@ -109,6 +109,7 @@
 													</div>
 												</div>
 												<ul class="vertical-menu">
+													<li><a href="./?p=events/empowerment-conference"><i class="ion-ios-circle-outline"></i> Your Time of Empowerment Conference</a></li>
 													<li><a href="./?p=503"><i class="ion-ios-circle-outline"></i> Revival Crusade</a></li>
 													<li><a href="./?p=503"><i class="ion-ios-circle-outline"></i> Youth Worship Night</a></li>
 													<li><a href="./?p=503"><i class="ion-ios-circle-outline"></i> Prayer & Fasting Week</a></li>
@@ -127,16 +128,16 @@
 													<article class="article col-md-4 mini">
 														<div class="inner">
 															<figure>
-																<a href="./?p=503">
-																	<img src="images/2.jpg" loading="lazy" alt="Baptism Event 2024">
+																<a href="./?p=events/empowerment-conference">
+																	<img src="images/events/empowerment-conference-main.jpeg" loading="lazy" alt="Your Time of Empowerment Conference">
 																</a>
 															</figure>
 															<div class="padding">
 																<div class="detail">
-																	<div class="time">November 19, 2024</div>
-																	<div class="category"><a href="#">Baptism</a></div>
+																	<div class="time">August 14-15, 2026</div>
+																	<div class="category"><a href="./?p=events/empowerment-conference">Conference</a></div>
 																</div>
-																<h2><a href="./?p=503">Mass Baptism at Home Church, Nyamira-Kenya</a></h2>
+																<h2><a href="./?p=events/empowerment-conference">Your Time of Empowerment Conference</a></h2>
 															</div>
 														</div>
 													</article>

@@ -29,6 +29,8 @@
 							$ch = curl_init();
 							curl_setopt($ch, CURLOPT_URL, $apiUrl);
 							curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+							curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
+							curl_setopt($ch, CURLOPT_TIMEOUT, 4);
 							$response = curl_exec($ch);
 							curl_close($ch);
 
@@ -66,10 +68,11 @@
 												<div><i class="ion-location"></i> Jimlizer Hotel, Buru-Buru Nairobi</div>
 											</div>
 											<div class="event-ad-actions">
-												<a href="tel:+447727208820" class="event-ad-btn event-ad-btn-primary">
-													<i class="ion-ios-telephone"></i> Register / Inquire
+												<a href="./?p=events/empowerment-conference" class="event-ad-btn event-ad-btn-primary">
+													<i class="ion-ios-information"></i> More Details
 												</a>
-												<a href="mailto:info@globalministries-dailybread.org" class="event-ad-btn event-ad-btn-light">
+												
+												<a href="mailto:info@globalministriesdailybread.org" class="event-ad-btn event-ad-btn-light">
 													<i class="ion-ios-email"></i> Email Us
 												</a>
 											</div>
@@ -455,10 +458,13 @@
 									<small>Jimlizer Hotel, Buru-Buru Nairobi</small>
 								</div>
 								<div class="event-inline-ad-actions">
+									<a href="./?p=events/empowerment-conference" class="event-inline-ad-btn event-inline-ad-btn-primary">
+										<i class="ion-ios-information"></i> More Details
+									</a>
 									<a href="tel:+447727208820" class="event-inline-ad-btn event-inline-ad-btn-primary">
 										<i class="ion-ios-telephone"></i> Register / Inquire
 									</a>
-									<a href="mailto:info@globalministries-dailybread.org" class="event-inline-ad-btn event-inline-ad-btn-light">
+									<a href="mailto:info@globalministriesdailybread.org" class="event-inline-ad-btn event-inline-ad-btn-light">
 										<i class="ion-ios-email"></i> Email Us
 									</a>
 								</div>

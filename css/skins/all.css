@@ -390,10 +390,16 @@
 .skin-purple .book-btn-solid,
 .skin-purple .event-ad-btn-primary,
 .skin-purple .event-inline-ad-btn-primary,
+.skin-purple .event-detail-btn-primary,
+.skin-purple .event-topic-list li:before,
 .skin-purple .books-carousel-progress span,
 .skin-purple #books-carousel-nav .prev:hover,
 .skin-purple #books-carousel-nav .next:hover {
   background-color: #8e44ad;
+}
+.skin-purple .event-side-details i,
+.skin-purple .event-side-contact i {
+  color: #8e44ad;
 }
 .skin-purple .videos-eyebrow,
 .skin-purple .video-link:hover,
@@ -799,10 +805,16 @@
 .skin-blue .book-btn-solid,
 .skin-blue .event-ad-btn-primary,
 .skin-blue .event-inline-ad-btn-primary,
+.skin-blue .event-detail-btn-primary,
+.skin-blue .event-topic-list li:before,
 .skin-blue .books-carousel-progress span,
 .skin-blue #books-carousel-nav .prev:hover,
 .skin-blue #books-carousel-nav .next:hover {
   background-color: #626eef;
+}
+.skin-blue .event-side-details i,
+.skin-blue .event-side-contact i {
+  color: #626eef;
 }
 .skin-blue .videos-eyebrow,
 .skin-blue .video-link:hover,
@@ -1209,10 +1221,16 @@
 .skin-orange .book-btn-solid,
 .skin-orange .event-ad-btn-primary,
 .skin-orange .event-inline-ad-btn-primary,
+.skin-orange .event-detail-btn-primary,
+.skin-orange .event-topic-list li:before,
 .skin-orange .books-carousel-progress span,
 .skin-orange #books-carousel-nav .prev:hover,
 .skin-orange #books-carousel-nav .next:hover {
   background-color: #fc624d;
+}
+.skin-orange .event-side-details i,
+.skin-orange .event-side-contact i {
+  color: #fc624d;
 }
 .skin-orange .videos-eyebrow,
 .skin-orange .video-link:hover,
