@@ -38,10 +38,49 @@
 							$verseReference = isset($verseData['reference']) ? $verseData['reference'] : $randomRef;
 							// Replace Yahweh or all-uppercase LORD with "the Lord"
 							$verseText = str_ireplace(['Yahweh', 'YHWH', 'LORD'], 'Lord', $verseText);
+
+							$eventEndDate = '2026-08-15';
+							$showEventAdvert = date('Y-m-d') <= $eventEndDate;
 						?>
 
 
 						<div class="owl-carousel owl-theme slide" id="featured">
+							<?php if ($showEventAdvert): ?>
+							<div class="item">
+								<article class="featured event-ad">
+									<div class="overlay"></div>
+									<figure>
+										<img src="images/events/empowerment-conference-main.jpeg" loading="lazy" alt="Your Time of Empowerment Conference">
+									</figure>
+									<div class="event-ad-content">
+										<div class="event-ad-copy">
+											<span class="event-ad-kicker">Main Event</span>
+											<h1>Your Time of Empowerment Conference</h1>
+											<p class="event-ad-theme">Called to Purpose</p>
+											<p>
+												Aligning and positioning yourself to answer God's call upon your life.
+											</p>
+											<div class="event-ad-details">
+												<div><i class="ion-calendar"></i> August 14-15, 2026</div>
+												<div><i class="ion-clock"></i> 9:00 AM - 6:00 PM each day</div>
+												<div><i class="ion-location"></i> Jimlizer Hotel, Buru-Buru Nairobi</div>
+											</div>
+											<div class="event-ad-actions">
+												<a href="tel:+447727208820" class="event-ad-btn event-ad-btn-primary">
+													<i class="ion-ios-telephone"></i> Register / Inquire
+												</a>
+												<a href="mailto:info@globalministries-dailybread.org" class="event-ad-btn event-ad-btn-light">
+													<i class="ion-ios-email"></i> Email Us
+												</a>
+											</div>
+										</div>
+										<div class="event-ad-poster">
+											<img src="images/events/empowerment-conference-main.jpeg" loading="lazy" alt="Empowerment conference poster">
+										</div>
+									</div>
+								</article>
+							</div>
+							<?php endif; ?>
 							<!-- Event 1 -->
 							<div class="item">
 								<article class="featured">

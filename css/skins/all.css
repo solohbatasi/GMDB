@@ -388,6 +388,7 @@
   color: #8e44ad;
 }
 .skin-purple .book-btn-solid,
+.skin-purple .event-ad-btn-primary,
 .skin-purple .books-carousel-progress span,
 .skin-purple #books-carousel-nav .prev:hover,
 .skin-purple #books-carousel-nav .next:hover {
@@ -795,6 +796,7 @@
   color: #626eef;
 }
 .skin-blue .book-btn-solid,
+.skin-blue .event-ad-btn-primary,
 .skin-blue .books-carousel-progress span,
 .skin-blue #books-carousel-nav .prev:hover,
 .skin-blue #books-carousel-nav .next:hover {
@@ -1203,6 +1205,7 @@
   color: #fc624d;
 }
 .skin-orange .book-btn-solid,
+.skin-orange .event-ad-btn-primary,
 .skin-orange .books-carousel-progress span,
 .skin-orange #books-carousel-nav .prev:hover,
 .skin-orange #books-carousel-nav .next:hover {

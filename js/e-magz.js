@@ -585,7 +585,9 @@ $(function(){
 		$("#featured").owlCarousel({
 			items: 1,
 			dots: false,
-			// autoplay: true,
+			autoplay: true,
+			autoplayTimeout: 8000,
+			autoplayHoverPause: true,
 			loop: true
 		});		
 	}
