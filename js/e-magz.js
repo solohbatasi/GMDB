@@ -291,7 +291,7 @@ $(function(){
 
 		var carousel = $("#books-carousel").owlCarousel({
 			items: 4,
-			margin: 24,
+			margin: 16,
 			nav: false,
 			dots: false,
 			loop: true,

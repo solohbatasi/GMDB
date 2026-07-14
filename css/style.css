@@ -4230,7 +4230,7 @@ blockquote {
   background: #f7f7f7;
   border-bottom: 1px solid #eee;
   display: flex;
-  height: 285px;
+  height: 250px;
   justify-content: center;
   overflow: hidden;
   padding: 18px;
@@ -4341,7 +4341,7 @@ blockquote {
 
 .books-grid {
   display: grid;
-  gap: 26px;
+  gap: 16px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
@@ -4375,7 +4375,7 @@ blockquote {
 
   .book-slide-cover,
   .book-card-cover {
-    height: 280px;
+    height: 230px;
   }
 
   .book-card-actions {
