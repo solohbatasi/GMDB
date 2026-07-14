@@ -380,6 +380,19 @@
   .name {
   color: #8e44ad;
 }
+.skin-purple .books-eyebrow,
+.skin-purple .book-link:hover,
+.skin-purple .book-meta span:first-child,
+.skin-purple .book-slide h2 a:hover,
+.skin-purple .book-card h2 a:hover {
+  color: #8e44ad;
+}
+.skin-purple .book-btn-solid,
+.skin-purple .books-carousel-progress span,
+.skin-purple #books-carousel-nav .prev:hover,
+.skin-purple #books-carousel-nav .next:hover {
+  background-color: #8e44ad;
+}
 
 /*
  * Variable
@@ -762,6 +775,19 @@
   .item
   .name {
   color: #626eef;
+}
+.skin-blue .books-eyebrow,
+.skin-blue .book-link:hover,
+.skin-blue .book-meta span:first-child,
+.skin-blue .book-slide h2 a:hover,
+.skin-blue .book-card h2 a:hover {
+  color: #626eef;
+}
+.skin-blue .book-btn-solid,
+.skin-blue .books-carousel-progress span,
+.skin-blue #books-carousel-nav .prev:hover,
+.skin-blue #books-carousel-nav .next:hover {
+  background-color: #626eef;
 }
 
 /*
@@ -1146,6 +1172,19 @@
   .item
   .name {
   color: #fc624d;
+}
+.skin-orange .books-eyebrow,
+.skin-orange .book-link:hover,
+.skin-orange .book-meta span:first-child,
+.skin-orange .book-slide h2 a:hover,
+.skin-orange .book-card h2 a:hover {
+  color: #fc624d;
+}
+.skin-orange .book-btn-solid,
+.skin-orange .books-carousel-progress span,
+.skin-orange #books-carousel-nav .prev:hover,
+.skin-orange #books-carousel-nav .next:hover {
+  background-color: #fc624d;
 }
 
 /*# sourceMappingURL=all.css.map */

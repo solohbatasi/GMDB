@@ -291,7 +291,7 @@ $(function(){
 
 		var carousel = $("#books-carousel").owlCarousel({
 			items: 4,
-			margin: 16,
+			margin: 12,
 			nav: false,
 			dots: false,
 			loop: true,
@@ -313,6 +313,23 @@ $(function(){
 				}
 			}
 		});
+
+		var updateProgress = function(event) {
+			var count = event.item.count || 1;
+			var visible = event.page && event.page.size ? event.page.size : 1;
+			var maxIndex = Math.max(count - visible, 0);
+			var clones = event.relatedTarget && event.relatedTarget._clones ? event.relatedTarget._clones.length : 0;
+			var current = event.item.index - clones / 2;
+
+			current = ((current % count) + count) % count;
+			current = Math.min(current, maxIndex);
+
+			var width = maxIndex === 0 ? 100 : ((current + visible) / count) * 100;
+			$(".books-carousel-progress span").css("width", width + "%");
+		}
+
+		carousel.on("initialized.owl.carousel changed.owl.carousel refreshed.owl.carousel", updateProgress);
+		carousel.trigger("refresh.owl.carousel");
 
 		$("#books-carousel-nav .next").click(function(){
 			carousel.trigger('next.owl.carousel');

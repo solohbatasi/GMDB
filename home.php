@@ -143,6 +143,9 @@
 					</div>
 				</div>
 
+				<div class="books-carousel-progress books-carousel-progress-top" aria-hidden="true">
+					<span></span>
+				</div>
 				<div class="owl-carousel owl-theme books-carousel" id="books-carousel">
 					<?php foreach ($books as $book): ?>
 						<article class="book-slide">
@@ -167,6 +170,9 @@
 							</div>
 						</article>
 					<?php endforeach; ?>
+				</div>
+				<div class="books-carousel-progress books-carousel-progress-bottom" aria-hidden="true">
+					<span></span>
 				</div>
 			</div>
 		</section>
