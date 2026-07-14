@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /server/
+Disallow: /vendor/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot
+
+Sitemap: https://globalministriesdailybread.org/sitemap.xml
