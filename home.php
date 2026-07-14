@@ -125,6 +125,52 @@
 			</div>
 		</section>
 
+		<?php require_once 'inc/books_data.php'; ?>
+		<section class="books-showcase">
+			<div class="container">
+				<div class="books-showcase-header">
+					<div>
+						<span class="books-eyebrow">Featured Books</span>
+						<h1>Books for Faith, Ministry, and Everyday Formation</h1>
+						<p>Explore practical resources written to equip believers, leaders, families, and communities for deeper Christian service.</p>
+					</div>
+					<div class="books-header-actions">
+						<a href="./?p=books" class="book-link">View all books</a>
+						<div class="carousel-nav" id="books-carousel-nav">
+							<div class="prev"><i class="ion-ios-arrow-left"></i></div>
+							<div class="next"><i class="ion-ios-arrow-right"></i></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="owl-carousel owl-theme books-carousel" id="books-carousel">
+					<?php foreach ($books as $book): ?>
+						<article class="book-slide">
+							<a class="book-slide-cover" href="./?p=books/<?php echo htmlspecialchars($book['slug']); ?>">
+								<img src="<?php echo htmlspecialchars($book['cover']); ?>" loading="lazy" alt="<?php echo htmlspecialchars($book['title']); ?>">
+							</a>
+							<div class="book-slide-body">
+								<div class="book-meta">
+									<span><?php echo htmlspecialchars($book['tag']); ?></span>
+									<span><?php echo htmlspecialchars($book['date']); ?></span>
+								</div>
+								<h2><a href="./?p=books/<?php echo htmlspecialchars($book['slug']); ?>"><?php echo htmlspecialchars($book['title']); ?></a></h2>
+								<p><?php echo htmlspecialchars($book['summary']); ?></p>
+							</div>
+							<div class="book-card-actions">
+								<a href="./?p=books/<?php echo htmlspecialchars($book['slug']); ?>" class="book-btn book-btn-outline">
+									<i class="ion-ios-book-outline"></i> Details
+								</a>
+								<a href="<?php echo htmlspecialchars($book['purchase_url']); ?>" target="_blank" rel="noopener" class="book-btn book-btn-solid">
+									<i class="fas fa-shopping-cart"></i> Purchase
+								</a>
+							</div>
+						</article>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+
 		<section class="best-of-the-week">
 			<div class="container">
 				<h1><div class="text-center">Best Of The Week</div>

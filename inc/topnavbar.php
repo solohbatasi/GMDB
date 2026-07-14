@@ -146,22 +146,23 @@
 									</div>
 								</div>
 							</li>
-							<li class="dropdown magz-dropdown magz-dropdown-megamenu"><a href="#" >Books<i class="ion-ios-arrow-right"></i></a>
+							<li class="dropdown magz-dropdown magz-dropdown-megamenu"><a href="./?p=books" >Books<i class="ion-ios-arrow-right"></i></a>
 								<div class="dropdown-menu megamenu">
 									<div class="megamenu-inner">
 										<div class="row">
 											<div class="col-md-3">
-												<h2 class="megamenu-title">Column 1</h2>
+												<h2 class="megamenu-title">Featured Books</h2>
 												<ul class="vertical-menu">
+													<li><a href="./?p=books"><strong>View All Books</strong></a></li>
 													<li><a href="./?p=books/book1">A Theory of Lay Ministry Praxis</a></li>
 													<li><a href="./?p=books/miracle-of-genuine-confession">The Miracle of Genuine Confession</a></li>
-													<li><a href="./?p=books/calling-of-god">Calling Of God and Its Coordinates</a></li>
+													<li><a href="./?p=books/calling-of-God">Calling Of God and Its Coordinates</a></li>
 													<li><a href="./?p=books/body-over-brand">Body Over Brand</a></li>
 													<li><a href="./?p=books/12cs">The 12 Cs of Christ</a></li>
 												</ul>
 											</div>
 											<div class="col-md-3">
-												<h2 class="megamenu-title">Column 2</h2>
+												<h2 class="megamenu-title">More Titles</h2>
 												<ul class="vertical-menu">
 													<li><a href="./?p=books/look">The Look</a></li>
 													<li><a href="./?p=books/marriage-made-in-heaven">Marriage Made in Heaven</a></li>
@@ -171,7 +172,7 @@
 												</ul>
 											</div>
 											<div class="col-md-3">
-												<h2 class="megamenu-title">Column 3</h2>
+												<h2 class="megamenu-title">Leadership</h2>
 												<ul class="vertical-menu">
 													<li><a href="./?p=books/kingdom-leadership">Kingdom Leadership of Empowering Stewards</a></li>
 													<!-- <li><a href="./?p=503">Book 12</a></li>

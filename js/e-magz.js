@@ -284,6 +284,45 @@ $(function(){
 		});
 	}
 
+	var booksCarousel = function() {
+		if(!$("#books-carousel").length) {
+			return;
+		}
+
+		var carousel = $("#books-carousel").owlCarousel({
+			items: 4,
+			margin: 24,
+			nav: false,
+			dots: false,
+			loop: true,
+			autoplay: true,
+			autoplayTimeout: 4500,
+			autoplayHoverPause: true,
+			responsive: {
+				1200: {
+					items: 4
+				},
+				992: {
+					items: 3
+				},
+				640: {
+					items: 2
+				},
+				0: {
+					items: 1
+				}
+			}
+		});
+
+		$("#books-carousel-nav .next").click(function(){
+			carousel.trigger('next.owl.carousel');
+		});
+
+		$("#books-carousel-nav .prev").click(function(){
+			carousel.trigger('prev.owl.carousel');
+		});
+	}
+
 	var youtubeAPI = function() {
 		$("[data-youtube]").each(function(vl_i){
 			var $this = $(this),
@@ -692,6 +731,8 @@ $(function(){
 	floatingLabel();
 
 	bestOfTheWeek();
+
+	booksCarousel();
 
 	youtubeAPI();
 
