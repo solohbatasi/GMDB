@@ -441,11 +441,36 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-8 col-sm-12 col-xs-12">
+						<?php if (!empty($showEventAdvert)): ?>
+						<div class="event-inline-ad">
+							<div class="event-inline-ad-image">
+								<img src="images/events/empowerment-conference-topics-blue.jpeg" loading="lazy" alt="Your Time of Empowerment conference topics">
+							</div>
+							<div class="event-inline-ad-content">
+								<span>Upcoming Conference</span>
+								<h2>Your Time of Empowerment</h2>
+								<p>Join us for two days of purpose, calling, leadership, prayer, spiritual gifts, and divine empowerment.</p>
+								<div class="event-inline-ad-meta">
+									<strong>August 14-15, 2026</strong>
+									<small>Jimlizer Hotel, Buru-Buru Nairobi</small>
+								</div>
+								<div class="event-inline-ad-actions">
+									<a href="tel:+447727208820" class="event-inline-ad-btn event-inline-ad-btn-primary">
+										<i class="ion-ios-telephone"></i> Register / Inquire
+									</a>
+									<a href="mailto:info@globalministries-dailybread.org" class="event-inline-ad-btn event-inline-ad-btn-light">
+										<i class="ion-ios-email"></i> Email Us
+									</a>
+								</div>
+							</div>
+						</div>
+						<?php else: ?>
 						<div class="banner">
 							<a href="#">
 								<img src="images/kk.jpg" alt="Sample Article">
 							</a>
 						</div>
+						<?php endif; ?>
 						<div class="line transparent little"></div>
 						<div class="row">
 							<div class="col-md-6 col-sm-6 trending-tags">
