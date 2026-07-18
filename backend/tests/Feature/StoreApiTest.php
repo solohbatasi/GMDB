@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\InventoryItem;
+use App\Models\PickupLocation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -101,5 +102,20 @@ class StoreApiTest extends TestCase
         $this->getJson('/api/store/books?limit=500')
             ->assertOk()
             ->assertJsonCount(50, 'data');
+    }
+
+    public function test_pickup_locations_api_returns_saved_map_details(): void
+    {
+        PickupLocation::factory()->create([
+            'map_url' => 'https://maps.app.goo.gl/example',
+            'latitude' => -1.286389,
+            'longitude' => 36.817223,
+        ]);
+
+        $this->getJson('/api/store/pickup-locations')
+            ->assertOk()
+            ->assertJsonPath('data.0.map_url', 'https://maps.app.goo.gl/example')
+            ->assertJsonPath('data.0.latitude', -1.286389)
+            ->assertJsonPath('data.0.longitude', 36.817223);
     }
 }

@@ -29,6 +29,9 @@ class OrderResource extends JsonResource
                     'city' => $this->pickupLocation->city,
                     'county' => $this->pickupLocation->county,
                     'instructions' => $this->pickupLocation->instructions,
+                    'map_url' => $this->pickupLocation->map_url,
+                    'latitude' => $this->pickupLocation->latitude,
+                    'longitude' => $this->pickupLocation->longitude,
                 ] : null),
             ],
             'items' => $this->whenLoaded('items', fn () => $this->items->map(fn ($item) => [

@@ -18,6 +18,9 @@ class PickupLocation extends Model
         'city',
         'county',
         'instructions',
+        'map_url',
+        'latitude',
+        'longitude',
         'is_active',
         'sort_order',
     ];
@@ -26,6 +29,8 @@ class PickupLocation extends Model
     {
         return [
             'is_active' => 'boolean',
+            'latitude' => 'float',
+            'longitude' => 'float',
             'sort_order' => 'integer',
         ];
     }

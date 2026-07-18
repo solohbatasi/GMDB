@@ -192,11 +192,19 @@ class Phase3CheckoutTest extends TestCase
         $this->post('/pickup-locations', [
             'name' => 'Office',
             'address' => 'Nairobi',
+            'map_url' => 'https://maps.google.com/?q=-1.286389,36.817223',
+            'latitude' => -1.286389,
+            'longitude' => 36.817223,
             'is_active' => true,
             'sort_order' => 0,
         ])->assertRedirect();
 
-        $this->assertDatabaseHas('pickup_locations', ['name' => 'Office']);
+        $this->assertDatabaseHas('pickup_locations', [
+            'name' => 'Office',
+            'map_url' => 'https://maps.google.com/?q=-1.286389,36.817223',
+            'latitude' => -1.286389,
+            'longitude' => 36.817223,
+        ]);
     }
 
     protected function sellableBook(int $price = 1000, int $quantity = 10): Book
