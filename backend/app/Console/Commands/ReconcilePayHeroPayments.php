@@ -15,22 +15,33 @@ class ReconcilePayHeroPayments extends Command
     public function handle(PayHeroVerificationService $verification): int
     {
         $before = now()->subMinutes((int) config('payhero.reconcile_after_minutes', 2));
-        $count = 0;
+        $reconciled = 0;
+        $failed = 0;
 
-        Payment::query()
+        $query = Payment::query()
             ->where('provider', 'payhero')
             ->whereIn('status', ['created', 'initiated', 'pending'])
-            ->where('created_at', '<=', $before)
-            ->orderBy('id')
-            ->chunkById(100, function ($payments) use ($verification, &$count) {
+            ->where('created_at', '<=', $before);
+
+        $candidates = (clone $query)->count();
+
+        $query->orderBy('id')
+            ->chunkById(100, function ($payments) use ($verification, &$reconciled, &$failed) {
                 foreach ($payments as $payment) {
                     if ($verification->safeVerify($payment)) {
-                        $count++;
+                        $reconciled++;
+                    } else {
+                        $failed++;
                     }
                 }
             });
 
-        $this->info("Reconciled PayHero payments: {$count}");
+        $this->info("Eligible pending PayHero payments: {$candidates}");
+        $this->info("Reconciled PayHero payments: {$reconciled}");
+
+        if ($failed > 0) {
+            $this->warn("PayHero status lookups that failed: {$failed}. Check storage/logs/laravel.log.");
+        }
 
         return self::SUCCESS;
     }
