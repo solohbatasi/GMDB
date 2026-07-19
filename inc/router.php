@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/php_compat.php';
+
 function gdmb_public_routes(): array
 {
     return [
