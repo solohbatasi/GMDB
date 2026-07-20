@@ -57,6 +57,7 @@
 						</div>
 						<div class="col-md-3 col-sm-12 text-right">
 							<ul class="nav-icons">
+								<li><a href="https://cs2.rcnoc.com:2096/logout/?locale=en" target="_blank" style="color:white;"><i class="ion-person-add"></i><div>Email</div></a></li>
 								<li><a href="./?p=register" style="color:white;"><i class="ion-person-add"></i><div>Register</div></a></li>
 								<li><a href="./?p=login" style="color:white;"><i class="ion-person"></i><div>Login</div></a></li>
 							</ul>
