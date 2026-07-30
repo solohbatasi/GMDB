@@ -12,4 +12,5 @@
 		<script src="scripts/toast/jquery.toast.min.js"></script>
 		<script src="js/demo.js"></script>
 		<script src="js/e-magz.js"></script>
-	
+		<script src="js/home-hero.js"></script>
+

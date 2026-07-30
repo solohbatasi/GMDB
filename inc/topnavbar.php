@@ -15,7 +15,7 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 	display: none !important;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1023px) {
 	header.primary .firstbar {
 		display: none !important;
 	}
@@ -67,6 +67,9 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 	}
 	header.primary nav.menu #menu-list {
 		flex: 0 0 0;
+	}
+	header.primary nav.menu .gdmb-sidebar-toggle {
+		display: none !important;
 	}
 	header.primary.up {
 		top: 0 !important;
@@ -164,7 +167,7 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 					<div class="mobile-toggle">
 						<a href="#" data-toggle="menu" data-target="#menu-list"><i class="ion-navicon-round"></i></a>
 					</div>
-					<div class="mobile-toggle">
+					<div class="mobile-toggle gdmb-sidebar-toggle">
 						<a href="#" data-toggle="sidebar" data-target="#sidebar"><i class="ion-ios-arrow-left"></i></a>
 					</div>
 					<div id="menu-list">
