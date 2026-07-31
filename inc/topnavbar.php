@@ -10,6 +10,69 @@ $gdmbNavBooks = gdmb_store_books(['limit' => 15]);
 $gdmbNavBookColumns = array_chunk($gdmbNavBooks, 5);
 $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 ?>
+<style>
+.gdmb-mobile-nav-brand {
+	display: none !important;
+}
+
+@media screen and (max-width: 768px) {
+	header.primary .firstbar {
+		display: none !important;
+	}
+	header.primary nav.menu {
+		background: #112243 !important;
+		border-color: #112243 !important;
+		height: 68px !important;
+	}
+	header.primary nav.menu > .container {
+		align-items: center;
+		display: flex;
+		height: 100%;
+	}
+	header.primary .gdmb-mobile-nav-brand {
+		display: block !important;
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+	header.primary .gdmb-mobile-nav-brand a {
+		align-items: center;
+		display: flex;
+		gap: 10px;
+		max-width: 220px;
+		text-decoration: none;
+	}
+	header.primary .gdmb-mobile-nav-brand img {
+		display: block;
+		flex: 0 0 44px;
+		height: 50px !important;
+		max-height: 50px !important;
+		max-width: 44px !important;
+		object-fit: contain;
+		width: 44px !important;
+	}
+	header.primary .gdmb-mobile-nav-brand span {
+		color: #fff;
+		font-family: 'Raleway', sans-serif;
+		font-size: 13px;
+		font-weight: 800;
+		line-height: 1.25;
+		overflow-wrap: anywhere;
+	}
+	header.primary nav.menu .mobile-toggle {
+		flex: 0 0 auto;
+		margin-left: 16px;
+	}
+	header.primary nav.menu .mobile-toggle a {
+		color: #fff;
+	}
+	header.primary nav.menu #menu-list {
+		flex: 0 0 0;
+	}
+	header.primary.up {
+		top: 0 !important;
+	}
+}
+</style>
 <header class="primary">
 			<div class="firstbar" style="background-color:#112243;">
 				<div class="container">
@@ -91,7 +154,7 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 			<!-- Start nav -->
 			<nav class="menu">
 				<div class="container">
-					<div class="gdmb-mobile-nav-brand">
+					<div class="gdmb-mobile-nav-brand" style="display:none;">
 						<a href="./" aria-label="Global Ministries Daily Bread home">
 							<img src="images/1720010940_church-removebg-preview.png" alt="Global Ministries Daily Bread logo">
 							<span>Global Ministries Daily Bread</span>
