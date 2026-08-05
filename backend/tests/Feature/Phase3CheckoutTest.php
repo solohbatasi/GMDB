@@ -24,9 +24,8 @@ class Phase3CheckoutTest extends TestCase
 
         config([
             'payhero.base_url' => 'https://payhero.test',
-            'payhero.payments_path' => '/api/v2/payments/initiate-stk-push',
-            'payhero.username' => 'username',
-            'payhero.password' => 'password',
+            'payhero.payments_path' => '/api/v2/payments',
+            'payhero.auth_token' => 'test-basic-token',
             'payhero.channel_id' => 123,
             'payhero.callback_url' => 'https://example.test/backend/api/payments/payhero/callback',
         ]);

@@ -2,11 +2,10 @@
 
 return [
     'base_url' => env('PAYHERO_BASE_URL', 'https://backend.payhero.co.ke'),
-    'payments_path' => env('PAYHERO_PAYMENTS_PATH', '/api/v2/payments/initiate-stk-push'),
+    'payments_path' => env('PAYHERO_PAYMENTS_PATH', '/api/v2/payments'),
     'status_base_url' => env('PAYHERO_STATUS_BASE_URL', 'https://api.payhero.africa'),
     'status_path' => env('PAYHERO_STATUS_PATH', '/api/global/transaction-status'),
-    'username' => env('PAYHERO_USERNAME'),
-    'password' => env('PAYHERO_PASSWORD'),
+    'auth_token' => env('PAYHERO_AUTH_TOKEN'),
     'channel_id' => env('PAYHERO_CHANNEL_ID'),
     'provider' => env('PAYHERO_PROVIDER', 'm-pesa'),
     'callback_url' => env('PAYHERO_CALLBACK_URL') ?: rtrim((string) env('APP_URL'), '/').'/api/payments/payhero/callback',

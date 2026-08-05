@@ -46,7 +46,7 @@ class PaymentController extends Controller
                 'provider' => 'payhero',
                 'currency' => 'KES',
                 'channel_id_configured' => filled(config('payhero.channel_id')),
-                'credentials_configured' => filled(config('payhero.username')) && filled(config('payhero.password')),
+                'credentials_configured' => filled(config('payhero.auth_token')),
             ],
         ]);
     }
