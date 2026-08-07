@@ -4,13 +4,9 @@
         <input type="hidden" name="slug" id="book-purchase-slug" value="">
 
         <div class="book-purchase-dialog-header">
-            <div class="book-purchase-product">
-                <img id="book-purchase-cover" src="" alt="" hidden>
-                <div>
-                    <span class="books-eyebrow">Purchase Book</span>
-                    <h2 id="book-purchase-title">Choose your edition</h2>
-                    <p>Select a format and quantity.</p>
-                </div>
+            <div>
+                <span class="books-eyebrow">Purchase Book</span>
+                <h2 id="book-purchase-title">Choose your edition</h2>
             </div>
             <button type="button" class="book-purchase-close" aria-label="Close purchase dialog" title="Close">
                 <i class="ion-close-round"></i>
@@ -65,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!dialog) return;
 
     var title = document.getElementById('book-purchase-title');
-    var cover = document.getElementById('book-purchase-cover');
     var slug = document.getElementById('book-purchase-slug');
     var quantity = document.getElementById('book-purchase-quantity');
     var total = document.getElementById('book-purchase-total');
@@ -105,10 +100,6 @@ document.addEventListener('DOMContentLoaded', function () {
         title.textContent = button.dataset.bookTitle || 'Choose your edition';
         slug.value = button.dataset.bookSlug || '';
         quantity.value = '1';
-        cover.src = button.dataset.bookCover || '';
-        cover.alt = button.dataset.bookTitle ? button.dataset.bookTitle + ' cover' : 'Book cover';
-        cover.hidden = !button.dataset.bookCover;
-
         dialog.querySelectorAll('[data-price-option]').forEach(function (option) {
             var key = option.dataset.priceOption;
             var available = currentPrices[key] > 0;

@@ -1869,7 +1869,7 @@ body .event-ad.featured .overlay {
   font-weight: 800;
   line-height: 1.08;
   margin: 0 0 12px;
-  max-width: 620px;
+  max-width: 540px;
 }
 
 .event-ad-theme {
@@ -5158,30 +5158,11 @@ blockquote {
 }
 
 .book-purchase-dialog-header {
-  align-items: center;
+  align-items: flex-start;
   border-bottom: 1px solid #e8eaf0;
   display: flex;
   justify-content: space-between;
   padding: 22px 24px;
-}
-
-.book-purchase-product {
-  align-items: center;
-  display: flex;
-  gap: 16px;
-  min-width: 0;
-}
-
-.book-purchase-product img {
-  background: #f3f4f6;
-  flex: 0 0 56px;
-  height: 76px;
-  object-fit: contain;
-  width: 56px;
-}
-
-.book-purchase-product > div {
-  min-width: 0;
 }
 
 .book-purchase-dialog-header h2 {
@@ -5189,13 +5170,6 @@ blockquote {
   font-size: 21px;
   line-height: 1.3;
   margin: 4px 0 0;
-}
-
-.book-purchase-dialog-header p {
-  color: #737b88;
-  font-size: 13px;
-  line-height: 1.4;
-  margin: 5px 0 0;
 }
 
 .book-purchase-close {
@@ -5481,20 +5455,13 @@ blockquote {
     grid-template-columns: 1fr;
   }
 
-  .book-purchase-product img {
-    height: 66px;
-    width: 48px;
-  }
-
   .book-purchase-dialog-header h2 {
     font-size: 18px;
   }
 
   .gdmb-whatsapp-float {
     bottom: 16px;
-    height: 52px;
     right: 16px;
-    width: 52px;
   }
 }
 

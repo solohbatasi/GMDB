@@ -56,7 +56,7 @@ $priceOptions = $book ? gdmb_book_price_options($book) : [];
                         <div class="title"><i class="fas fa-shopping-cart"></i> Order the Book</div>
                         <ul class="social">
                             <li>
-                                <button type="button" class="book-btn book-btn-solid book-purchase-trigger" data-book-title="<?php echo gdmb_e($book['title']); ?>" data-book-slug="<?php echo gdmb_e($book['slug']); ?>" data-book-cover="<?php echo gdmb_e($book['cover']); ?>" data-currency="<?php echo gdmb_e($book['currency']); ?>" data-primary-price="<?php echo gdmb_e($book['price'] ?? ''); ?>" data-secondary-price="<?php echo gdmb_e($book['compare_price'] ?? ''); ?>"><i class="fas fa-shopping-cart"></i> Purchase</button>
+                                <button type="button" class="book-btn book-btn-solid book-purchase-trigger" data-book-title="<?php echo gdmb_e($book['title']); ?>" data-book-slug="<?php echo gdmb_e($book['slug']); ?>" data-currency="<?php echo gdmb_e($book['currency']); ?>" data-primary-price="<?php echo gdmb_e($book['price'] ?? ''); ?>" data-secondary-price="<?php echo gdmb_e($book['compare_price'] ?? ''); ?>"><i class="fas fa-shopping-cart"></i> Purchase</button>
                             </li>
                         </ul>
                     </div>
