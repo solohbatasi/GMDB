@@ -26,6 +26,11 @@ $priceOptions = $book ? gdmb_book_price_options($book) : [];
                 <article class="article main-article">
                     <header>
                         <h1><?php echo gdmb_e($book['title']); ?></h1>
+                        <div class="book-detail-prices">
+                            <?php foreach ($priceOptions as $priceOption): ?>
+                                <span><strong><?php echo gdmb_e($priceOption['label']); ?>:</strong> <?php echo gdmb_e($priceOption['formatted']); ?></span>
+                            <?php endforeach; ?>
+                        </div>
                         <ul class="details">
                             <?php if (! empty($book['published_at'])): ?>
                                 <li>Published <?php echo gdmb_e($book['published_at']); ?></li>
@@ -51,7 +56,7 @@ $priceOptions = $book ? gdmb_book_price_options($book) : [];
                         <div class="title"><i class="fas fa-shopping-cart"></i> Order the Book</div>
                         <ul class="social">
                             <li>
-                                <button type="button" class="book-btn book-btn-solid book-purchase-trigger" data-book-title="<?php echo gdmb_e($book['title']); ?>" data-book-slug="<?php echo gdmb_e($book['slug']); ?>" data-currency="<?php echo gdmb_e($book['currency']); ?>" data-primary-price="<?php echo gdmb_e($book['price'] ?? ''); ?>" data-secondary-price="<?php echo gdmb_e($book['compare_price'] ?? ''); ?>"><i class="fas fa-shopping-cart"></i> Purchase</button>
+                                <button type="button" class="book-btn book-btn-solid book-purchase-trigger" data-book-title="<?php echo gdmb_e($book['title']); ?>" data-book-slug="<?php echo gdmb_e($book['slug']); ?>" data-book-cover="<?php echo gdmb_e($book['cover']); ?>" data-currency="<?php echo gdmb_e($book['currency']); ?>" data-primary-price="<?php echo gdmb_e($book['price'] ?? ''); ?>" data-secondary-price="<?php echo gdmb_e($book['compare_price'] ?? ''); ?>"><i class="fas fa-shopping-cart"></i> Purchase</button>
                             </li>
                         </ul>
                     </div>
@@ -64,7 +69,7 @@ $priceOptions = $book ? gdmb_book_price_options($book) : [];
                         <ul class="social">
                             <li>
                                 <a href="<?php echo gdmb_e($book['purchase_url']); ?>" target="_blank" rel="noopener" style="background-color: #FF9900; color:white;">
-                                    <i class="fas fa-shopping-cart"></i> Purchase
+                                    <i class="fas fa-external-link-alt"></i> Buy on Amazon
                                 </a>
                             </li>
                         </ul>

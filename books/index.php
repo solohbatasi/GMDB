@@ -57,6 +57,9 @@ foreach (gdmb_store_books(['limit' => 50]) as $bookForCategory) {
                             <span><?php echo gdmb_e($book['published_at']); ?></span>
                         </div>
                         <h2><a href="./?p=book&amp;slug=<?php echo rawurlencode($book['slug']); ?>"><?php echo gdmb_e($book['title']); ?></a></h2>
+                        <?php foreach ($priceOptions as $priceOption): ?>
+                            <p class="book-edition-price"><strong><?php echo gdmb_e($priceOption['label']); ?>:</strong> <?php echo gdmb_e($priceOption['formatted']); ?></p>
+                        <?php endforeach; ?>
                         <p><?php echo gdmb_e($book['summary']); ?></p>
                     </div>
                     <div class="book-card-actions">
@@ -64,10 +67,10 @@ foreach (gdmb_store_books(['limit' => 50]) as $bookForCategory) {
                             <i class="ion-ios-book-outline"></i> Details
                         </a>
                         <?php if (! empty($book['available']) && $priceOptions): ?>
-                            <button type="button" class="book-btn book-btn-solid book-purchase-trigger" data-book-title="<?php echo gdmb_e($book['title']); ?>" data-book-slug="<?php echo gdmb_e($book['slug']); ?>" data-currency="<?php echo gdmb_e($book['currency']); ?>" data-primary-price="<?php echo gdmb_e($book['price'] ?? ''); ?>" data-secondary-price="<?php echo gdmb_e($book['compare_price'] ?? ''); ?>"><i class="fas fa-shopping-cart"></i> Purchase</button>
+                            <button type="button" class="book-btn book-btn-solid book-purchase-trigger" data-book-title="<?php echo gdmb_e($book['title']); ?>" data-book-slug="<?php echo gdmb_e($book['slug']); ?>" data-book-cover="<?php echo gdmb_e($book['cover']); ?>" data-currency="<?php echo gdmb_e($book['currency']); ?>" data-primary-price="<?php echo gdmb_e($book['price'] ?? ''); ?>" data-secondary-price="<?php echo gdmb_e($book['compare_price'] ?? ''); ?>"><i class="fas fa-shopping-cart"></i> Purchase</button>
                         <?php elseif (! empty($book['purchase_url'])): ?>
                             <a href="<?php echo gdmb_e($book['purchase_url']); ?>" target="_blank" rel="noopener" class="book-btn book-btn-solid">
-                                <i class="fas fa-shopping-cart"></i> Purchase
+                                <i class="fas fa-external-link-alt"></i> Buy on Amazon
                             </a>
                         <?php endif; ?>
                     </div>

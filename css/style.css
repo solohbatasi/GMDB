@@ -5143,9 +5143,14 @@ blockquote {
   color: #20242c;
   margin: auto;
   max-height: calc(100vh - 32px);
-  max-width: 520px;
+  max-width: 620px;
   padding: 0;
   width: calc(100% - 32px);
+}
+
+.book-purchase-form {
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
 }
 
 .book-purchase-dialog::backdrop {
@@ -5153,11 +5158,30 @@ blockquote {
 }
 
 .book-purchase-dialog-header {
-  align-items: flex-start;
+  align-items: center;
   border-bottom: 1px solid #e8eaf0;
   display: flex;
   justify-content: space-between;
-  padding: 22px 24px 18px;
+  padding: 22px 24px;
+}
+
+.book-purchase-product {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  min-width: 0;
+}
+
+.book-purchase-product img {
+  background: #f3f4f6;
+  flex: 0 0 56px;
+  height: 76px;
+  object-fit: contain;
+  width: 56px;
+}
+
+.book-purchase-product > div {
+  min-width: 0;
 }
 
 .book-purchase-dialog-header h2 {
@@ -5165,6 +5189,13 @@ blockquote {
   font-size: 21px;
   line-height: 1.3;
   margin: 4px 0 0;
+}
+
+.book-purchase-dialog-header p {
+  color: #737b88;
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 5px 0 0;
 }
 
 .book-purchase-close {
@@ -5185,6 +5216,7 @@ blockquote {
 }
 
 .book-purchase-dialog-body {
+  background: #fafbfc;
   padding: 22px 24px;
 }
 
@@ -5203,16 +5235,23 @@ blockquote {
   padding: 0;
 }
 
+.book-purchase-format-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .book-format-option {
   align-items: center;
   border: 1px solid #dce0e8;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
-  min-height: 60px;
-  padding: 11px 14px;
-  transition: border-color .2s ease, background-color .2s ease;
+  margin: 0;
+  min-height: 72px;
+  padding: 14px 16px;
+  position: relative;
+  transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
 }
 
 .book-format-option[hidden] {
@@ -5225,13 +5264,19 @@ blockquote {
 }
 
 .book-format-option:has(input:checked) {
-  background: #fff7f0;
+  background: #fff;
   border-color: #d35400;
+  box-shadow: inset 0 0 0 1px #d35400;
 }
 
 .book-format-option input {
-  accent-color: #d35400;
-  margin: 0 12px 0 0;
+  opacity: 0;
+  position: absolute;
+}
+
+.book-format-option:has(input:focus-visible) {
+  outline: 2px solid #112243;
+  outline-offset: 2px;
 }
 
 .book-format-option > span {
@@ -5267,8 +5312,8 @@ blockquote {
   border-top: 1px solid #eceef2;
   display: flex;
   justify-content: space-between;
-  margin-top: 18px;
-  padding-top: 18px;
+  margin-top: 22px;
+  padding-top: 20px;
 }
 
 .book-quantity-control {
@@ -5307,7 +5352,7 @@ blockquote {
 
 .book-purchase-total {
   align-items: center;
-  background: #f5f7fa;
+  background: #112243;
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
@@ -5315,14 +5360,14 @@ blockquote {
 }
 
 .book-purchase-total span {
-  color: #59606d;
+  color: rgba(255, 255, 255, .72);
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
 }
 
 .book-purchase-total strong {
-  color: #112243;
+  color: #fff;
   font-size: 20px;
 }
 
@@ -5331,11 +5376,27 @@ blockquote {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
-  padding: 16px 24px 22px;
+  padding: 18px 24px 22px;
 }
 
 .book-purchase-dialog-actions .book-btn {
-  flex: 0 1 160px;
+  flex: 0 1 180px;
+}
+
+.book-edition-price {
+  color: #313744 !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  margin: 0 0 4px !important;
+}
+
+.book-detail-prices {
+  color: #313744;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+  gap: 8px 18px;
+  margin: 8px 0 10px;
 }
 
 .gdmb-whatsapp-float {
@@ -5350,7 +5411,7 @@ blockquote {
   font-size: 27px;
   height: 56px;
   justify-content: center;
-  left: 22px;
+  right: 22px;
   position: fixed;
   transition: background-color .2s ease, transform .2s ease;
   width: 56px;
@@ -5416,10 +5477,23 @@ blockquote {
     flex: 1;
   }
 
+  .book-purchase-format-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .book-purchase-product img {
+    height: 66px;
+    width: 48px;
+  }
+
+  .book-purchase-dialog-header h2 {
+    font-size: 18px;
+  }
+
   .gdmb-whatsapp-float {
     bottom: 16px;
     height: 52px;
-    left: 16px;
+    right: 16px;
     width: 52px;
   }
 }
