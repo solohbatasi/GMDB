@@ -5338,6 +5338,32 @@ blockquote {
   flex: 0 1 160px;
 }
 
+.gdmb-whatsapp-float {
+  align-items: center;
+  background: #25d366;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  bottom: 22px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+  color: #fff !important;
+  display: flex;
+  font-size: 27px;
+  height: 56px;
+  justify-content: center;
+  left: 22px;
+  position: fixed;
+  transition: background-color .2s ease, transform .2s ease;
+  width: 56px;
+  z-index: 1990;
+}
+
+.gdmb-whatsapp-float:hover,
+.gdmb-whatsapp-float:focus {
+  background: #128c4a;
+  color: #fff !important;
+  transform: translateY(-2px);
+}
+
 @media (max-width: 991px) {
   .books-showcase-header,
   .books-page-header {
@@ -5388,6 +5414,13 @@ blockquote {
 
   .book-purchase-dialog-actions .book-btn {
     flex: 1;
+  }
+
+  .gdmb-whatsapp-float {
+    bottom: 16px;
+    height: 52px;
+    left: 16px;
+    width: 52px;
   }
 }
 
