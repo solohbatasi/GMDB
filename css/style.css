@@ -5135,6 +5135,209 @@ blockquote {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.book-purchase-dialog {
+  background: #fff;
+  border: 0;
+  border-radius: 6px;
+  box-shadow: 0 24px 70px rgba(17, 34, 67, .28);
+  color: #20242c;
+  margin: auto;
+  max-height: calc(100vh - 32px);
+  max-width: 520px;
+  padding: 0;
+  width: calc(100% - 32px);
+}
+
+.book-purchase-dialog::backdrop {
+  background: rgba(9, 18, 35, .72);
+}
+
+.book-purchase-dialog-header {
+  align-items: flex-start;
+  border-bottom: 1px solid #e8eaf0;
+  display: flex;
+  justify-content: space-between;
+  padding: 22px 24px 18px;
+}
+
+.book-purchase-dialog-header h2 {
+  color: #111;
+  font-size: 21px;
+  line-height: 1.3;
+  margin: 4px 0 0;
+}
+
+.book-purchase-close {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: #59606d;
+  display: flex;
+  font-size: 20px;
+  height: 36px;
+  justify-content: center;
+  padding: 0;
+  width: 36px;
+}
+
+.book-purchase-close:hover {
+  color: #111;
+}
+
+.book-purchase-dialog-body {
+  padding: 22px 24px;
+}
+
+.book-purchase-formats {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.book-purchase-formats legend {
+  border: 0;
+  color: #2d3340;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+.book-format-option {
+  align-items: center;
+  border: 1px solid #dce0e8;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  min-height: 60px;
+  padding: 11px 14px;
+  transition: border-color .2s ease, background-color .2s ease;
+}
+
+.book-format-option[hidden] {
+  display: none;
+}
+
+.book-purchase-trigger {
+  border: 0;
+  cursor: pointer;
+}
+
+.book-format-option:has(input:checked) {
+  background: #fff7f0;
+  border-color: #d35400;
+}
+
+.book-format-option input {
+  accent-color: #d35400;
+  margin: 0 12px 0 0;
+}
+
+.book-format-option > span {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.book-format-option strong {
+  color: #171a20;
+  font-size: 14px;
+}
+
+.book-format-option small,
+.book-purchase-quantity-row small {
+  color: #737b88;
+  display: block;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.book-format-option > i {
+  color: #d35400;
+  opacity: 0;
+}
+
+.book-format-option:has(input:checked) > i {
+  opacity: 1;
+}
+
+.book-purchase-quantity-row {
+  align-items: center;
+  border-top: 1px solid #eceef2;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding-top: 18px;
+}
+
+.book-quantity-control {
+  border: 1px solid #dce0e8;
+  display: grid;
+  grid-template-columns: 38px 48px 38px;
+  height: 40px;
+}
+
+.book-quantity-control button,
+.book-quantity-control input {
+  background: #fff;
+  border: 0;
+  color: #20242c;
+  min-width: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.book-quantity-control button:hover {
+  background: #f4f5f7;
+}
+
+.book-quantity-control input {
+  border-left: 1px solid #e3e5ea;
+  border-right: 1px solid #e3e5ea;
+  font-weight: 700;
+  width: 48px;
+}
+
+.book-quantity-control input::-webkit-inner-spin-button,
+.book-quantity-control input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.book-purchase-total {
+  align-items: center;
+  background: #f5f7fa;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 16px;
+}
+
+.book-purchase-total span {
+  color: #59606d;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.book-purchase-total strong {
+  color: #112243;
+  font-size: 20px;
+}
+
+.book-purchase-dialog-actions {
+  border-top: 1px solid #e8eaf0;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 16px 24px 22px;
+}
+
+.book-purchase-dialog-actions .book-btn {
+  flex: 0 1 160px;
+}
+
 @media (max-width: 991px) {
   .books-showcase-header,
   .books-page-header {
@@ -5174,6 +5377,17 @@ blockquote {
 
   .books-grid {
     grid-template-columns: 1fr;
+  }
+
+  .book-purchase-dialog-header,
+  .book-purchase-dialog-body,
+  .book-purchase-dialog-actions {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .book-purchase-dialog-actions .book-btn {
+    flex: 1;
   }
 }
 

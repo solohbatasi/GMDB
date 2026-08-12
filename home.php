@@ -177,7 +177,7 @@
 					<div>
 						<span class="books-eyebrow">Featured Books</span>
 						<h1>Books for Faith, Ministry, and Everyday Formation</h1>
-						<p>Explore practical resources written to equip believers, leaders, families, and communities for deeper Christian service. Click Purchase on any book to order through Amazon and have it delivered to your preferred location.</p>
+						<p>Explore practical resources written to equip believers, leaders, families, and communities for deeper Christian service. Choose a book and purchase your preferred edition for pickup.</p>
 					</div>
 					<div class="books-header-actions">
 						<a href="./?p=books" class="book-link">View all books</a>
@@ -204,9 +204,6 @@
 									<span><?php echo gdmb_e($book['published_at']); ?></span>
 								</div>
 								<h2><a href="./?p=book&amp;slug=<?php echo rawurlencode($book['slug']); ?>"><?php echo gdmb_e($book['title']); ?></a></h2>
-								<?php foreach ($priceOptions as $priceOption): ?>
-									<p style="margin-bottom:4px;"><strong><?php echo gdmb_e($priceOption['label']); ?>:</strong> <?php echo gdmb_e($priceOption['formatted']); ?></p>
-								<?php endforeach; ?>
 								<p><?php echo gdmb_e($book['summary']); ?></p>
 							</div>
 							<div class="book-card-actions">
@@ -214,19 +211,7 @@
 									<i class="ion-ios-book-outline"></i> Details
 								</a>
 								<?php if (! empty($book['available']) && $priceOptions): ?>
-									<form method="post" action="./?p=cart" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-										<input type="hidden" name="action" value="add">
-										<input type="hidden" name="slug" value="<?php echo gdmb_e($book['slug']); ?>">
-										<input type="hidden" name="quantity" value="1">
-										<?php if (count($priceOptions) > 1): ?>
-											<select name="price_option" class="form-control" style="width:auto; min-width:145px;" aria-label="Choose price for <?php echo gdmb_e($book['title']); ?>">
-												<?php foreach ($priceOptions as $value => $option): ?><option value="<?php echo gdmb_e($value); ?>"><?php echo gdmb_e($option['label'].' - '.$option['formatted']); ?></option><?php endforeach; ?>
-											</select>
-										<?php else: ?>
-											<input type="hidden" name="price_option" value="<?php echo gdmb_e(array_key_first($priceOptions)); ?>">
-										<?php endif; ?>
-										<button class="book-btn book-btn-solid" type="submit"><i class="fas fa-shopping-cart"></i> Purchase</button>
-									</form>
+									<button type="button" class="book-btn book-btn-solid book-purchase-trigger" data-book-title="<?php echo gdmb_e($book['title']); ?>" data-book-slug="<?php echo gdmb_e($book['slug']); ?>" data-currency="<?php echo gdmb_e($book['currency']); ?>" data-primary-price="<?php echo gdmb_e($book['price'] ?? ''); ?>" data-secondary-price="<?php echo gdmb_e($book['compare_price'] ?? ''); ?>"><i class="fas fa-shopping-cart"></i> Purchase</button>
 								<?php elseif (! empty($book['purchase_url'])): ?>
 									    <a href="<?php echo gdmb_e($book['purchase_url']); ?>" target="_blank" rel="noopener" class="book-btn book-btn-solid">
 											<i class="fas fa-shopping-cart"></i> Purchase
@@ -241,6 +226,7 @@
 				</div>
 			</div>
 		</section>
+		<?php require_once 'inc/book_purchase_modal.php'; ?>
 
 		<section class="best-of-the-week home-week-section">
 			<div class="container">
