@@ -216,7 +216,7 @@ function gdmb_cart_display_quote(): array
         $items[] = [
             'slug' => $cartItem['slug'],
             'price_option' => $priceOption,
-            'price_option_label' => $priceOption === 'secondary' ? 'Price 2' : 'Price 1',
+            'price_option_label' => $priceOption === 'secondary' ? 'Paperback' : 'Hardcover',
             'title' => $book['title'] ?? $cartItem['slug'],
             'author' => $book['author'] ?? '',
             'cover_url' => $book['cover'] ?? '',

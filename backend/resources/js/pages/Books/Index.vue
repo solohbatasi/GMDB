@@ -109,7 +109,7 @@ const hideBook = (book: Book) => router.delete(backendPath(`/books/${book.id}`),
                         </td>
                         <td class="p-3">{{ book.category?.name ?? 'Uncategorized' }}</td>
                         <td class="p-3">{{ book.inventory_item?.sku ?? '-' }}</td>
-                        <td class="p-3"><div>Price 1: {{ book.currency }} {{ book.price }}</div><div v-if="book.compare_price">Price 2: {{ book.currency }} {{ book.compare_price }}</div></td>
+                        <td class="p-3"><div>Hardcover: {{ book.currency }} {{ book.price }}</div><div v-if="book.compare_price">Paperback: {{ book.currency }} {{ book.compare_price }}</div></td>
                         <td class="p-3">{{ book.inventory_item ? `${book.inventory_item.available_quantity} · ${book.inventory_item.stock_status}` : 'Digital/none' }}</td>
                         <td class="p-3">{{ book.featured ? 'Yes' : 'No' }}</td>
                         <td class="p-3">{{ book.status }}</td>
@@ -135,8 +135,8 @@ const hideBook = (book: Book) => router.delete(backendPath(`/books/${book.id}`),
                         <input v-model="form.author" class="rounded-md border bg-transparent px-3 py-2" placeholder="Author">
                         <input v-model="form.publisher" class="rounded-md border bg-transparent px-3 py-2" placeholder="Publisher">
                         <input v-model="form.isbn" class="rounded-md border bg-transparent px-3 py-2" placeholder="ISBN">
-                        <label class="grid gap-1 text-sm"><span>Primary price</span><input v-model.number="form.price" type="number" min="0" step="0.01" class="rounded-md border bg-transparent px-3 py-2" placeholder="Primary price"></label>
-                        <label class="grid gap-1 text-sm"><span>Second price (optional)</span><input v-model="form.compare_price" type="number" min="0" step="0.01" class="rounded-md border bg-transparent px-3 py-2" placeholder="Second price"></label>
+                        <label class="grid gap-1 text-sm"><span>Hardcover price</span><input v-model.number="form.price" type="number" min="0" step="0.01" class="rounded-md border bg-transparent px-3 py-2" placeholder="Hardcover price"></label>
+                        <label class="grid gap-1 text-sm"><span>Paperback price (optional)</span><input v-model="form.compare_price" type="number" min="0" step="0.01" class="rounded-md border bg-transparent px-3 py-2" placeholder="Paperback price"></label>
                         <input v-model="form.currency" maxlength="3" class="rounded-md border bg-transparent px-3 py-2" placeholder="Currency">
                         <select v-model="form.status" class="rounded-md border bg-background px-3 py-2"><option v-for="status in statuses" :key="status" :value="status">{{ status }}</option></select>
                         <input v-model="form.published_at" type="date" class="rounded-md border bg-transparent px-3 py-2">

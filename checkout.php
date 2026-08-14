@@ -69,7 +69,7 @@ $selectedPickupId = (int) ($_POST['pickup_location_id'] ?? ($pickupLocations[0][
     <div class="col-md-5">
         <h3>Order Summary</h3>
         <?php foreach ($quote['items'] as $item): ?>
-            <p><?php echo gdmb_e($item['title'] ?? $item['slug']); ?> (<?php echo gdmb_e($item['price_option_label'] ?? 'Price 1'); ?>) x <?php echo (int) $item['quantity']; ?> <strong><?php echo gdmb_e(gdmb_format_price($item['line_total'] ?? null, $quote['currency'])); ?></strong></p>
+            <p><?php echo gdmb_e($item['title'] ?? $item['slug']); ?> (<?php echo gdmb_e($item['price_option_label'] ?? 'Hardcover'); ?>) x <?php echo (int) $item['quantity']; ?> <strong><?php echo gdmb_e(gdmb_format_price($item['line_total'] ?? null, $quote['currency'])); ?></strong></p>
         <?php endforeach; ?>
         <hr>
         <p>Subtotal: <?php echo gdmb_e(gdmb_format_price($quote['subtotal'], $quote['currency'])); ?></p>
