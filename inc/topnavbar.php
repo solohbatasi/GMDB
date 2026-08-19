@@ -24,6 +24,17 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 						<div class="col-md-3 col-sm-12">
 							<div class="block">
 								<div class="block-body" style="padding-top:14px;">
+									<?php if ($gdmbHeaderPickupMapUrl !== ''): ?>
+										<a href="<?php echo gdmb_e($gdmbHeaderPickupMapUrl); ?>" target="_blank" rel="noopener" title="Open pickup office in Google Maps" style="display:flex; width:100%; max-width:220px; min-height:42px; margin:0 0 12px; padding:10px 16px; align-items:center; justify-content:center; gap:9px; background:#F8B803; color:#112243; font-family:'Raleway', sans-serif; font-size:12px; font-weight:800; line-height:1; letter-spacing:.5px; text-decoration:none;">
+											<i class="ion-ios-location" style="font-size:18px;"></i>
+											<span>GET DIRECTIONS</span>
+										</a>
+									<?php else: ?>
+										<span aria-disabled="true" style="display:flex; width:100%; max-width:220px; min-height:42px; margin:0 0 12px; padding:10px 16px; align-items:center; justify-content:center; gap:9px; background:#F8B803; color:#112243; font-family:'Raleway', sans-serif; font-size:12px; font-weight:800; line-height:1; letter-spacing:.5px; opacity:.55;">
+											<i class="ion-ios-location" style="font-size:18px;"></i>
+											<span>GET DIRECTIONS</span>
+										</span>
+									<?php endif; ?>
 									<?php if (is_array($gdmbHeaderPickup)): ?>
 										<div style="color:white; line-height:1.45;">
 											<div style="color:#F8B803; font-size:12px; text-transform:uppercase; letter-spacing:.04em;"><?php echo gdmb_e($gdmbHeaderPickup['name'] ?? 'Pickup point'); ?></div>
