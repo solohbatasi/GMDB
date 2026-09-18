@@ -4,9 +4,13 @@
     // require_once 'initialize.php';
     // require_once 'essentials.php';
     require_once 'inc/router.php';
-    if (gdmb_normalize_route($_GET['p'] ?? 'home') === 'cart' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $currentRoute = gdmb_normalize_route($_GET['p'] ?? 'home');
+    if (in_array($currentRoute, ['cart', 'checkout'], true)) {
         require_once 'inc/cart.php';
-        gdmb_cart_handle_request();
+        if ($currentRoute === 'cart' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            gdmb_cart_handle_request();
+        }
+        gdmb_cart_boot();
     }
     require_once 'inc/header.php';
     $page = gdmb_resolve_public_route($_GET['p'] ?? 'home');

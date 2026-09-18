@@ -78,7 +78,9 @@ function gdmb_cart_handle_request(): void
     $quantity = (int) ($_POST['quantity'] ?? 1);
 
     if ($action === 'add' || $action === 'buy_now') {
-        gdmb_cart_add($slug, $quantity);
+        if (! gdmb_cart_add($slug, $quantity)) {
+            $_SESSION['gdmb_cart_error'] = 'The selected book could not be added to the cart.';
+        }
         header('Location: ./' . ($action === 'buy_now' ? '?p=checkout' : '?p=cart'));
         exit;
     }

@@ -2,11 +2,16 @@
 require_once 'inc/cart.php';
 
 $quote = gdmb_cart_display_quote();
+$cartError = $_SESSION['gdmb_cart_error'] ?? null;
+unset($_SESSION['gdmb_cart_error']);
 ?>
 <section class="books-page">
     <div class="container">
         <?php include_once 'inc/breadcrumbs.php'; ?>
         <div class="books-page-header"><div><span class="books-eyebrow">Cart</span><h1>Your Book Cart</h1><p>Prices and availability are refreshed from the bookstore before checkout.</p></div><a href="./?p=books" class="btn btn-primary">Continue Shopping</a></div>
+        <?php if ($cartError): ?>
+            <p style="color:#b00020;"><?php echo gdmb_e($cartError); ?></p>
+        <?php endif; ?>
         <?php if (empty($quote['items'])): ?>
             <p>Your cart is empty.</p>
         <?php else: ?>
