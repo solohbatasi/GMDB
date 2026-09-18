@@ -8,6 +8,15 @@ type Stats = {
     total_units_in_stock: number;
     low_stock_books: number;
     out_of_stock_books: number;
+    pending_orders: number;
+    awaiting_payment: number;
+    confirmed_revenue: string | number;
+    paid_orders: number;
+    pending_payments: number;
+    failed_payments: number;
+    payments_requiring_review: number;
+    active_reservations: number;
+    pending_order_value: string | number;
 };
 
 type Book = {

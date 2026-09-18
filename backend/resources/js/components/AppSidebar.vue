@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { Archive, BookOpen, FolderGit2, LayoutGrid, LibraryBig, MapPin, ReceiptText, Tags } from '@lucide/vue';
+import { Archive, Banknote, BookOpen, FolderGit2, LayoutGrid, LibraryBig, MapPin, ReceiptText, Tags } from '@lucide/vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -61,6 +61,11 @@ const salesNavItems: NavItem[] = [
         title: 'Orders',
         href: '/orders',
         icon: ReceiptText,
+    },
+    {
+        title: 'Payments',
+        href: '/payments',
+        icon: Banknote,
     },
 ];
 
