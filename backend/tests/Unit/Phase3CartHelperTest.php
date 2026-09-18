@@ -44,4 +44,21 @@ class Phase3CartHelperTest extends TestCase
         gdmb_cart_clear();
         $this->assertSame(0, gdmb_cart_count());
     }
+
+    public function test_display_quote_falls_back_to_session_items_when_api_is_unavailable(): void
+    {
+        $GLOBALS['gdmb_store_http_post_client'] = fn () => null;
+        $GLOBALS['gdmb_store_http_client'] = fn () => null;
+
+        gdmb_cart_add('book1', 2);
+
+        $quote = gdmb_cart_display_quote();
+
+        $this->assertFalse($quote['quote_available']);
+        $this->assertSame('book1', $quote['items'][0]['slug']);
+        $this->assertSame(2, $quote['items'][0]['quantity']);
+        $this->assertSame('A Theory of Lay Ministry Praxis', $quote['items'][0]['title']);
+
+        unset($GLOBALS['gdmb_store_http_post_client'], $GLOBALS['gdmb_store_http_client']);
+    }
 }
