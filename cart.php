@@ -24,7 +24,7 @@ unset($_SESSION['gdmb_cart_error']);
                         <a class="book-card-cover" href="./?p=book&amp;slug=<?php echo rawurlencode($item['slug']); ?>"><img src="<?php echo gdmb_e($item['cover_url'] ?? ''); ?>" loading="lazy" alt="<?php echo gdmb_e($item['title'] ?? $item['slug']); ?>"></a>
                         <div class="book-card-body"><div class="book-meta"><span><?php echo gdmb_e($item['availability'] ?? ''); ?></span><span><?php echo gdmb_e($quote['currency'] ?? 'KES'); ?></span></div><h2><?php echo gdmb_e($item['title'] ?? $item['slug']); ?></h2><p>Unit: <?php echo gdmb_e(gdmb_format_price($item['unit_price'] ?? null, $quote['currency'] ?? 'KES')); ?></p><p>Line total: <?php echo gdmb_e(gdmb_format_price($item['line_total'] ?? null, $quote['currency'] ?? 'KES')); ?></p><?php if (! empty($item['message'])): ?><p><?php echo gdmb_e($item['message']); ?></p><?php endif; ?></div>
                         <div class="book-card-actions">
-                            <form method="post" style="display:flex; gap:8px; align-items:center;"><input type="hidden" name="action" value="update"><input type="hidden" name="slug" value="<?php echo gdmb_e($item['slug']); ?>"><input type="number" name="quantity" min="0" max="99" value="<?php echo (int) $item['quantity']; ?>" class="form-control" style="width:80px;"><button class="book-btn book-btn-outline">Update</button></form>
+                            <form method="post" class="cart-quantity-form" style="display:flex; gap:8px; align-items:center;"><input type="hidden" name="action" value="update"><input type="hidden" name="slug" value="<?php echo gdmb_e($item['slug']); ?>"><input type="number" name="quantity" min="0" max="99" value="<?php echo (int) $item['quantity']; ?>" class="form-control cart-quantity-input" style="width:80px;" aria-label="Quantity for <?php echo gdmb_e($item['title'] ?? $item['slug']); ?>"><button class="book-btn book-btn-outline cart-update-button">Update</button></form>
                             <form method="post"><input type="hidden" name="action" value="remove"><input type="hidden" name="slug" value="<?php echo gdmb_e($item['slug']); ?>"><button class="book-btn book-btn-outline">Remove</button></form>
                         </div>
                     </article>
@@ -41,3 +41,23 @@ unset($_SESSION['gdmb_cart_error']);
         <?php endif; ?>
     </div>
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.cart-quantity-form').forEach(function (form) {
+        var input = form.querySelector('.cart-quantity-input');
+        var button = form.querySelector('.cart-update-button');
+
+        if (!input) {
+            return;
+        }
+
+        if (button) {
+            button.style.display = 'none';
+        }
+
+        input.addEventListener('change', function () {
+            form.submit();
+        });
+    });
+});
+</script>
