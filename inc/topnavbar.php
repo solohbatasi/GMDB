@@ -1,3 +1,10 @@
+<?php
+require_once __DIR__ . '/store_catalog.php';
+
+$gdmbNavBooks = gdmb_store_books(['limit' => 15]);
+$gdmbNavBookColumns = array_chunk($gdmbNavBooks, 5);
+$gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
+?>
 <header class="primary">
 			<div class="firstbar" style="background-color:#112243;">
 				<div class="container">
@@ -152,37 +159,21 @@
 								<div class="dropdown-menu megamenu">
 									<div class="megamenu-inner">
 										<div class="row">
-											<div class="col-md-3">
-												<h2 class="megamenu-title">Featured Books</h2>
-												<ul class="vertical-menu">
-													<li><a href="./?p=books"><strong>View All Books</strong></a></li>
-													<li><a href="./?p=books/book1">A Theory of Lay Ministry Praxis</a></li>
-													<li><a href="./?p=books/miracle-of-genuine-confession">The Miracle of Genuine Confession</a></li>
-													<li><a href="./?p=books/calling-of-God">Calling Of God and Its Coordinates</a></li>
-													<li><a href="./?p=books/body-over-brand">Body Over Brand</a></li>
-													<li><a href="./?p=books/12cs">The 12 Cs of Christ</a></li>
-												</ul>
-											</div>
-											<div class="col-md-3">
-												<h2 class="megamenu-title">More Titles</h2>
-												<ul class="vertical-menu">
-													<li><a href="./?p=books/look">The Look</a></li>
-													<li><a href="./?p=books/marriage-made-in-heaven">Marriage Made in Heaven</a></li>
-													<li><a href="./?p=books/when-heaven-touches-earth">When Heaven Touches Earth</a></li>
-													<li><a href="./?p=books/prayer-that-works">Prayer That Works</a></li>
-													<li><a href="./?p=books/pasis-model"> The Pasis Model</a></li>
-												</ul>
-											</div>
-											<div class="col-md-3">
-												<h2 class="megamenu-title">Leadership</h2>
-												<ul class="vertical-menu">
-													<li><a href="./?p=books/kingdom-leadership">Kingdom Leadership of Empowering Stewards</a></li>
-													<!-- <li><a href="./?p=503">Book 12</a></li>
-													<li><a href="./?p=503">Book 13</a></li>
-													<li><a href="./?p=503">Book 14</a></li>
-													<li><a href="./?p=503">Book 15</a></li> -->
-												</ul>
-											</div>
+											<?php foreach ($gdmbNavBookColumns as $columnIndex => $bookColumn): ?>
+												<div class="col-md-3">
+													<h2 class="megamenu-title"><?php echo gdmb_e($gdmbNavBookColumnTitles[$columnIndex] ?? 'Books'); ?></h2>
+													<ul class="vertical-menu">
+														<?php if ($columnIndex === 0): ?>
+															<li><a href="./?p=books"><strong>View All Books</strong></a></li>
+														<?php endif; ?>
+														<?php foreach ($bookColumn as $book): ?>
+															<?php if (! empty($book['title']) && ! empty($book['slug'])): ?>
+																<li><a href="./?p=book&amp;slug=<?php echo rawurlencode($book['slug']); ?>"><?php echo gdmb_e($book['title']); ?></a></li>
+															<?php endif; ?>
+														<?php endforeach; ?>
+													</ul>
+												</div>
+											<?php endforeach; ?>
 											<!-- <div class="col-md-3">
 												<h2 class="megamenu-title">Column 4</h2>
 												<ul class="vertical-menu">
