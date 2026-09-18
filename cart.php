@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.cart-quantity-form').forEach(function (form) {
         var input = form.querySelector('.cart-quantity-input');
         var button = form.querySelector('.cart-update-button');
-        var timer;
 
         if (!input) {
             return;
@@ -56,15 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
             button.style.display = 'none';
         }
 
-        input.addEventListener('input', function () {
-            window.clearTimeout(timer);
-            timer = window.setTimeout(function () {
-                form.submit();
-            }, 450);
-        });
-
         input.addEventListener('change', function () {
-            window.clearTimeout(timer);
             form.submit();
         });
     });
