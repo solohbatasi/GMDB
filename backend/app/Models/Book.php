@@ -67,6 +67,16 @@ class Book extends Model
         return $this->hasMany(StockMovement::class);
     }
 
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function inventoryReservations(): HasMany
+    {
+        return $this->hasMany(InventoryReservation::class);
+    }
+
     public function getCoverUrlAttribute(): ?string
     {
         if (! $this->cover_image) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { Archive, BookOpen, FolderGit2, LayoutGrid, LibraryBig, Tags } from '@lucide/vue';
+import { Archive, BookOpen, FolderGit2, LayoutGrid, LibraryBig, MapPin, ReceiptText, Tags } from '@lucide/vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -49,6 +49,19 @@ const inventoryNavItems: NavItem[] = [
         href: '/inventory/movements',
         icon: BookOpen,
     },
+    {
+        title: 'Pickup Locations',
+        href: '/pickup-locations',
+        icon: MapPin,
+    },
+];
+
+const salesNavItems: NavItem[] = [
+    {
+        title: 'Orders',
+        href: '/orders',
+        icon: ReceiptText,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
@@ -83,6 +96,7 @@ const footerNavItems: NavItem[] = [
             <NavMain :items="dashboardNavItems" label="Dashboard" />
             <NavMain :items="catalogNavItems" label="Catalog" />
             <NavMain :items="inventoryNavItems" label="Inventory" />
+            <NavMain :items="salesNavItems" label="Sales" />
         </SidebarContent>
 
         <SidebarFooter>
