@@ -167,7 +167,10 @@
 			</div>
 		</section>
 
-		<?php require 'inc/books_data.php'; ?>
+		<?php
+			require_once 'inc/store_catalog.php';
+			$books = gdmb_featured_books(12);
+		?>
 		<section class="books-showcase">
 			<div class="container">
 				<div class="books-showcase-header">
@@ -191,24 +194,34 @@
 				<div class="owl-carousel owl-theme books-carousel" id="books-carousel">
 					<?php foreach ($books as $book): ?>
 						<article class="book-slide">
-							<a class="book-slide-cover" href="./?p=books/<?php echo htmlspecialchars($book['slug']); ?>">
-								<img src="<?php echo htmlspecialchars($book['cover']); ?>" loading="lazy" alt="<?php echo htmlspecialchars($book['title']); ?>">
+							<a class="book-slide-cover" href="./?p=book&amp;slug=<?php echo rawurlencode($book['slug']); ?>">
+								<img src="<?php echo gdmb_e($book['cover']); ?>" loading="lazy" alt="<?php echo gdmb_e($book['title']); ?>">
 							</a>
 							<div class="book-slide-body">
 								<div class="book-meta">
-									<span><?php echo htmlspecialchars($book['tag']); ?></span>
-									<span><?php echo htmlspecialchars($book['date']); ?></span>
+									<span><?php echo gdmb_e($book['category']); ?></span>
+									<span><?php echo gdmb_e($book['published_at']); ?></span>
 								</div>
-								<h2><a href="./?p=books/<?php echo htmlspecialchars($book['slug']); ?>"><?php echo htmlspecialchars($book['title']); ?></a></h2>
-								<p><?php echo htmlspecialchars($book['summary']); ?></p>
+								<h2><a href="./?p=book&amp;slug=<?php echo rawurlencode($book['slug']); ?>"><?php echo gdmb_e($book['title']); ?></a></h2>
+								<p><?php echo gdmb_e($book['summary']); ?></p>
 							</div>
 							<div class="book-card-actions">
-								<a href="./?p=books/<?php echo htmlspecialchars($book['slug']); ?>" class="book-btn book-btn-outline">
+								<a href="./?p=book&amp;slug=<?php echo rawurlencode($book['slug']); ?>" class="book-btn book-btn-outline">
 									<i class="ion-ios-book-outline"></i> Details
 								</a>
-								<a href="<?php echo htmlspecialchars($book['purchase_url']); ?>" target="_blank" rel="noopener" class="book-btn book-btn-solid">
-									<i class="fas fa-shopping-cart"></i> Purchase
-								</a>
+								<?php if (! empty($book['available']) && is_numeric($book['price']) && (float) $book['price'] > 0): ?>
+									<form method="post" action="./?p=cart" style="display:inline;">
+										<input type="hidden" name="action" value="add">
+										<input type="hidden" name="slug" value="<?php echo gdmb_e($book['slug']); ?>">
+										<input type="hidden" name="quantity" value="1">
+										<button class="book-btn book-btn-solid" type="submit"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+									</form>
+								<?php endif; ?>
+								<?php if (! empty($book['purchase_url'])): ?>
+									<a href="<?php echo gdmb_e($book['purchase_url']); ?>" target="_blank" rel="noopener" class="book-btn book-btn-solid">
+										<i class="fas fa-shopping-cart"></i> Purchase
+									</a>
+								<?php endif; ?>
 							</div>
 						</article>
 					<?php endforeach; ?>

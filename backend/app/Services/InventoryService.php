@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Book;
 use App\Models\InventoryItem;
+use App\Models\InventoryReservation;
+use App\Models\Order;
 use App\Models\StockMovement;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -90,6 +92,94 @@ class InventoryService
         $available = $this->availableStock($inventory);
 
         return $available > 0 && $available <= $inventory->reorder_level;
+    }
+
+    public function reserve(Order $order, Book $book, int $quantity, \DateTimeInterface $expiresAt): InventoryReservation
+    {
+        if ($quantity <= 0) {
+            throw new InvalidArgumentException('Reservation quantity must be greater than zero.');
+        }
+
+        return DB::transaction(function () use ($order, $book, $quantity, $expiresAt) {
+            $inventory = InventoryItem::where('book_id', $book->id)->lockForUpdate()->first();
+
+            if (! $inventory) {
+                throw new InvalidArgumentException('This book does not have inventory configured.');
+            }
+
+            if ($inventory->track_stock && $inventory->available_quantity < $quantity) {
+                throw new InvalidArgumentException('Insufficient stock is available.');
+            }
+
+            if ($inventory->track_stock) {
+                $inventory->increment('quantity_reserved', $quantity);
+            }
+
+            return InventoryReservation::create([
+                'order_id' => $order->id,
+                'book_id' => $book->id,
+                'quantity' => $quantity,
+                'status' => 'active',
+                'expires_at' => $expiresAt,
+            ]);
+        });
+    }
+
+    public function releaseReservation(InventoryReservation $reservation): InventoryReservation
+    {
+        return DB::transaction(function () use ($reservation) {
+            $reservation = InventoryReservation::whereKey($reservation->id)->lockForUpdate()->firstOrFail();
+
+            if ($reservation->status !== 'active') {
+                return $reservation;
+            }
+
+            $inventory = InventoryItem::where('book_id', $reservation->book_id)->lockForUpdate()->first();
+
+            if ($inventory && $inventory->track_stock) {
+                $inventory->update([
+                    'quantity_reserved' => max(0, $inventory->quantity_reserved - $reservation->quantity),
+                ]);
+            }
+
+            $reservation->update([
+                'status' => 'released',
+                'released_at' => now(),
+            ]);
+
+            return $reservation->refresh();
+        });
+    }
+
+    public function commitReservation(InventoryReservation $reservation): InventoryReservation
+    {
+        return DB::transaction(function () use ($reservation) {
+            $reservation = InventoryReservation::whereKey($reservation->id)->lockForUpdate()->firstOrFail();
+
+            if ($reservation->status !== 'active') {
+                return $reservation;
+            }
+
+            $inventory = InventoryItem::where('book_id', $reservation->book_id)->lockForUpdate()->firstOrFail();
+
+            if ($inventory->track_stock) {
+                if ($inventory->quantity_on_hand < $reservation->quantity || $inventory->quantity_reserved < $reservation->quantity) {
+                    throw new InvalidArgumentException('Reserved inventory cannot be committed.');
+                }
+
+                $inventory->update([
+                    'quantity_on_hand' => $inventory->quantity_on_hand - $reservation->quantity,
+                    'quantity_reserved' => $inventory->quantity_reserved - $reservation->quantity,
+                ]);
+            }
+
+            $reservation->update([
+                'status' => 'committed',
+                'committed_at' => now(),
+            ]);
+
+            return $reservation->refresh();
+        });
     }
 
     protected function move(Book $book, string $type, int $quantityChange, ?User $user, ?string $reference, ?string $notes): InventoryItem
