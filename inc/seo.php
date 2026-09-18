@@ -94,6 +94,29 @@ function seo_book_pages() {
 
 function seo_page_data() {
 	$path = seo_current_path();
+
+	if ($path === 'book') {
+		require_once __DIR__ . '/store_catalog.php';
+		$book = gdmb_store_book_by_slug($_GET['slug'] ?? '');
+
+		if ($book) {
+			$defaults = seo_pages()['home'];
+			$data = array_merge($defaults, [
+				'title' => ($book['seo_title'] ?: $book['title']) . ' | Global Ministries Daily Bread',
+				'description' => $book['seo_description'] ?: $book['summary'],
+				'image' => $book['cover'],
+				'type' => 'book',
+			]);
+			$data['path'] = $path;
+			$data['canonical'] = seo_url_for_path('book') . '?slug=' . rawurlencode($book['slug']);
+			$data['site_name'] = 'Global Ministries Daily Bread';
+			$data['image_url'] = seo_absolute_asset($data['image']);
+			$data['robots'] = 'index, follow';
+
+			return $data;
+		}
+	}
+
 	$pages = array_merge(seo_pages(), seo_book_pages());
 	$defaults = seo_pages()['home'];
 	$data = isset($pages[$path]) ? array_merge($defaults, $pages[$path]) : $defaults;
