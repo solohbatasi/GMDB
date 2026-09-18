@@ -3,6 +3,9 @@ require_once 'inc/cart.php';
 
 $quote = gdmb_cart_quote();
 $error = null;
+if (! $quote && gdmb_cart_count() > 0) {
+    $error = 'Live checkout pricing is temporarily unavailable. Please try again shortly.';
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $quote && ! empty($quote['valid'])) {
     gdmb_session_start();

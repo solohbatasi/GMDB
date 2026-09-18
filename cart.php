@@ -1,36 +1,23 @@
 <?php
 require_once 'inc/cart.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? '';
-    $slug = (string) ($_POST['slug'] ?? '');
-    $quantity = (int) ($_POST['quantity'] ?? 1);
-
-    if ($action === 'add' || $action === 'buy_now') {
-        gdmb_cart_add($slug, $quantity);
-        header('Location: ./' . ($action === 'buy_now' ? '?p=checkout' : '?p=cart'));
-        exit;
-    }
-
-    if ($action === 'update') {
-        gdmb_cart_update($slug, $quantity);
-    } elseif ($action === 'remove') {
-        gdmb_cart_remove($slug);
-    }
-
-    header('Location: ./?p=cart');
-    exit;
-}
-
-$quote = gdmb_cart_quote();
+$quote = gdmb_cart_display_quote();
+$cartError = $_SESSION['gdmb_cart_error'] ?? null;
+unset($_SESSION['gdmb_cart_error']);
 ?>
 <section class="books-page">
     <div class="container">
         <?php include_once 'inc/breadcrumbs.php'; ?>
         <div class="books-page-header"><div><span class="books-eyebrow">Cart</span><h1>Your Book Cart</h1><p>Prices and availability are refreshed from the bookstore before checkout.</p></div><a href="./?p=books" class="btn btn-primary">Continue Shopping</a></div>
-        <?php if (! $quote || empty($quote['items'])): ?>
+        <?php if ($cartError): ?>
+            <p style="color:#b00020;"><?php echo gdmb_e($cartError); ?></p>
+        <?php endif; ?>
+        <?php if (empty($quote['items'])): ?>
             <p>Your cart is empty.</p>
         <?php else: ?>
+            <?php if (empty($quote['quote_available'])): ?>
+                <p style="color:#b00020;">Live checkout pricing is temporarily unavailable, but your cart item is saved below.</p>
+            <?php endif; ?>
             <div class="books-grid">
                 <?php foreach ($quote['items'] as $item): ?>
                     <article class="book-card">
@@ -43,7 +30,14 @@ $quote = gdmb_cart_quote();
                     </article>
                 <?php endforeach; ?>
             </div>
-            <div style="margin-top:25px; text-align:right;"><h3>Subtotal: <?php echo gdmb_e(gdmb_format_price($quote['subtotal'], $quote['currency'])); ?></h3><a href="./?p=checkout" class="book-btn book-btn-solid">Proceed to Checkout</a></div>
+            <div style="margin-top:25px; text-align:right;">
+                <?php if (! empty($quote['quote_available'])): ?>
+                    <h3>Subtotal: <?php echo gdmb_e(gdmb_format_price($quote['subtotal'], $quote['currency'])); ?></h3>
+                    <a href="./?p=checkout" class="book-btn book-btn-solid">Proceed to Checkout</a>
+                <?php else: ?>
+                    <a href="./?p=books" class="book-btn book-btn-outline">Continue Shopping</a>
+                <?php endif; ?>
+            </div>
         <?php endif; ?>
     </div>
 </section>

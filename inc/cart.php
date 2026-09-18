@@ -67,9 +67,76 @@ function gdmb_cart_count(): int
     return array_sum(array_map(fn ($item) => (int) $item['quantity'], gdmb_cart_items()));
 }
 
+function gdmb_cart_handle_request(): void
+{
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        return;
+    }
+
+    $action = $_POST['action'] ?? '';
+    $slug = (string) ($_POST['slug'] ?? '');
+    $quantity = (int) ($_POST['quantity'] ?? 1);
+
+    if ($action === 'add' || $action === 'buy_now') {
+        if (! gdmb_cart_add($slug, $quantity)) {
+            $_SESSION['gdmb_cart_error'] = 'The selected book could not be added to the cart.';
+        }
+        header('Location: ./' . ($action === 'buy_now' ? '?p=checkout' : '?p=cart'));
+        exit;
+    }
+
+    if ($action === 'update') {
+        gdmb_cart_update($slug, $quantity);
+    } elseif ($action === 'remove') {
+        gdmb_cart_remove($slug);
+    }
+
+    header('Location: ./?p=cart');
+    exit;
+}
+
 function gdmb_cart_quote(): ?array
 {
     $response = gdmb_store_api_post('cart/quote', ['items' => gdmb_cart_items()]);
 
     return is_array($response) && isset($response['data']) ? $response['data'] : null;
+}
+
+function gdmb_cart_display_quote(): array
+{
+    $quote = gdmb_cart_quote();
+
+    if (is_array($quote)) {
+        $quote['quote_available'] = true;
+
+        return $quote;
+    }
+
+    $items = [];
+
+    foreach (gdmb_cart_items() as $cartItem) {
+        $book = gdmb_store_book_by_slug((string) $cartItem['slug']);
+
+        $items[] = [
+            'slug' => $cartItem['slug'],
+            'title' => $book['title'] ?? $cartItem['slug'],
+            'author' => $book['author'] ?? '',
+            'cover_url' => $book['cover'] ?? '',
+            'unit_price' => $book['price'] ?? null,
+            'quantity' => (int) $cartItem['quantity'],
+            'line_total' => is_numeric($book['price'] ?? null) ? (float) $book['price'] * (int) $cartItem['quantity'] : null,
+            'availability' => $book['availability'] ?? 'unknown',
+            'message' => 'Live price and stock will refresh when the bookstore service is available.',
+        ];
+    }
+
+    return [
+        'items' => $items,
+        'subtotal' => null,
+        'shipping_total' => null,
+        'total' => null,
+        'currency' => 'KES',
+        'valid' => false,
+        'quote_available' => false,
+    ];
 }
