@@ -4,7 +4,8 @@
     // require_once 'initialize.php';
     // require_once 'essentials.php';
     require_once 'inc/header.php';
-    $p = isset($_GET['p']) ? $_GET['p'] : 'home'; 
+    require_once 'inc/router.php';
+    $page = gdmb_resolve_public_route($_GET['p'] ?? 'home');
 ?>
 <body class="skin-orange">
 		  
@@ -13,13 +14,10 @@
         <?php
         //  require_once 'inc/sidebar.php';
          require_once 'inc/topnavbar.php';
-         if (!file_exists($p . ".php") && !is_dir($p)) {
+         if ($page === null) {
             include '404.html';
          } else {
-            if (is_dir($p))
-                include $p . '/index.php';
-            else
-                include $p . '.php';
+            include $page;
          }
          require_once 'inc/footer.php';
         ?>
