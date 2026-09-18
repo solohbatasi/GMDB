@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid } from '@lucide/vue';
+import { Archive, BookOpen, FolderGit2, LayoutGrid, LibraryBig, Tags } from '@lucide/vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -17,11 +17,37 @@ import {
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
+const dashboardNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+];
+
+const catalogNavItems: NavItem[] = [
+    {
+        title: 'Books',
+        href: '/books',
+        icon: LibraryBig,
+    },
+    {
+        title: 'Categories',
+        href: '/book-categories',
+        icon: Tags,
+    },
+];
+
+const inventoryNavItems: NavItem[] = [
+    {
+        title: 'Inventory',
+        href: '/inventory',
+        icon: Archive,
+    },
+    {
+        title: 'Stock Movements',
+        href: '/inventory/movements',
+        icon: BookOpen,
     },
 ];
 
@@ -54,7 +80,9 @@ const footerNavItems: NavItem[] = [
         </SidebarHeader>
 
         <SidebarContent>
-            <NavMain :items="mainNavItems" />
+            <NavMain :items="dashboardNavItems" label="Dashboard" />
+            <NavMain :items="catalogNavItems" label="Catalog" />
+            <NavMain :items="inventoryNavItems" label="Inventory" />
         </SidebarContent>
 
         <SidebarFooter>
