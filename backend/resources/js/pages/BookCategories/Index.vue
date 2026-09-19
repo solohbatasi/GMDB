@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { backendPath } from '@/lib/backendPath';
 
 type Category = { id: number; name: string; slug: string; description?: string | null; is_active: boolean; sort_order: number; books_count: number };
 type Page<T> = { data: T[] };
@@ -33,14 +34,14 @@ const openEdit = (category: Category) => {
 
 const submit = () => {
     const options = { preserveScroll: true, onSuccess: () => dialog.value?.close() };
-    editing.value ? form.put(`/book-categories/${editing.value.id}`, options) : form.post('/book-categories', options);
+    editing.value ? form.put(backendPath(`/book-categories/${editing.value.id}`), options) : form.post(backendPath('/book-categories'), options);
 };
 
 const deactivate = (category: Category) => {
-    router.delete(`/book-categories/${category.id}`, { preserveScroll: true });
+    router.delete(backendPath(`/book-categories/${category.id}`), { preserveScroll: true });
 };
 
-const filter = () => router.get('/book-categories', { search: search.value }, { preserveState: true, replace: true });
+const filter = () => router.get(backendPath('/book-categories'), { search: search.value }, { preserveState: true, replace: true });
 </script>
 
 <template>

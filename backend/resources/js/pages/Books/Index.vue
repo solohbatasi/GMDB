@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
+import { backendPath } from '@/lib/backendPath';
 
 type Category = { id: number; name: string };
 type Inventory = { sku: string; available_quantity: number; stock_status: string; reorder_level: number; track_stock: boolean };
@@ -62,11 +63,11 @@ const chooseCover = (event: Event) => {
 
 const submit = () => {
     const options = { preserveScroll: true, forceFormData: true, onSuccess: () => dialog.value?.close() };
-    editing.value ? form.post(`/books/${editing.value.id}?_method=PUT`, options) : form.post('/books', options);
+    editing.value ? form.post(backendPath(`/books/${editing.value.id}?_method=PUT`), options) : form.post(backendPath('/books'), options);
 };
 
-const filter = () => router.get('/books', filters.value, { preserveState: true, replace: true });
-const hideBook = (book: Book) => router.delete(`/books/${book.id}`, { preserveScroll: true });
+const filter = () => router.get(backendPath('/books'), filters.value, { preserveState: true, replace: true });
+const hideBook = (book: Book) => router.delete(backendPath(`/books/${book.id}`), { preserveScroll: true });
 </script>
 
 <template>

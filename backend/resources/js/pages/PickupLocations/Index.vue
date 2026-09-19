@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { backendPath } from '@/lib/backendPath';
 
 type Location = { id: number; name: string; address: string; city?: string | null; county?: string | null; instructions?: string | null; is_active: boolean; sort_order: number };
 type Page<T> = { data: T[] };
@@ -16,8 +17,8 @@ const openEdit = (location: Location) => {
     form.name = location.name; form.address = location.address; form.city = location.city ?? ''; form.county = location.county ?? ''; form.instructions = location.instructions ?? ''; form.is_active = location.is_active; form.sort_order = location.sort_order;
     dialog.value?.showModal();
 };
-const submit = () => editing.value ? form.put(`/pickup-locations/${editing.value.id}`, { preserveScroll: true, onSuccess: () => dialog.value?.close() }) : form.post('/pickup-locations', { preserveScroll: true, onSuccess: () => dialog.value?.close() });
-const deactivate = (location: Location) => router.delete(`/pickup-locations/${location.id}`, { preserveScroll: true });
+const submit = () => editing.value ? form.put(backendPath(`/pickup-locations/${editing.value.id}`), { preserveScroll: true, onSuccess: () => dialog.value?.close() }) : form.post(backendPath('/pickup-locations'), { preserveScroll: true, onSuccess: () => dialog.value?.close() });
+const deactivate = (location: Location) => router.delete(backendPath(`/pickup-locations/${location.id}`), { preserveScroll: true });
 </script>
 
 <template>
