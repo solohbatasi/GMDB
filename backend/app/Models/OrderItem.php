@@ -17,6 +17,7 @@ class OrderItem extends Model
         'book_id',
         'title_snapshot',
         'sku_snapshot',
+        'price_option_snapshot',
         'price_snapshot',
         'quantity',
         'line_total',

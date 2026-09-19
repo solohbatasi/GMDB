@@ -43,6 +43,33 @@ class Phase3CheckoutTest extends TestCase
             ->assertJsonPath('data.items.0.available_quantity', 1);
     }
 
+    public function test_second_price_is_selected_from_the_database_and_saved_on_checkout(): void
+    {
+        $book = $this->sellableBook(price: 1000, quantity: 5);
+        $book->update(['compare_price' => 1750]);
+        $items = [['slug' => $book->slug, 'quantity' => 2, 'price_option' => 'secondary', 'price' => 1]];
+
+        $this->postJson('/api/store/cart/quote', ['items' => $items])
+            ->assertOk()
+            ->assertJsonPath('data.items.0.price_option', 'secondary')
+            ->assertJsonPath('data.items.0.unit_price', '1750.00')
+            ->assertJsonPath('data.total', '3500.00');
+
+        $payload = $this->checkoutPayload($book, token: 'second-price-token');
+        $payload['items'] = $items;
+
+        $this->postJson('/api/store/checkout', $payload)
+            ->assertCreated()
+            ->assertJsonPath('data.total', '3500.00');
+
+        $this->assertDatabaseHas('order_items', [
+            'book_id' => $book->id,
+            'price_option_snapshot' => 'secondary',
+            'price_snapshot' => '1750.00',
+            'quantity' => 2,
+        ]);
+    }
+
     public function test_malformed_quantity_is_rejected(): void
     {
         $book = $this->sellableBook();

@@ -14,19 +14,28 @@ class CartQuoteService
     public function quote(array $items): array
     {
         $normalized = $this->normalizeItems($items);
-        $books = $this->publicBooksBySlug(array_keys($normalized));
+        $books = $this->publicBooksBySlug(array_column($normalized, 'slug'));
+        $requestedBySlug = [];
+
+        foreach ($normalized as $item) {
+            $requestedBySlug[$item['slug']] = ($requestedBySlug[$item['slug']] ?? 0) + $item['quantity'];
+        }
         $quotedItems = [];
         $subtotalCents = 0;
         $valid = true;
         $currency = 'KES';
 
-        foreach ($normalized as $slug => $quantity) {
+        foreach ($normalized as $normalizedItem) {
+            $slug = $normalizedItem['slug'];
+            $quantity = $normalizedItem['quantity'];
+            $priceOption = $normalizedItem['price_option'];
             $book = $books->get($slug);
 
             if (! $book) {
                 $valid = false;
                 $quotedItems[] = [
                     'slug' => $slug,
+                    'price_option' => $priceOption,
                     'quantity' => $quantity,
                     'valid' => false,
                     'message' => 'This book is no longer available.',
@@ -38,9 +47,13 @@ class CartQuoteService
             $inventory = $book->inventoryItem;
             $availability = $this->availability($inventory);
             $availableQuantity = $inventory?->track_stock ? $inventory->available_quantity : null;
-            $lineValid = ! ($inventory?->track_stock && $availableQuantity < $quantity);
+            $lineValid = ! ($inventory?->track_stock && $availableQuantity < $requestedBySlug[$slug]);
             $valid = $valid && $lineValid;
-            $unitCents = $this->money->decimalToCents($book->price);
+            $usesSecondaryPrice = $priceOption === 'secondary'
+                && $book->compare_price !== null
+                && (float) $book->compare_price > 0;
+            $resolvedPriceOption = $usesSecondaryPrice ? 'secondary' : 'primary';
+            $unitCents = $this->money->decimalToCents($usesSecondaryPrice ? $book->compare_price : $book->price);
             $lineCents = $unitCents * $quantity;
             $subtotalCents += $lineValid ? $lineCents : 0;
             $currency = $book->currency;
@@ -48,6 +61,8 @@ class CartQuoteService
             $quotedItems[] = [
                 'book_id' => $book->id,
                 'slug' => $book->slug,
+                'price_option' => $resolvedPriceOption,
+                'price_option_label' => $resolvedPriceOption === 'secondary' ? 'Price 2' : 'Price 1',
                 'title' => $book->title,
                 'author' => $book->author,
                 'cover_url' => $book->cover_url,
@@ -86,19 +101,29 @@ class CartQuoteService
         foreach ($items as $item) {
             $slug = trim((string) ($item['slug'] ?? ''));
             $quantity = (int) ($item['quantity'] ?? 0);
+            $priceOption = (string) ($item['price_option'] ?? 'primary');
 
-            if (! preg_match('/\A[A-Za-z0-9_-]+\z/', $slug) || $quantity < 1 || $quantity > 99) {
+            if (! preg_match('/\A[A-Za-z0-9_-]+\z/', $slug)
+                || $quantity < 1
+                || $quantity > 99
+                || ! in_array($priceOption, ['primary', 'secondary'], true)) {
                 throw new InvalidArgumentException('Your cart contains an invalid item.');
             }
 
-            $normalized[$slug] = ($normalized[$slug] ?? 0) + $quantity;
+            $key = $slug.'|'.$priceOption;
+            $normalized[$key] ??= [
+                'slug' => $slug,
+                'price_option' => $priceOption,
+                'quantity' => 0,
+            ];
+            $normalized[$key]['quantity'] += $quantity;
 
-            if ($normalized[$slug] > 99) {
-                $normalized[$slug] = 99;
+            if ($normalized[$key]['quantity'] > 99) {
+                $normalized[$key]['quantity'] = 99;
             }
         }
 
-        return $normalized;
+        return array_values($normalized);
     }
 
     public function publicBooksBySlug(array $slugs): Collection

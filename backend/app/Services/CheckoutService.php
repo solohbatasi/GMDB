@@ -86,6 +86,7 @@ class CheckoutService
                     'book_id' => $book?->id,
                     'title_snapshot' => $item['title'],
                     'sku_snapshot' => $item['sku'] ?? null,
+                    'price_option_snapshot' => $item['price_option'],
                     'price_snapshot' => $item['unit_price'],
                     'quantity' => $item['quantity'],
                     'line_total' => $item['line_total'],

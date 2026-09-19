@@ -7,9 +7,36 @@ function gdmb_cart_boot(): void
 {
     gdmb_session_start();
     $_SESSION['gdmb_cart'] ??= [];
+
+    $normalized = [];
+    foreach ($_SESSION['gdmb_cart'] as $item) {
+        $slug = (string) ($item['slug'] ?? '');
+        $priceOption = gdmb_cart_price_option((string) ($item['price_option'] ?? 'primary'));
+        if (! preg_match('/\A[A-Za-z0-9_-]+\z/', $slug)) {
+            continue;
+        }
+
+        $key = gdmb_cart_item_key($slug, $priceOption);
+        $normalized[$key] = [
+            'slug' => $slug,
+            'price_option' => $priceOption,
+            'quantity' => min(99, max(1, (int) ($item['quantity'] ?? 1))),
+        ];
+    }
+    $_SESSION['gdmb_cart'] = $normalized;
 }
 
-function gdmb_cart_add(string $slug, int $quantity = 1): bool
+function gdmb_cart_price_option(string $priceOption): string
+{
+    return $priceOption === 'secondary' ? 'secondary' : 'primary';
+}
+
+function gdmb_cart_item_key(string $slug, string $priceOption = 'primary'): string
+{
+    return $slug.'|'.gdmb_cart_price_option($priceOption);
+}
+
+function gdmb_cart_add(string $slug, int $quantity = 1, string $priceOption = 'primary'): bool
 {
     gdmb_cart_boot();
     $slug = trim($slug);
@@ -19,13 +46,19 @@ function gdmb_cart_add(string $slug, int $quantity = 1): bool
     }
 
     $quantity = min($quantity, 99);
-    $current = (int) ($_SESSION['gdmb_cart'][$slug]['quantity'] ?? 0);
-    $_SESSION['gdmb_cart'][$slug] = ['slug' => $slug, 'quantity' => min(99, $current + $quantity)];
+    $priceOption = gdmb_cart_price_option($priceOption);
+    $key = gdmb_cart_item_key($slug, $priceOption);
+    $current = (int) ($_SESSION['gdmb_cart'][$key]['quantity'] ?? 0);
+    $_SESSION['gdmb_cart'][$key] = [
+        'slug' => $slug,
+        'price_option' => $priceOption,
+        'quantity' => min(99, $current + $quantity),
+    ];
 
     return true;
 }
 
-function gdmb_cart_update(string $slug, int $quantity): bool
+function gdmb_cart_update(string $slug, int $quantity, string $priceOption = 'primary'): bool
 {
     gdmb_cart_boot();
 
@@ -33,20 +66,26 @@ function gdmb_cart_update(string $slug, int $quantity): bool
         return false;
     }
 
+    $key = gdmb_cart_item_key($slug, $priceOption);
+
     if ($quantity <= 0) {
-        unset($_SESSION['gdmb_cart'][$slug]);
+        unset($_SESSION['gdmb_cart'][$key]);
         return true;
     }
 
-    $_SESSION['gdmb_cart'][$slug] = ['slug' => $slug, 'quantity' => min(99, $quantity)];
+    $_SESSION['gdmb_cart'][$key] = [
+        'slug' => $slug,
+        'price_option' => gdmb_cart_price_option($priceOption),
+        'quantity' => min(99, $quantity),
+    ];
 
     return true;
 }
 
-function gdmb_cart_remove(string $slug): void
+function gdmb_cart_remove(string $slug, string $priceOption = 'primary'): void
 {
     gdmb_cart_boot();
-    unset($_SESSION['gdmb_cart'][$slug]);
+    unset($_SESSION['gdmb_cart'][gdmb_cart_item_key($slug, $priceOption)]);
 }
 
 function gdmb_cart_clear(): void
@@ -76,9 +115,10 @@ function gdmb_cart_handle_request(): void
     $action = $_POST['action'] ?? '';
     $slug = (string) ($_POST['slug'] ?? '');
     $quantity = (int) ($_POST['quantity'] ?? 1);
+    $priceOption = gdmb_cart_price_option((string) ($_POST['price_option'] ?? 'primary'));
 
     if ($action === 'add' || $action === 'buy_now') {
-        if (! gdmb_cart_add($slug, $quantity)) {
+        if (! gdmb_cart_add($slug, $quantity, $priceOption)) {
             $_SESSION['gdmb_cart_error'] = 'The selected book could not be added to the cart.';
         }
         header('Location: ./' . ($action === 'buy_now' ? '?p=checkout' : '?p=cart'));
@@ -86,9 +126,9 @@ function gdmb_cart_handle_request(): void
     }
 
     if ($action === 'update') {
-        gdmb_cart_update($slug, $quantity);
+        gdmb_cart_update($slug, $quantity, $priceOption);
     } elseif ($action === 'remove') {
-        gdmb_cart_remove($slug);
+        gdmb_cart_remove($slug, $priceOption);
     }
 
     header('Location: ./?p=cart');
@@ -168,15 +208,21 @@ function gdmb_cart_display_quote(): array
 
     foreach (gdmb_cart_items() as $cartItem) {
         $book = gdmb_store_book_by_slug((string) $cartItem['slug']);
+        $priceOption = gdmb_cart_price_option((string) ($cartItem['price_option'] ?? 'primary'));
+        $selectedPrice = $priceOption === 'secondary' && is_numeric($book['compare_price'] ?? null) && (float) $book['compare_price'] > 0
+            ? $book['compare_price']
+            : ($book['price'] ?? null);
 
         $items[] = [
             'slug' => $cartItem['slug'],
+            'price_option' => $priceOption,
+            'price_option_label' => $priceOption === 'secondary' ? 'Price 2' : 'Price 1',
             'title' => $book['title'] ?? $cartItem['slug'],
             'author' => $book['author'] ?? '',
             'cover_url' => $book['cover'] ?? '',
-            'unit_price' => $book['price'] ?? null,
+            'unit_price' => $selectedPrice,
             'quantity' => (int) $cartItem['quantity'],
-            'line_total' => is_numeric($book['price'] ?? null) ? (float) $book['price'] * (int) $cartItem['quantity'] : null,
+            'line_total' => is_numeric($selectedPrice) ? (float) $selectedPrice * (int) $cartItem['quantity'] : null,
             'availability' => $book['availability'] ?? 'unknown',
             'message' => 'Live price and stock will refresh when the bookstore service is available.',
         ];
