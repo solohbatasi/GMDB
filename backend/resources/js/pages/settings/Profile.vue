@@ -9,7 +9,7 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { edit } from '@/routes/profile';
+import { backendPath } from '@/lib/backendPath';
 import { send } from '@/routes/verification';
 
 defineOptions({
@@ -17,7 +17,7 @@ defineOptions({
         breadcrumbs: [
             {
                 title: 'Profile settings',
-                href: edit(),
+                href: backendPath('/settings/profile'),
             },
         ],
     },

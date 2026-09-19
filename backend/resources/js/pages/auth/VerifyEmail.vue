@@ -3,7 +3,7 @@ import { Form, Head } from '@inertiajs/vue3';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import { logout } from '@/routes';
+import { backendPath } from '@/lib/backendPath';
 import { send } from '@/routes/verification';
 
 defineOptions({
@@ -40,7 +40,7 @@ defineProps<{
             Resend verification email
         </Button>
 
-        <TextLink :href="logout()" as="button" class="mx-auto block text-sm">
+        <TextLink :href="backendPath('/logout')" method="post" as="button" class="mx-auto block text-sm">
             Log out
         </TextLink>
     </Form>

@@ -2,14 +2,14 @@
 import { Head } from '@inertiajs/vue3';
 import AppearanceTabs from '@/components/AppearanceTabs.vue';
 import Heading from '@/components/Heading.vue';
-import { edit } from '@/routes/appearance';
+import { backendPath } from '@/lib/backendPath';
 
 defineOptions({
     layout: {
         breadcrumbs: [
             {
                 title: 'Appearance settings',
-                href: edit(),
+                href: backendPath('/settings/appearance'),
             },
         ],
     },
