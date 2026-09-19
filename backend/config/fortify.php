@@ -73,7 +73,7 @@ return [
     |
     */
 
-    'home' => '/dashboard',
+    'home' => '/'.trim(trim((string) env('APP_ROUTE_PREFIX', ''), '/').'/dashboard', '/'),
 
     /*
     |--------------------------------------------------------------------------
@@ -86,7 +86,7 @@ return [
     |
     */
 
-    'prefix' => '',
+    'prefix' => trim((string) env('APP_ROUTE_PREFIX', ''), '/'),
 
     'domain' => null,
 
