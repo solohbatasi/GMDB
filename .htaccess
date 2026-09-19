@@ -22,6 +22,12 @@ RewriteCond %{HTTPS} off
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 RewriteBase /
 
+# Let the Laravel backend handle its own routes before the legacy PHP router.
+RewriteRule ^backend/(build|storage)/(.*)$ backend/public/$1/$2 [L]
+RewriteRule ^backend/(favicon\.ico|robots\.txt|manifest\.json)$ backend/public/$1 [L]
+RewriteRule ^backend/?$ backend/index.php [L,QSA]
+RewriteRule ^backend/.+$ backend/index.php [L,QSA]
+
 # This rewrites clean URLs like /books/book1 to index.php?p=books/book1
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
