@@ -5,6 +5,10 @@
     // require_once 'essentials.php';
     require_once 'inc/router.php';
     $currentRoute = gdmb_normalize_route($_GET['p'] ?? 'home');
+    if ($currentRoute === 'store-diagnostics') {
+        require 'store-diagnostics.php';
+        exit;
+    }
     if (in_array($currentRoute, ['cart', 'checkout'], true)) {
         require_once 'inc/cart.php';
         if ($currentRoute === 'cart' && $_SERVER['REQUEST_METHOD'] === 'POST') {
