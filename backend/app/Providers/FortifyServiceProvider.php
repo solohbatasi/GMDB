@@ -6,11 +6,14 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
+use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
 
@@ -21,7 +24,49 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(LoginResponse::class, fn () => new class implements LoginResponse
+        {
+            public function toResponse($request)
+            {
+                return $request->wantsJson()
+                    ? new Response('', 204)
+                    : redirect()->intended($this->backendPath($request, '/dashboard'));
+            }
+
+            private function backendPath(Request $request, string $path): string
+            {
+                $prefix = trim((string) (config('app.route_prefix') ?: env('APP_ROUTE_PREFIX', '')), '/');
+                $firstSegment = $request->segment(1);
+                if ($prefix === '' && $firstSegment === 'backend') {
+                    $prefix = 'backend';
+                }
+                $cleanPath = '/'.ltrim($path, '/');
+
+                return $prefix !== '' ? '/'.$prefix.$cleanPath : $cleanPath;
+            }
+        });
+
+        $this->app->singleton(RegisterResponse::class, fn () => new class implements RegisterResponse
+        {
+            public function toResponse($request)
+            {
+                return $request->wantsJson()
+                    ? new Response('', 201)
+                    : redirect($this->backendPath($request, '/dashboard'));
+            }
+
+            private function backendPath(Request $request, string $path): string
+            {
+                $prefix = trim((string) (config('app.route_prefix') ?: env('APP_ROUTE_PREFIX', '')), '/');
+                $firstSegment = $request->segment(1);
+                if ($prefix === '' && $firstSegment === 'backend') {
+                    $prefix = 'backend';
+                }
+                $cleanPath = '/'.ltrim($path, '/');
+
+                return $prefix !== '' ? '/'.$prefix.$cleanPath : $cleanPath;
+            }
+        });
     }
 
     /**
