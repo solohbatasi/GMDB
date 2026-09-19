@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\Api\PayHeroCallbackController;
+use App\Http\Controllers\Api\PaystackWebhookController;
 use App\Http\Controllers\Api\Store\BookController;
 use App\Http\Controllers\Api\Store\CartController;
 use App\Http\Controllers\Api\Store\CheckoutController;
 use App\Http\Controllers\Api\Store\OrderController;
-use App\Http\Controllers\Api\Store\PayHeroPaymentController;
+use App\Http\Controllers\Api\Store\PaystackPaymentController;
+use App\Http\Controllers\Api\Store\PaystackReturnController;
 use App\Http\Controllers\Api\Store\PickupLocationController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('payments/payhero/callback', PayHeroCallbackController::class)->name('payments.payhero.callback');
+Route::post('payments/paystack/webhook', PaystackWebhookController::class)->name('payments.paystack.webhook');
 
 Route::prefix('store')->name('api.store.')->group(function () {
     Route::get('books', [BookController::class, 'index'])->name('books.index');
@@ -23,6 +24,7 @@ Route::prefix('store')->name('api.store.')->group(function () {
     });
 
     Route::middleware('throttle:store-payments')->group(function () {
-        Route::post('orders/{orderNumber}/payments/payhero', [PayHeroPaymentController::class, 'store'])->name('orders.payments.payhero.store');
+        Route::post('orders/{orderNumber}/payments/paystack', [PaystackPaymentController::class, 'store'])->name('orders.payments.paystack.store');
+        Route::post('payments/paystack/verify', [PaystackReturnController::class, 'store'])->name('payments.paystack.verify');
     });
 });

@@ -9,4 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('orders:release-expired')->everyMinute()->withoutOverlapping();
-Schedule::command('payments:reconcile-payhero')->everyFiveMinutes()->withoutOverlapping();
+Schedule::command('payments:reconcile-paystack')->everyFiveMinutes()->withoutOverlapping();

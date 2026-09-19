@@ -25,4 +25,14 @@ class MoneyService
     {
         return number_format($cents / 100, 2, '.', '');
     }
+
+    public function toPaystackSubunit(string|int|float|null $amount, ?string $currency = 'KES'): int
+    {
+        return $this->decimalToCents($amount);
+    }
+
+    public function fromPaystackSubunit(int $amount, ?string $currency = 'KES'): string
+    {
+        return $this->centsToDecimal($amount);
+    }
 }

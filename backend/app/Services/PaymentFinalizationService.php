@@ -82,7 +82,7 @@ class PaymentFinalizationService
                 'type' => 'payment_confirmed',
                 'from_status' => 'unpaid',
                 'to_status' => 'paid',
-                'notes' => 'Payment verified through PayHero and inventory committed.',
+                'notes' => 'Payment verified through payment provider and inventory committed.',
                 'metadata' => [
                     'payment_id' => $payment->id,
                     'external_reference' => $payment->external_reference,
@@ -134,7 +134,7 @@ class PaymentFinalizationService
     protected function mergeMetadata(Payment $payment, array $payload): array
     {
         return array_filter([
-            'payhero' => $payload,
+            'provider' => $payload,
             'previous' => $payment->metadata,
         ]);
     }
