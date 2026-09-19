@@ -26,6 +26,8 @@ class PaystackReturnController extends Controller
             return response()->json(['message' => 'Payment not found.'], 404);
         }
 
+        $payment->loadMissing('order.pickupLocation');
+
         return response()->json([
             'message' => $payment->status === 'paid' ? 'Payment verified.' : 'Payment is not complete yet.',
             'data' => [
@@ -37,6 +39,13 @@ class PaystackReturnController extends Controller
                 'currency' => $payment->currency,
                 'paid_at' => $payment->paid_at?->toIso8601String(),
                 'order_number' => $payment->order?->order_number,
+                'pickup_location' => $payment->order?->pickupLocation ? [
+                    'name' => $payment->order->pickupLocation->name,
+                    'address' => $payment->order->pickupLocation->address,
+                    'city' => $payment->order->pickupLocation->city,
+                    'county' => $payment->order->pickupLocation->county,
+                    'instructions' => $payment->order->pickupLocation->instructions,
+                ] : null,
                 'can_retry' => $payment->order?->payment_status !== 'paid',
             ],
         ]);

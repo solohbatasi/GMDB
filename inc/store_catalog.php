@@ -16,6 +16,18 @@ function gdmb_format_price(mixed $price, ?string $currency = 'KES'): string
     return trim(($currency ?: 'KES') . ' ' . number_format((float) $price, 0));
 }
 
+function gdmb_pickup_map_url(array $location): string
+{
+    $parts = array_filter([
+        $location['name'] ?? null,
+        $location['address'] ?? null,
+        $location['city'] ?? null,
+        $location['county'] ?? null,
+    ]);
+
+    return 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode(implode(', ', $parts));
+}
+
 function gdmb_legacy_books(): array
 {
     $books = [];
