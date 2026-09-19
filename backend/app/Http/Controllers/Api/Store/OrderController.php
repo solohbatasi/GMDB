@@ -12,7 +12,7 @@ class OrderController extends Controller
     public function show(Request $request, string $orderNumber)
     {
         $order = Order::query()
-            ->with('items', 'pickupLocation')
+            ->with('items', 'pickupLocation', 'payments', 'reservations')
             ->where('order_number', $orderNumber)
             ->where('public_token', $request->query('token'))
             ->first();

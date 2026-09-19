@@ -151,9 +151,9 @@ class InventoryService
         });
     }
 
-    public function commitReservation(InventoryReservation $reservation): InventoryReservation
+    public function commitReservation(InventoryReservation $reservation, ?Order $order = null, ?string $reference = null): InventoryReservation
     {
-        return DB::transaction(function () use ($reservation) {
+        return DB::transaction(function () use ($reservation, $order, $reference) {
             $reservation = InventoryReservation::whereKey($reservation->id)->lockForUpdate()->firstOrFail();
 
             if ($reservation->status !== 'active') {
@@ -167,9 +167,24 @@ class InventoryService
                     throw new InvalidArgumentException('Reserved inventory cannot be committed.');
                 }
 
+                $before = $inventory->quantity_on_hand;
+                $after = $before - $reservation->quantity;
+
                 $inventory->update([
-                    'quantity_on_hand' => $inventory->quantity_on_hand - $reservation->quantity,
+                    'quantity_on_hand' => $after,
                     'quantity_reserved' => $inventory->quantity_reserved - $reservation->quantity,
+                ]);
+
+                StockMovement::create([
+                    'book_id' => $reservation->book_id,
+                    'order_id' => $order?->id ?? $reservation->order_id,
+                    'type' => 'sale',
+                    'quantity_change' => -$reservation->quantity,
+                    'quantity_before' => $before,
+                    'quantity_after' => $after,
+                    'reference' => $reference ?? $order?->order_number,
+                    'notes' => 'Sale committed from paid order reservation.',
+                    'metadata' => ['reservation_id' => $reservation->id],
                 ]);
             }
 

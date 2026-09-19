@@ -114,7 +114,7 @@ class CheckoutService
         $count = 0;
 
         Order::query()
-            ->where('payment_status', 'unpaid')
+            ->whereIn('payment_status', ['unpaid', 'pending'])
             ->where('order_status', 'pending')
             ->whereNotNull('reservation_expires_at')
             ->where('reservation_expires_at', '<=', now())
@@ -124,7 +124,7 @@ class CheckoutService
                     DB::transaction(function () use ($order, &$count) {
                         $order = Order::whereKey($order->id)->lockForUpdate()->firstOrFail();
 
-                        if ($order->order_status !== 'pending' || $order->payment_status !== 'unpaid') {
+                        if ($order->order_status !== 'pending' || ! in_array($order->payment_status, ['unpaid', 'pending'], true)) {
                             return;
                         }
 

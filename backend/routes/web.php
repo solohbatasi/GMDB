@@ -5,6 +5,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PickupLocationController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('inventory/{book}/restock', [InventoryController::class, 'restock'])->name('inventory.restock');
     Route::post('inventory/{book}/adjust', [InventoryController::class, 'adjust'])->name('inventory.adjust');
     Route::resource('orders', OrderController::class)->only(['index', 'show']);
+    Route::resource('payments', PaymentController::class)->only(['index']);
     Route::resource('pickup-locations', PickupLocationController::class)->except(['create', 'show', 'edit']);
 });
 

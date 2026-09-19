@@ -46,8 +46,22 @@ class OrderResource extends JsonResource
             'currency' => $this->currency,
             'payment_status' => $this->payment_status,
             'order_status' => $this->order_status,
+            'latest_payment_status' => $this->whenLoaded('payments', fn () => $this->payments->sortByDesc('created_at')->first()?->status),
+            'payment_method' => $this->whenLoaded('payments', fn () => $this->payments->sortByDesc('created_at')->first()?->method),
+            'can_retry_payment' => $this->canRetryPayment(),
+            'paid_at' => $this->paid_at?->toIso8601String(),
+            'provider_reference' => $this->whenLoaded('payments', fn () => $this->payments->where('status', 'paid')->sortByDesc('paid_at')->first()?->provider_reference),
             'reservation_expires_at' => $this->reservation_expires_at?->toIso8601String(),
             'created_at' => $this->created_at?->toIso8601String(),
         ];
+    }
+
+    protected function canRetryPayment(): bool
+    {
+        return $this->payment_status !== 'paid'
+            && $this->order_status === 'pending'
+            && $this->reservation_expires_at
+            && $this->reservation_expires_at->isFuture()
+            && $this->reservations()->where('status', 'active')->exists();
     }
 }
