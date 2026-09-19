@@ -7,6 +7,8 @@ $response = ($orderNumber && $token) ? gdmb_store_api_get('orders/' . rawurlenco
 $order = is_array($response['data'] ?? null) ? $response['data'] : null;
 $orderLookupUrl = $order ? gdmb_store_api_base_url() . '/orders/' . rawurlencode($order['order_number']) . '?token=' . rawurlencode($token) : '';
 $paymentUrl = $order ? gdmb_store_api_base_url() . '/orders/' . rawurlencode($order['order_number']) . '/payments/paystack' : '';
+$pickupLocation = is_array($order['fulfillment']['pickup_location'] ?? null) ? $order['fulfillment']['pickup_location'] : null;
+$pickupMapUrl = $pickupLocation ? gdmb_pickup_map_url($pickupLocation) : '';
 ?>
 <section class="books-page"><div class="container"><?php include_once 'inc/breadcrumbs.php'; ?>
 <?php if (! $order): ?><?php include '404.html'; ?><?php else: ?>
@@ -19,6 +21,16 @@ $paymentUrl = $order ? gdmb_store_api_base_url() . '/orders/' . rawurlencode($or
         <p id="reservation-line"><strong>Your books are reserved for:</strong> <span id="reservation-countdown"><?php echo gdmb_e($order['reservation_expires_at']); ?></span></p>
         <p id="payment-status-line"><strong>Payment:</strong> <span id="payment-status"><?php echo gdmb_e($order['payment_status']); ?></span></p>
         <p id="provider-reference-line" style="<?php echo empty($order['provider_reference']) ? 'display:none;' : ''; ?>"><strong>Reference:</strong> <span id="provider-reference"><?php echo gdmb_e($order['provider_reference'] ?? ''); ?></span></p>
+
+        <?php if ($pickupLocation): ?>
+            <div class="book-card" style="padding:20px; margin:20px 0;">
+                <h3>Pickup Point</h3>
+                <p><strong><?php echo gdmb_e($pickupLocation['name'] ?? 'Pickup point'); ?></strong></p>
+                <p><?php echo gdmb_e(trim(($pickupLocation['address'] ?? '') . ', ' . ($pickupLocation['city'] ?? '') . ', ' . ($pickupLocation['county'] ?? ''), ', ')); ?></p>
+                <?php if (! empty($pickupLocation['instructions'])): ?><p><?php echo gdmb_e($pickupLocation['instructions']); ?></p><?php endif; ?>
+                <a class="book-btn" href="<?php echo gdmb_e($pickupMapUrl); ?>" target="_blank" rel="noopener">View Map</a>
+            </div>
+        <?php endif; ?>
 
         <?php if ($order['payment_status'] !== 'paid' && ! empty($order['can_retry_payment'])): ?>
             <div id="payment-panel" class="book-card" style="padding:20px; margin:20px 0;">

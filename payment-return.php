@@ -6,6 +6,8 @@ $response = $reference !== '' ? gdmb_store_api_post('payments/paystack/verify', 
 $payment = is_array($response['data'] ?? null) ? $response['data'] : null;
 $status = $payment['status'] ?? null;
 $verified = $status === 'paid';
+$pickupLocation = is_array($payment['pickup_location'] ?? null) ? $payment['pickup_location'] : null;
+$pickupMapUrl = $pickupLocation ? gdmb_pickup_map_url($pickupLocation) : '';
 ?>
 <section class="books-page"><div class="container"><?php include_once 'inc/breadcrumbs.php'; ?>
 <div class="books-page-header">
@@ -31,6 +33,14 @@ $verified = $status === 'paid';
         <p><strong>Reference:</strong> <?php echo gdmb_e($payment['provider_reference'] ?? $payment['reference'] ?? $reference); ?></p>
         <p><strong>Amount:</strong> <?php echo gdmb_e(gdmb_format_price($payment['amount'] ?? null, $payment['currency'] ?? 'KES')); ?></p>
         <?php if (! empty($payment['channel'])): ?><p><strong>Channel:</strong> <?php echo gdmb_e($payment['channel']); ?></p><?php endif; ?>
+        <?php if ($pickupLocation): ?>
+            <hr>
+            <h3>Pickup Point</h3>
+            <p><strong><?php echo gdmb_e($pickupLocation['name'] ?? 'Pickup point'); ?></strong></p>
+            <p><?php echo gdmb_e(trim(($pickupLocation['address'] ?? '') . ', ' . ($pickupLocation['city'] ?? '') . ', ' . ($pickupLocation['county'] ?? ''), ', ')); ?></p>
+            <?php if (! empty($pickupLocation['instructions'])): ?><p><?php echo gdmb_e($pickupLocation['instructions']); ?></p><?php endif; ?>
+            <a class="book-btn" href="<?php echo gdmb_e($pickupMapUrl); ?>" target="_blank" rel="noopener">View Map</a>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 </div></section>
