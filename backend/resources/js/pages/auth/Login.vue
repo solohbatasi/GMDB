@@ -8,10 +8,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { register } from '@/routes';
-import { store } from '@/routes/login';
-import { request } from '@/routes/password';
 import PasskeyVerify from '@/components/PasskeyVerify.vue';
+import { backendPath } from '@/lib/backendPath';
+
+const loginForm = {
+    action: backendPath('/login'),
+    method: 'post' as const,
+};
 
 defineOptions({
     layout: {
@@ -39,7 +42,7 @@ defineProps<{
     <PasskeyVerify />
 
     <Form
-        v-bind="store.form()"
+        v-bind="loginForm"
         :reset-on-success="['password']"
         v-slot="{ errors, processing }"
         class="flex flex-col gap-6"
@@ -65,7 +68,7 @@ defineProps<{
                     <Label for="password">Password</Label>
                     <TextLink
                         v-if="canResetPassword"
-                        :href="request()"
+                        :href="backendPath('/forgot-password')"
                         class="text-sm"
                         :tabindex="5"
                     >
@@ -104,7 +107,7 @@ defineProps<{
 
         <div class="text-muted-foreground text-center text-sm">
             Don't have an account?
-            <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
+            <TextLink :href="backendPath('/register')" :tabindex="5">Sign up</TextLink>
         </div>
     </Form>
 </template>
