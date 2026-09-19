@@ -6,7 +6,7 @@ $token = $_GET['token'] ?? '';
 $response = ($orderNumber && $token) ? gdmb_store_api_get('orders/' . rawurlencode($orderNumber), ['token' => $token]) : null;
 $order = is_array($response['data'] ?? null) ? $response['data'] : null;
 $orderLookupUrl = $order ? gdmb_store_api_base_url() . '/orders/' . rawurlencode($order['order_number']) . '?token=' . rawurlencode($token) : '';
-$paymentUrl = $order ? gdmb_store_api_base_url() . '/orders/' . rawurlencode($order['order_number']) . '/payments/payhero' : '';
+$paymentUrl = $order ? gdmb_store_api_base_url() . '/orders/' . rawurlencode($order['order_number']) . '/payments/paystack' : '';
 ?>
 <section class="books-page"><div class="container"><?php include_once 'inc/breadcrumbs.php'; ?>
 <?php if (! $order): ?><?php include '404.html'; ?><?php else: ?>
@@ -23,10 +23,8 @@ $paymentUrl = $order ? gdmb_store_api_base_url() . '/orders/' . rawurlencode($or
         <?php if ($order['payment_status'] !== 'paid' && ! empty($order['can_retry_payment'])): ?>
             <div id="payment-panel" class="book-card" style="padding:20px; margin:20px 0;">
                 <h3>Payment Method</h3>
-                <p>M-Pesa / PayHero</p>
-                <input id="payment-phone" class="form-control" value="<?php echo gdmb_e($order['customer']['phone'] ?? ''); ?>" placeholder="Payment phone e.g. 0712345678">
-                <br>
-                <button id="pay-now-button" class="book-btn book-btn-solid" type="button">Pay Now</button>
+                <p>Secure card and mobile checkout powered by Paystack.</p>
+                <button id="pay-now-button" class="book-btn book-btn-solid" type="button">Pay Securely with Paystack</button>
                 <p id="payment-message" style="margin-top:12px;"></p>
             </div>
         <?php elseif ($order['payment_status'] !== 'paid'): ?>
@@ -108,14 +106,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (button) {
         button.addEventListener('click', function () {
-            var phone = document.getElementById('payment-phone').value;
             button.disabled = true;
-            message.textContent = 'Sending payment request...';
+            message.textContent = 'Preparing secure checkout...';
 
             fetch(paymentUrl, {
                 method: 'POST',
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: token, method: 'mpesa_stk', phone: phone })
+                body: JSON.stringify({ token: token })
             })
                 .then(function (response) {
                     return response.json().then(function (payload) {
@@ -127,9 +124,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                 })
                 .then(function (payload) {
-                    message.textContent = payload.message || 'Payment request sent. Please complete the payment on your phone.';
-                    pollsRemaining = 40;
-                    pollOrder();
+                    if (payload.data && payload.data.authorization_url) {
+                        window.location.href = payload.data.authorization_url;
+                        return;
+                    }
+
+                    message.textContent = payload.message || 'Checkout is ready, but no redirect URL was returned.';
+                    button.disabled = false;
                 })
                 .catch(function (error) {
                     message.textContent = error.message;

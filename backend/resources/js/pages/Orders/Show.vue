@@ -26,8 +26,8 @@ defineProps<{ order: any }>();
             <div class="border-b p-4 font-medium">Payments</div>
             <div v-for="(payment, index) in order.payments" :key="payment.id" class="border-b p-4 text-sm">
                 <div class="font-medium">Attempt #{{ index + 1 }} / {{ payment.method }} / {{ payment.status === 'review_required' ? 'Payment Requires Review' : payment.status }}</div>
-                <div class="text-muted-foreground">{{ payment.created_at }} / {{ payment.currency }} {{ payment.amount }} / {{ payment.payer_phone ?? '-' }}</div>
-                <div class="text-muted-foreground">Reference: {{ payment.provider_reference ?? payment.payhero_reference ?? payment.external_reference }}</div>
+                <div class="text-muted-foreground">{{ payment.created_at }} / {{ payment.currency }} {{ payment.amount }} / {{ payment.provider }} / {{ payment.channel ?? '-' }}</div>
+                <div class="text-muted-foreground">Reference: {{ payment.provider_reference ?? payment.external_reference }}</div>
                 <div v-if="payment.result_description" class="mt-1">{{ payment.result_description }}</div>
             </div>
             <div v-if="!order.payments?.length" class="p-4 text-sm text-muted-foreground">No payment attempts yet.</div>

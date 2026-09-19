@@ -29,7 +29,7 @@ class PaymentController extends Controller
                     $query->where(function ($searchQuery) use ($search) {
                         $searchQuery->where('external_reference', 'like', "%{$search}%")
                             ->orWhere('provider_reference', 'like', "%{$search}%")
-                            ->orWhere('payhero_reference', 'like', "%{$search}%")
+                            ->orWhere('provider_transaction_id', 'like', "%{$search}%")
                             ->orWhereHas('order', fn ($orderQuery) => $orderQuery
                                 ->where('order_number', 'like', "%{$search}%")
                                 ->orWhere('customer_name', 'like', "%{$search}%")
@@ -39,9 +39,11 @@ class PaymentController extends Controller
                 ->latest()
                 ->paginate(15)
                 ->withQueryString(),
-            'payheroChannel' => [
-                'channel_id' => config('payhero.channel_id'),
-                'provider' => config('payhero.provider'),
+            'providerConfig' => [
+                'provider' => 'paystack',
+                'currency' => config('paystack.currency'),
+                'public_key_configured' => filled(config('paystack.public_key')),
+                'secret_key_configured' => filled(config('paystack.secret_key')),
             ],
         ]);
     }

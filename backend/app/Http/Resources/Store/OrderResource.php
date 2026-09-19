@@ -48,6 +48,7 @@ class OrderResource extends JsonResource
             'order_status' => $this->order_status,
             'latest_payment_status' => $this->whenLoaded('payments', fn () => $this->payments->sortByDesc('created_at')->first()?->status),
             'payment_method' => $this->whenLoaded('payments', fn () => $this->payments->sortByDesc('created_at')->first()?->method),
+            'payment_channel' => $this->whenLoaded('payments', fn () => $this->payments->where('status', 'paid')->sortByDesc('paid_at')->first()?->channel),
             'can_retry_payment' => $this->canRetryPayment(),
             'paid_at' => $this->paid_at?->toIso8601String(),
             'provider_reference' => $this->whenLoaded('payments', fn () => $this->payments->where('status', 'paid')->sortByDesc('paid_at')->first()?->provider_reference),
