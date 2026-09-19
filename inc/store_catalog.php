@@ -130,6 +130,8 @@ function gdmb_store_api_get(string $path, array $params = []): ?array
 
     if (is_callable($client)) {
         $body = $client($url);
+    } elseif ($body = gdmb_store_internal_api_request('GET', $url)) {
+        // Internal dispatch avoids cPanel/hosting loopback HTTP failures.
     } else {
         $body = gdmb_store_http_get($url);
     }
@@ -156,6 +158,8 @@ function gdmb_store_api_post(string $path, array $payload): ?array
 
     if (is_callable($client)) {
         $response = $client($url, $body);
+    } elseif ($response = gdmb_store_internal_api_request('POST', $url, $body)) {
+        // Internal dispatch avoids cPanel/hosting loopback HTTP failures.
     } elseif (function_exists('curl_init')) {
         $ch = curl_init($url);
         curl_setopt_array($ch, [
@@ -225,6 +229,59 @@ function gdmb_store_http_get(string $url): ?string
     $statusLine = $http_response_header[0] ?? '';
 
     return str_contains($statusLine, ' 200 ') && is_string($body) ? $body : null;
+}
+
+function gdmb_store_internal_api_request(string $method, string $url, ?string $body = null): ?string
+{
+    if (getenv('GDMB_STORE_API_INTERNAL') === '0') {
+        return null;
+    }
+
+    $bootstrap = dirname(__DIR__) . '/backend/bootstrap/app.php';
+    $autoload = dirname(__DIR__) . '/backend/vendor/autoload.php';
+
+    if (! is_file($bootstrap) || ! is_file($autoload)) {
+        return null;
+    }
+
+    $parts = parse_url($url);
+    $path = $parts['path'] ?? '';
+
+    if ($path === '' || ! str_contains($path, '/api/store')) {
+        return null;
+    }
+
+    $uri = $path . (! empty($parts['query']) ? '?' . $parts['query'] : '');
+    $payload = [];
+
+    if ($body !== null && $body !== '') {
+        $decoded = json_decode($body, true);
+        $payload = is_array($decoded) ? $decoded : [];
+    }
+
+    try {
+        require_once $autoload;
+
+        $app = $GLOBALS['gdmb_laravel_app'] ?? null;
+
+        if (! $app) {
+            $GLOBALS['gdmb_laravel_app'] = $app = require $bootstrap;
+        }
+
+        $server = [
+            'HTTP_ACCEPT' => 'application/json',
+            'CONTENT_TYPE' => 'application/json',
+        ];
+
+        $request = \Illuminate\Http\Request::create($uri, strtoupper($method), $payload, [], [], $server, $body);
+        $response = $app->handle($request);
+
+        return $response->getStatusCode() >= 200 && $response->getStatusCode() < 300
+            ? $response->getContent()
+            : null;
+    } catch (\Throwable) {
+        return null;
+    }
 }
 
 function gdmb_clean_store_params(array $params): array
