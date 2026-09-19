@@ -95,6 +95,58 @@ function gdmb_cart_handle_request(): void
     exit;
 }
 
+function gdmb_checkout_handle_request(): void
+{
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        return;
+    }
+
+    $quote = gdmb_cart_quote();
+    $GLOBALS['gdmb_checkout_quote'] = $quote;
+
+    if (! $quote && gdmb_cart_count() > 0) {
+        $GLOBALS['gdmb_checkout_error'] = 'Live checkout pricing is temporarily unavailable. Please try again shortly.';
+
+        return;
+    }
+
+    if (! $quote || empty($quote['valid'])) {
+        $GLOBALS['gdmb_checkout_error'] = 'Your cart could not be checked out. Please review the cart and try again.';
+
+        return;
+    }
+
+    gdmb_session_start();
+    $_SESSION['gdmb_checkout_token'] ??= bin2hex(random_bytes(24));
+
+    $response = gdmb_store_api_post('checkout', [
+        'checkout_token' => $_SESSION['gdmb_checkout_token'],
+        'items' => gdmb_cart_items(),
+        'customer' => [
+            'name' => $_POST['name'] ?? '',
+            'email' => $_POST['email'] ?? '',
+            'phone' => $_POST['phone'] ?? '',
+        ],
+        'fulfillment' => [
+            'method' => $_POST['delivery_method'] ?? 'delivery',
+            'address' => $_POST['address'] ?? null,
+            'city' => $_POST['city'] ?? null,
+            'county' => $_POST['county'] ?? null,
+            'pickup_location_id' => $_POST['pickup_location_id'] ?? null,
+        ],
+        'customer_note' => $_POST['customer_note'] ?? null,
+    ]);
+
+    if (isset($response['data']['order_number'], $response['data']['public_token'])) {
+        gdmb_cart_clear();
+        unset($_SESSION['gdmb_checkout_token']);
+        header('Location: ./?p=order-confirmation&order=' . rawurlencode($response['data']['order_number']) . '&token=' . rawurlencode($response['data']['public_token']));
+        exit;
+    }
+
+    $GLOBALS['gdmb_checkout_error'] = $response['message'] ?? 'Checkout could not be completed. Please review your details and try again.';
+}
+
 function gdmb_cart_quote(): ?array
 {
     $response = gdmb_store_api_post('cart/quote', ['items' => gdmb_cart_items()]);
