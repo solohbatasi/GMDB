@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { dashboard } from '@/routes';
 import { backendPath } from '@/lib/backendPath';
 
 type Stats = {
@@ -38,7 +37,7 @@ defineProps<{
 
 defineOptions({
     layout: {
-        breadcrumbs: [{ title: 'Dashboard', href: dashboard() }],
+        breadcrumbs: [{ title: 'Dashboard', href: backendPath('/dashboard') }],
     },
 });
 </script>
