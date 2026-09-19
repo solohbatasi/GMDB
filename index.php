@@ -14,6 +14,9 @@
         if ($currentRoute === 'cart' && $_SERVER['REQUEST_METHOD'] === 'POST') {
             gdmb_cart_handle_request();
         }
+        if ($currentRoute === 'checkout' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            gdmb_checkout_handle_request();
+        }
         gdmb_cart_boot();
     }
     require_once 'inc/header.php';
