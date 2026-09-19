@@ -1,6 +1,23 @@
+Options -Indexes
+DirectoryIndex index.php
+
+<FilesMatch "^\.env$">
+    Require all denied
+</FilesMatch>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Redirect all requests to the public directory
-    RewriteRule ^(.*)$ public/$1 [L]
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    RewriteRule ^(build|storage)/(.*)$ public/$1/$2 [L]
+    RewriteRule ^(favicon\.ico|robots\.txt|manifest\.json)$ public/$1 [L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
 </IfModule>
