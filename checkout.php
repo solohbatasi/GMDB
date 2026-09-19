@@ -29,7 +29,7 @@ $selectedPickupId = (int) ($_POST['pickup_location_id'] ?? ($pickupLocations[0][
 <?php else: ?>
 <div class="row">
     <div class="col-md-7">
-        <form method="post" class="checkout-form">
+        <form id="checkout-form" method="post" class="checkout-form">
             <h3>Customer</h3>
             <input name="name" class="form-control" placeholder="Full name" required><br>
             <input name="email" type="email" class="form-control" placeholder="Email" required><br>
@@ -63,8 +63,7 @@ $selectedPickupId = (int) ($_POST['pickup_location_id'] ?? ($pickupLocations[0][
                 <a id="pickup-detail-map" class="book-btn" href="#" target="_blank" rel="noopener">View Map</a>
             </div>
 
-            <textarea name="customer_note" class="form-control" placeholder="Optional note"></textarea><br>
-            <button class="book-btn book-btn-solid" <?php echo empty($quote['valid']) ? 'disabled' : ''; ?>>Create Order</button>
+            <textarea name="customer_note" class="form-control" placeholder="Optional note"></textarea>
         </form>
     </div>
     <div class="col-md-5">
@@ -76,6 +75,7 @@ $selectedPickupId = (int) ($_POST['pickup_location_id'] ?? ($pickupLocations[0][
         <p>Subtotal: <?php echo gdmb_e(gdmb_format_price($quote['subtotal'], $quote['currency'])); ?></p>
         <p>Pickup: KES 0</p>
         <h3>Total: <?php echo gdmb_e(gdmb_format_price($quote['total'], $quote['currency'])); ?></h3>
+        <button form="checkout-form" class="book-btn book-btn-solid" style="width:100%; margin-top:12px;" <?php echo empty($quote['valid']) ? 'disabled' : ''; ?>>Create Order</button>
     </div>
 </div>
 
