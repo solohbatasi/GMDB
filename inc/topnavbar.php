@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/store_catalog.php';
 
+$gdmbBackendBase = rtrim(getenv('GDMB_BACKEND_BASE') ?: './backend', '/');
 $gdmbNavBooks = gdmb_store_books(['limit' => 15]);
 $gdmbNavBookColumns = array_chunk($gdmbNavBooks, 5);
 $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
@@ -65,8 +66,8 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 						<div class="col-md-3 col-sm-12 text-right">
 							<ul class="nav-icons">
 								<li><a href="https://cs2.rcnoc.com:2096/logout/?locale=en" target="_blank" style="color:white;"><i class="ion-chatbox"></i><div>Email</div></a></li>
-								<li><a href="./?p=register" style="color:white;"><i class="ion-person-add"></i><div>Register</div></a></li>
-								<li><a href="./?p=login" style="color:white;"><i class="ion-person"></i><div>Login</div></a></li>
+								<li><a href="<?php echo gdmb_e($gdmbBackendBase . '/register'); ?>" style="color:white;"><i class="ion-person-add"></i><div>Register</div></a></li>
+								<li><a href="<?php echo gdmb_e($gdmbBackendBase . '/login'); ?>" style="color:white;"><i class="ion-person"></i><div>Login</div></a></li>
 							</ul>
 						</div>
 					</div>
@@ -86,8 +87,8 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 					<div id="menu-list">
 						<ul class="nav-list">
 							<li class="for-tablet nav-title"><a  >Menu</a></li>
-							<li class="for-tablet"><a href="./?p=login"  >Login</a></li>
-							<li class="for-tablet"><a href="./?p=register"  >Register</a></li>
+							<li class="for-tablet"><a href="<?php echo gdmb_e($gdmbBackendBase . '/login'); ?>"  >Login</a></li>
+							<li class="for-tablet"><a href="<?php echo gdmb_e($gdmbBackendBase . '/register'); ?>"  >Register</a></li>
 							<li><a href="./" >Home</a></li>
 							<li class="dropdown magz-dropdown">
 								<a href="./?p=about" >About <i class="ion-ios-arrow-right"></i></a>
