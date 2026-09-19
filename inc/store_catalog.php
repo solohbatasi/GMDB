@@ -273,15 +273,36 @@ function gdmb_store_internal_api_request(string $method, string $url, ?string $b
             'CONTENT_TYPE' => 'application/json',
         ];
 
-        $request = \Illuminate\Http\Request::create($uri, strtoupper($method), $payload, [], [], $server, $body);
-        $response = $app->handle($request);
+        foreach (gdmb_store_internal_candidate_uris($uri) as $candidateUri) {
+            $request = \Illuminate\Http\Request::create($candidateUri, strtoupper($method), $payload, [], [], $server, $body);
+            $response = $app->handle($request);
 
-        return $response->getStatusCode() >= 200 && $response->getStatusCode() < 300
-            ? $response->getContent()
-            : null;
+            $GLOBALS['gdmb_store_internal_last_status'] = $response->getStatusCode();
+            $GLOBALS['gdmb_store_internal_last_uri'] = $candidateUri;
+
+            if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+                return $response->getContent();
+            }
+        }
+
+        return null;
     } catch (\Throwable) {
         return null;
     }
+}
+
+function gdmb_store_internal_candidate_uris(string $uri): array
+{
+    $candidates = [$uri];
+    $parsed = parse_url($uri);
+    $path = $parsed['path'] ?? $uri;
+    $query = isset($parsed['query']) && $parsed['query'] !== '' ? '?' . $parsed['query'] : '';
+
+    if (preg_match('#^/[^/]+(/api/store(?:/.*)?)$#', $path, $matches)) {
+        $candidates[] = $matches[1] . $query;
+    }
+
+    return array_values(array_unique($candidates));
 }
 
 function gdmb_clean_store_params(array $params): array

@@ -7,6 +7,8 @@ $httpBody = gdmb_store_http_get($apiUrl);
 $httpData = is_string($httpBody) ? json_decode($httpBody, true) : null;
 $internalBody = gdmb_store_internal_api_request('GET', $apiUrl);
 $internalData = is_string($internalBody) ? json_decode($internalBody, true) : null;
+$internalStatus = $GLOBALS['gdmb_store_internal_last_status'] ?? null;
+$internalUri = $GLOBALS['gdmb_store_internal_last_uri'] ?? null;
 $bridgeBooks = gdmb_store_books(['limit' => 3]);
 
 header('Content-Type: text/plain; charset=UTF-8');
@@ -31,6 +33,8 @@ if (is_array($httpData['data'][0] ?? null)) {
 echo "\nInternal Laravel dispatch\n";
 echo "-------------------------\n";
 echo 'Returned body: ' . (is_string($internalBody) && $internalBody !== '' ? 'yes' : 'no') . "\n";
+echo 'Last URI tried: ' . ($internalUri ?: '-') . "\n";
+echo 'Last status: ' . ($internalStatus ?: '-') . "\n";
 echo 'JSON decoded: ' . (is_array($internalData) ? 'yes' : 'no') . "\n";
 echo 'Book count: ' . (is_array($internalData['data'] ?? null) ? count($internalData['data']) : 0) . "\n";
 
