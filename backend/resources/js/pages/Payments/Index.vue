@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { backendPath } from '@/lib/backendPath';
 
 type Payment = {
     id: number;
@@ -27,7 +28,7 @@ const props = defineProps<{
 }>();
 
 const filters = ref({ ...props.filters });
-const filter = () => router.get('/payments', filters.value, { preserveState: true, replace: true });
+const filter = () => router.get(backendPath('/payments'), filters.value, { preserveState: true, replace: true });
 </script>
 
 <template>
@@ -72,7 +73,7 @@ const filter = () => router.get('/payments', filters.value, { preserveState: tru
                 <tbody class="divide-y">
                     <tr v-for="payment in payments.data" :key="payment.id" :class="payment.status === 'review_required' ? 'bg-amber-50 dark:bg-amber-950/20' : ''">
                         <td class="p-3">{{ payment.created_at }}</td>
-                        <td class="p-3"><Link v-if="payment.order" class="underline" :href="`/orders/${payment.order.id}`">{{ payment.order.order_number }}</Link><span v-else>-</span></td>
+                        <td class="p-3"><Link v-if="payment.order" class="underline" :href="backendPath(`/orders/${payment.order.id}`)">{{ payment.order.order_number }}</Link><span v-else>-</span></td>
                         <td class="p-3">{{ payment.order?.customer_name ?? '-' }}</td>
                         <td class="p-3">{{ payment.source ?? payment.method }}</td>
                         <td class="p-3">{{ payment.payer_phone ?? '-' }}</td>

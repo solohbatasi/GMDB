@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { backendPath } from '@/lib/backendPath';
 
 type Order = { id: number; order_number: string; customer_name: string; customer_phone: string; total: string; currency: string; payment_status: string; order_status: string; delivery_method: string; fulfillment_status: string; reservation_expires_at?: string | null; created_at: string; items_count: number };
 type Page<T> = { data: T[] };
 
 const props = defineProps<{ orders: Page<Order>; filters: Record<string, string> }>();
 const filters = ref({ ...props.filters });
-const filter = () => router.get('/orders', filters.value, { preserveState: true, replace: true });
+const filter = () => router.get(backendPath('/orders'), filters.value, { preserveState: true, replace: true });
 </script>
 
 <template>
@@ -26,7 +27,7 @@ const filter = () => router.get('/orders', filters.value, { preserveState: true,
                 <thead class="bg-muted/40 text-left"><tr><th class="p-3">Order</th><th class="p-3">Customer</th><th class="p-3">Phone</th><th class="p-3">Total</th><th class="p-3">Payment</th><th class="p-3">Order</th><th class="p-3">Fulfillment</th><th class="p-3">Expires</th><th class="p-3 text-right">Actions</th></tr></thead>
                 <tbody class="divide-y">
                     <tr v-for="order in orders.data" :key="order.id">
-                        <td class="p-3 font-medium">{{ order.order_number }}</td><td class="p-3">{{ order.customer_name }}</td><td class="p-3">{{ order.customer_phone }}</td><td class="p-3">{{ order.currency }} {{ order.total }}</td><td class="p-3">{{ order.payment_status }}</td><td class="p-3">{{ order.order_status }}</td><td class="p-3">{{ order.delivery_method }} / {{ order.fulfillment_status }}</td><td class="p-3">{{ order.reservation_expires_at ?? '-' }}</td><td class="p-3 text-right"><Link class="rounded border px-2 py-1" :href="`/orders/${order.id}`">View</Link></td>
+                        <td class="p-3 font-medium">{{ order.order_number }}</td><td class="p-3">{{ order.customer_name }}</td><td class="p-3">{{ order.customer_phone }}</td><td class="p-3">{{ order.currency }} {{ order.total }}</td><td class="p-3">{{ order.payment_status }}</td><td class="p-3">{{ order.order_status }}</td><td class="p-3">{{ order.delivery_method }} / {{ order.fulfillment_status }}</td><td class="p-3">{{ order.reservation_expires_at ?? '-' }}</td><td class="p-3 text-right"><Link class="rounded border px-2 py-1" :href="backendPath(`/orders/${order.id}`)">View</Link></td>
                     </tr>
                 </tbody>
             </table>

@@ -5,6 +5,7 @@ import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
+import { backendPath } from '@/lib/backendPath';
 import {
     Sidebar,
     SidebarContent,
@@ -28,12 +29,12 @@ const dashboardNavItems: NavItem[] = [
 const catalogNavItems: NavItem[] = [
     {
         title: 'Books',
-        href: '/books',
+        href: backendPath('/books'),
         icon: LibraryBig,
     },
     {
         title: 'Categories',
-        href: '/book-categories',
+        href: backendPath('/book-categories'),
         icon: Tags,
     },
 ];
@@ -41,17 +42,17 @@ const catalogNavItems: NavItem[] = [
 const inventoryNavItems: NavItem[] = [
     {
         title: 'Inventory',
-        href: '/inventory',
+        href: backendPath('/inventory'),
         icon: Archive,
     },
     {
         title: 'Stock Movements',
-        href: '/inventory/movements',
+        href: backendPath('/inventory/movements'),
         icon: BookOpen,
     },
     {
         title: 'Pickup Locations',
-        href: '/pickup-locations',
+        href: backendPath('/pickup-locations'),
         icon: MapPin,
     },
 ];
@@ -59,12 +60,12 @@ const inventoryNavItems: NavItem[] = [
 const salesNavItems: NavItem[] = [
     {
         title: 'Orders',
-        href: '/orders',
+        href: backendPath('/orders'),
         icon: ReceiptText,
     },
     {
         title: 'Payments',
-        href: '/payments',
+        href: backendPath('/payments'),
         icon: Banknote,
     },
 ];

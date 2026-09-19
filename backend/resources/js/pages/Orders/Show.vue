@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import { backendPath } from '@/lib/backendPath';
 
 defineProps<{ order: any }>();
 </script>
@@ -7,7 +8,7 @@ defineProps<{ order: any }>();
 <template>
     <Head :title="order.order_number" />
     <div class="flex flex-1 flex-col gap-4 p-4">
-        <Link href="/orders" class="text-sm underline">Back to orders</Link>
+        <Link :href="backendPath('/orders')" class="text-sm underline">Back to orders</Link>
         <div class="rounded-lg border p-4">
             <h1 class="text-2xl font-semibold">{{ order.order_number }}</h1>
             <p class="text-muted-foreground text-sm">Payment {{ order.payment_status }} / Order {{ order.order_status }} / Fulfillment {{ order.fulfillment_status }}</p>

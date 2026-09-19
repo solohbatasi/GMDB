@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import { backendPath } from '@/lib/backendPath';
 
 type Book = { id: number; title: string; author: string; cover_url?: string | null; inventory_item?: { sku: string; quantity_on_hand: number; quantity_reserved: number; available_quantity: number; stock_status: string } | null };
 type Movement = { id: number; created_at: string; type: string; quantity_change: number; quantity_before: number; quantity_after: number; reference?: string | null; notes?: string | null; user?: { name: string } | null };
@@ -11,7 +12,7 @@ defineProps<{ book: Book; movements: Page<Movement> }>();
 <template>
     <Head :title="`${book.title} Inventory`" />
     <div class="flex flex-1 flex-col gap-4 p-4">
-        <Link href="/inventory" class="text-sm underline">Back to inventory</Link>
+        <Link :href="backendPath('/inventory')" class="text-sm underline">Back to inventory</Link>
         <div class="flex items-center gap-4 rounded-lg border p-4">
             <img v-if="book.cover_url" :src="book.cover_url" class="h-24 w-16 rounded object-cover" :alt="book.title">
             <div>

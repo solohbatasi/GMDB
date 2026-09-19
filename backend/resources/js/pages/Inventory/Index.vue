@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { backendPath } from '@/lib/backendPath';
 
 type Category = { id: number; name: string };
 type Book = { id: number; title: string; author: string; cover_url?: string | null; category?: Category | null };
@@ -15,11 +16,11 @@ const adjustDialog = ref<HTMLDialogElement | null>(null);
 const restockForm = useForm({ quantity: 1, reference: '', notes: '' });
 const adjustForm = useForm({ quantity_change: -1, reason: '', notes: '' });
 
-const filter = () => router.get('/inventory', filters.value, { preserveState: true, replace: true });
+const filter = () => router.get(backendPath('/inventory'), filters.value, { preserveState: true, replace: true });
 const openRestock = (item: Item) => { selected.value = item; restockForm.reset(); restockDialog.value?.showModal(); };
 const openAdjust = (item: Item) => { selected.value = item; adjustForm.reset(); adjustDialog.value?.showModal(); };
-const submitRestock = () => selected.value && restockForm.post(`/inventory/${selected.value.book.id}/restock`, { preserveScroll: true, onSuccess: () => restockDialog.value?.close() });
-const submitAdjust = () => selected.value && adjustForm.post(`/inventory/${selected.value.book.id}/adjust`, { preserveScroll: true, onSuccess: () => adjustDialog.value?.close() });
+const submitRestock = () => selected.value && restockForm.post(backendPath(`/inventory/${selected.value.book.id}/restock`), { preserveScroll: true, onSuccess: () => restockDialog.value?.close() });
+const submitAdjust = () => selected.value && adjustForm.post(backendPath(`/inventory/${selected.value.book.id}/adjust`), { preserveScroll: true, onSuccess: () => adjustDialog.value?.close() });
 </script>
 
 <template>
@@ -35,7 +36,7 @@ const submitAdjust = () => selected.value && adjustForm.post(`/inventory/${selec
             <select v-model="filters.category" class="rounded-md border bg-background px-3 py-2 text-sm"><option value="">All categories</option><option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option></select>
             <select v-model="filters.condition" class="rounded-md border bg-background px-3 py-2 text-sm"><option value="">All stock</option><option value="low">Low stock</option><option value="out">Out of stock</option><option value="disabled">Tracking disabled</option></select>
             <button class="rounded-md border px-3 py-2 text-sm">Filter</button>
-            <Link href="/inventory/movements" class="rounded-md border px-3 py-2 text-center text-sm">All Movements</Link>
+            <Link :href="backendPath('/inventory/movements')" class="rounded-md border px-3 py-2 text-center text-sm">All Movements</Link>
         </form>
 
         <div class="overflow-x-auto rounded-lg border">
@@ -56,7 +57,7 @@ const submitAdjust = () => selected.value && adjustForm.post(`/inventory/${selec
                         <td class="p-3">{{ item.available_quantity }}</td>
                         <td class="p-3">{{ item.reorder_level }}</td>
                         <td class="p-3">{{ item.stock_status }}</td>
-                        <td class="space-x-2 p-3 text-right"><Link class="rounded border px-2 py-1" :href="`/inventory/${item.book.id}`">View</Link><button class="rounded border px-2 py-1" @click="openRestock(item)">Restock</button><button class="rounded border px-2 py-1" @click="openAdjust(item)">Adjust</button></td>
+                        <td class="space-x-2 p-3 text-right"><Link class="rounded border px-2 py-1" :href="backendPath(`/inventory/${item.book.id}`)">View</Link><button class="rounded border px-2 py-1" @click="openRestock(item)">Restock</button><button class="rounded border px-2 py-1" @click="openAdjust(item)">Adjust</button></td>
                     </tr>
                 </tbody>
             </table>

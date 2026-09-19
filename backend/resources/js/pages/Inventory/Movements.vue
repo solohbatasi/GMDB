@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import { backendPath } from '@/lib/backendPath';
 
 type Movement = { id: number; created_at: string; type: string; quantity_change: number; quantity_before: number; quantity_after: number; reference?: string | null; notes?: string | null; book: { title: string }; user?: { name: string } | null };
 type Page<T> = { data: T[] };
@@ -12,7 +13,7 @@ defineProps<{ movements: Page<Movement> }>();
     <div class="flex flex-1 flex-col gap-4 p-4">
         <div class="flex items-center justify-between">
             <div><h1 class="text-2xl font-semibold">Stock Movements</h1><p class="text-muted-foreground text-sm">Newest movement history first.</p></div>
-            <Link href="/inventory" class="rounded-md border px-3 py-2 text-sm">Inventory</Link>
+            <Link :href="backendPath('/inventory')" class="rounded-md border px-3 py-2 text-sm">Inventory</Link>
         </div>
         <div class="overflow-x-auto rounded-lg border">
             <table class="w-full min-w-[900px] text-sm">

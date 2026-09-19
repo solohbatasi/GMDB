@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { dashboard } from '@/routes';
+import { backendPath } from '@/lib/backendPath';
 
 type Stats = {
     total_books: number;
@@ -62,7 +63,7 @@ defineOptions({
             <section class="rounded-lg border">
                 <div class="flex items-center justify-between border-b p-4">
                     <h2 class="font-medium">Recently Added Books</h2>
-                    <Link href="/books" class="text-sm underline">Manage</Link>
+                    <Link :href="backendPath('/books')" class="text-sm underline">Manage</Link>
                 </div>
                 <div class="divide-y">
                     <div v-for="book in recentBooks" :key="book.id" class="flex items-center gap-3 p-4">
@@ -80,7 +81,7 @@ defineOptions({
             <section class="rounded-lg border">
                 <div class="flex items-center justify-between border-b p-4">
                     <h2 class="font-medium">Low Stock Books</h2>
-                    <Link href="/inventory?condition=low" class="text-sm underline">Review</Link>
+                    <Link :href="backendPath('/inventory?condition=low')" class="text-sm underline">Review</Link>
                 </div>
                 <div class="divide-y">
                     <div v-for="item in lowStockBooks" :key="item.id" class="flex items-center justify-between gap-3 p-4">
