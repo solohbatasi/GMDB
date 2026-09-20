@@ -1,6 +1,10 @@
 <?php
 $videos = [
     [
+        'id' => 'PcXhxn4aRZg',
+        'type' => 'Teaching',
+    ],
+    [
         'id' => 'PPnsCJh3g0E',
         'type' => 'Preaching',
     ],
