@@ -2,7 +2,6 @@
 import { Form, Head, usePage } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/DeleteUser.vue';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
@@ -25,6 +24,10 @@ defineOptions({
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
+const profileUpdateForm = {
+    action: backendPath('/settings/profile?_method=PATCH'),
+    method: 'post' as const,
+};
 </script>
 
 <template>
@@ -40,7 +43,7 @@ const user = computed(() => page.props.auth.user);
         />
 
         <Form
-            v-bind="ProfileController.update.form()"
+            v-bind="profileUpdateForm"
             class="space-y-6"
             v-slot="{ errors, processing }"
         >

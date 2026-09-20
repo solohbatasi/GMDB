@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Form } from '@inertiajs/vue3';
 import { useTemplateRef } from 'vue';
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
@@ -17,8 +16,13 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { backendPath } from '@/lib/backendPath';
 
 const passwordInput = useTemplateRef('passwordInput');
+const deleteUserForm = {
+    action: backendPath('/settings/profile?_method=DELETE'),
+    method: 'post' as const,
+};
 </script>
 
 <template>
@@ -45,7 +49,7 @@ const passwordInput = useTemplateRef('passwordInput');
                 </DialogTrigger>
                 <DialogContent>
                     <Form
-                        v-bind="ProfileController.destroy.form()"
+                        v-bind="deleteUserForm"
                         reset-on-success
                         @error="() => passwordInput?.focus()"
                         :options="{
