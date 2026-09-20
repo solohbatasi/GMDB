@@ -27,7 +27,6 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 									<div class="block-body">
 										<?php if (is_array($gdmbHeaderPickup)): ?>
 											<div style="color:white; line-height:1.45;">
-												<div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; opacity:.8;">Pickup Point</div>
 												<strong><?php echo gdmb_e($gdmbHeaderPickup['name'] ?? 'Pickup point'); ?></strong>
 												<div><?php echo gdmb_e(trim(($gdmbHeaderPickup['address'] ?? '') . ', ' . ($gdmbHeaderPickup['city'] ?? '') . ', ' . ($gdmbHeaderPickup['county'] ?? ''), ', ')); ?></div>
 												<?php if (! empty($gdmbHeaderPickup['instructions'])): ?><div style="opacity:.86;"><?php echo gdmb_e($gdmbHeaderPickup['instructions']); ?></div><?php endif; ?>
