@@ -30,6 +30,12 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 												<strong><?php echo gdmb_e($gdmbHeaderPickup['name'] ?? 'Pickup point'); ?></strong>
 												<div><?php echo gdmb_e(trim(($gdmbHeaderPickup['address'] ?? '') . ', ' . ($gdmbHeaderPickup['city'] ?? '') . ', ' . ($gdmbHeaderPickup['county'] ?? ''), ', ')); ?></div>
 												<?php if (! empty($gdmbHeaderPickup['instructions'])): ?><div style="opacity:.86;"><?php echo gdmb_e($gdmbHeaderPickup['instructions']); ?></div><?php endif; ?>
+												<div style="margin-top:6px; opacity:.92;">
+													<div><strong>Opening Hours</strong></div>
+													<div>Monday - Friday: 9am - 5pm</div>
+													<div>Saturday: 10am - 2pm</div>
+													<div>Sunday: 8am - 8pm (Church Services)</div>
+												</div>
 											</div>
 										<?php else: ?>
 											<div style="color:white;">Pickup details will be available before checkout.</div>
