@@ -44,8 +44,7 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 										<div style="color:#FC624D; font-size:12px; text-transform:uppercase; letter-spacing:.04em;">Opening Hours</div>
 										<div>Monday - Friday: 9am - 5pm</div>
 										<div>Saturday: 10am - 2pm</div>
-										<div>Sunday: 8am - 8pm</div>
-										<div style="opacity:.86;">Church Services</div>
+										<div>Sunday: 8am - 8pm (Church Services)</div>
 									</div>
 								</div>
 							</div>
