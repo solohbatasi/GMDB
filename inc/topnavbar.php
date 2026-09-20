@@ -31,7 +31,6 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 												<strong><?php echo gdmb_e($gdmbHeaderPickup['name'] ?? 'Pickup point'); ?></strong>
 												<div><?php echo gdmb_e(trim(($gdmbHeaderPickup['address'] ?? '') . ', ' . ($gdmbHeaderPickup['city'] ?? '') . ', ' . ($gdmbHeaderPickup['county'] ?? ''), ', ')); ?></div>
 												<?php if (! empty($gdmbHeaderPickup['instructions'])): ?><div style="opacity:.86;"><?php echo gdmb_e($gdmbHeaderPickup['instructions']); ?></div><?php endif; ?>
-												<a href="<?php echo gdmb_e($gdmbHeaderPickupMapUrl); ?>" target="_blank" rel="noopener" style="color:white; text-decoration:underline;">View Map</a>
 											</div>
 										<?php else: ?>
 											<div style="color:white;">Pickup details will be available before checkout.</div>
@@ -50,13 +49,18 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 						</div>
 						<div class="col-md-3 col-sm-12 text-right">
 							<div class="block">
-								<div class="block-body">
+								<div class="block-body" style="padding-top:14px;">
 									<ul class="social trp">
 										<li><a href="https://web.facebook.com/people/Global-Ministries-Daily-Bread/61570234694399/?mibextid=rS40aB7S9Ucbxw6v" target="_blank" class="facebook"><svg><rect width="0" height="0"/></svg><i class="fab fa-facebook"></i></a></li>
 										<li><a href="https://www.tiktok.com/@global.ministries4?_t=ZG-8tK8ue6DcEj&_r=1" target="_blank" class="tumblr"><svg><rect width="0" height="0"/></svg><i class="fab fa-tiktok"></i></a></li>
-										<li><a href="https://www.youtube.com/@globalministries-dailybread" target="_blank" class="youtube"><svg><rect width="0" height="0"/></svg><i class="fab fa-youtube"></i></a></li>
+										<li><a href="https://www.youtube.com/@globalministriesdailybread" target="_blank" class="youtube"><svg><rect width="0" height="0"/></svg><i class="fab fa-youtube"></i></a></li>
 										<li><a href="#" class="twitter"><svg><rect width="0" height="0"/></svg><i class="fab fa-x-twitter"></i></a></li>
 									</ul>
+									<div style="color:white; margin-top:10px; line-height:1.7; font-size:12px; text-align:left; display:inline-block; font-family:'Raleway', sans-serif; font-weight:700; letter-spacing:.5px;">
+										<div><i class="ion-ios-telephone-outline" style="display:inline-block; width:18px;"></i>+254722780410</div>
+										<div><i class="ion-ios-telephone-outline" style="display:inline-block; width:18px;"></i>+254724207817</div>
+										<div><i class="ion-ios-email-outline" style="display:inline-block; width:18px;"></i>info@globalministriesdailybread.org</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -77,13 +81,8 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 					<div id="menu-list">
 						<ul class="nav-list">
 							<li class="for-tablet nav-title"><a  >Menu</a></li>
-							<li class="for-tablet"><a href="https://cs2.rcnoc.com:2096/logout/?locale=en" target="_blank">Email</a></li>
 							<li class="for-tablet"><a href="<?php echo gdmb_e($gdmbBackendBase . '/login'); ?>"  >Login</a></li>
-							<li class="for-tablet"><a href="<?php echo gdmb_e($gdmbBackendBase . '/register'); ?>"  >Register</a></li>
 							<li><a href="./" >Home</a></li>
-							<li><a href="https://cs2.rcnoc.com:2096/logout/?locale=en" target="_blank">Email</a></li>
-							<li><a href="<?php echo gdmb_e($gdmbBackendBase . '/login'); ?>">Login</a></li>
-							<li><a href="<?php echo gdmb_e($gdmbBackendBase . '/register'); ?>">Register</a></li>
 							<li class="dropdown magz-dropdown">
 								<a href="./?p=about" >About <i class="ion-ios-arrow-right"></i></a>
 								<ul class="dropdown-menu">
@@ -195,6 +194,8 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 							</li>
 							<li><a href="./?p=videos">Videos</a></li>
 							<li><a href="./?p=contact">Contact us</a></li>
+							<li><a href="https://cs2.rcnoc.com:2096/logout/?locale=en" target="_blank">Email</a></li>
+							<li><a href="<?php echo gdmb_e($gdmbBackendBase . '/login'); ?>">Login</a></li>
 
 						</ul>
 					</div>
