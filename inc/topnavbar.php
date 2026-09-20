@@ -21,36 +21,34 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 								</a>
 							</div>						
 						</div>
-						<div class="col-md-6 col-sm-12">
-							<form class="search" autocomplete="off">
-								<div class="block">
-									<div class="block-body">
-										<?php if (is_array($gdmbHeaderPickup)): ?>
-											<div style="color:white; line-height:1.45;">
-												<strong><?php echo gdmb_e($gdmbHeaderPickup['name'] ?? 'Pickup point'); ?></strong>
-												<div><?php echo gdmb_e(trim(($gdmbHeaderPickup['address'] ?? '') . ', ' . ($gdmbHeaderPickup['city'] ?? '') . ', ' . ($gdmbHeaderPickup['county'] ?? ''), ', ')); ?></div>
-												<?php if (! empty($gdmbHeaderPickup['instructions'])): ?><div style="opacity:.86;"><?php echo gdmb_e($gdmbHeaderPickup['instructions']); ?></div><?php endif; ?>
-												<div style="margin-top:6px; opacity:.92;">
-													<div><strong>Opening Hours</strong></div>
-													<div>Monday - Friday: 9am - 5pm</div>
-													<div>Saturday: 10am - 2pm</div>
-													<div>Sunday: 8am - 8pm (Church Services)</div>
-												</div>
-											</div>
-										<?php else: ?>
-											<div style="color:white;">Pickup details will be available before checkout.</div>
-										<?php endif; ?>
+						<div class="col-md-3 col-sm-12">
+							<div class="block">
+								<div class="block-body" style="padding-top:14px;">
+									<?php if (is_array($gdmbHeaderPickup)): ?>
+										<div style="color:white; line-height:1.45;">
+											<div style="color:#FC624D; font-size:12px; text-transform:uppercase; letter-spacing:.04em;">Pickup / Offices</div>
+											<strong><?php echo gdmb_e($gdmbHeaderPickup['name'] ?? 'Pickup point'); ?></strong>
+											<div><?php echo gdmb_e(trim(($gdmbHeaderPickup['address'] ?? '') . ', ' . ($gdmbHeaderPickup['city'] ?? '') . ', ' . ($gdmbHeaderPickup['county'] ?? ''), ', ')); ?></div>
+											<?php if (! empty($gdmbHeaderPickup['instructions'])): ?><div style="opacity:.86;"><?php echo gdmb_e($gdmbHeaderPickup['instructions']); ?></div><?php endif; ?>
+										</div>
+									<?php else: ?>
+										<div style="color:white;">Pickup details will be available before checkout.</div>
+									<?php endif; ?>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 col-sm-12">
+							<div class="block">
+								<div class="block-body" style="padding-top:14px;">
+									<div style="color:white; line-height:1.55;">
+										<div style="color:#FC624D; font-size:12px; text-transform:uppercase; letter-spacing:.04em;">Opening Hours</div>
+										<div>Monday - Friday: 9am - 5pm</div>
+										<div>Saturday: 10am - 2pm</div>
+										<div>Sunday: 8am - 8pm</div>
+										<div style="opacity:.86;">Church Services</div>
 									</div>
 								</div>
-								<div class="help-block">
-									<div>Popular:</div>
-									<ul>
-										<li><a href="./?p=books/book1" style="color:white;">A Theory of Lay Ministry Praxis</a></li>
-										<li><a href="#" style="color:white;">Duke Randolph</a></li>
-										<li><a href="#" style="color:white;">Empowerment missions</a></li>
-									</ul>
-								</div>
-							</form>								
+							</div>
 						</div>
 						<div class="col-md-3 col-sm-12 text-right">
 							<div class="block">
