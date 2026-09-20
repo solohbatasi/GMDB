@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
-import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
@@ -19,6 +18,10 @@ type Props = {
     ManageTwoFactorProps;
 
 const props = defineProps<Props>();
+const passwordUpdateForm = {
+    action: backendPath('/settings/password?_method=PUT'),
+    method: 'post' as const,
+};
 
 defineOptions({
     layout: {
@@ -45,7 +48,7 @@ defineOptions({
         />
 
         <Form
-            v-bind="SecurityController.update.form()"
+            v-bind="passwordUpdateForm"
             :options="{
                 preserveScroll: true,
             }"
