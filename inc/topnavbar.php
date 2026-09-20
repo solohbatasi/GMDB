@@ -26,7 +26,7 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 								<div class="block-body" style="padding-top:14px;">
 									<?php if (is_array($gdmbHeaderPickup)): ?>
 										<div style="color:white; line-height:1.45;">
-											<div style="color:#FC624D; font-size:12px; text-transform:uppercase; letter-spacing:.04em;"><?php echo gdmb_e($gdmbHeaderPickup['name'] ?? 'Pickup point'); ?></div>
+											<div style="color:#F8B803; font-size:12px; text-transform:uppercase; letter-spacing:.04em;"><?php echo gdmb_e($gdmbHeaderPickup['name'] ?? 'Pickup point'); ?></div>
 											<div><?php echo gdmb_e(trim(($gdmbHeaderPickup['address'] ?? '') . ', ' . ($gdmbHeaderPickup['city'] ?? '') . ', ' . ($gdmbHeaderPickup['county'] ?? ''), ', ')); ?></div>
 											<?php if (! empty($gdmbHeaderPickup['instructions'])): ?><div style="opacity:.86;"><?php echo gdmb_e($gdmbHeaderPickup['instructions']); ?></div><?php endif; ?>
 										</div>
@@ -40,7 +40,7 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 							<div class="block">
 								<div class="block-body" style="padding-top:14px;">
 									<div style="color:white; line-height:1.55;">
-										<div style="color:#FC624D; font-size:12px; text-transform:uppercase; letter-spacing:.04em;">Opening Hours</div>
+										<div style="color:#F8B803; font-size:12px; text-transform:uppercase; letter-spacing:.04em;">Opening Hours</div>
 										<div>Monday - Friday: 9am - 5pm</div>
 										<div>Saturday: 10am - 2pm</div>
 										<div>Sunday: 8am - 8pm (Church Services)</div>
