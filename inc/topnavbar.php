@@ -2,6 +2,10 @@
 require_once __DIR__ . '/store_catalog.php';
 
 $gdmbBackendBase = rtrim(getenv('GDMB_BACKEND_BASE') ?: './backend', '/');
+$gdmbPickupResponse = gdmb_store_api_get('pickup-locations');
+$gdmbPickupLocations = is_array($gdmbPickupResponse['data'] ?? null) ? $gdmbPickupResponse['data'] : [];
+$gdmbHeaderPickup = $gdmbPickupLocations[0] ?? null;
+$gdmbHeaderPickupMapUrl = is_array($gdmbHeaderPickup) ? gdmb_pickup_map_url($gdmbHeaderPickup) : '';
 $gdmbNavBooks = gdmb_store_books(['limit' => 15]);
 $gdmbNavBookColumns = array_chunk($gdmbNavBooks, 5);
 $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
@@ -19,38 +23,19 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 						</div>
 						<div class="col-md-6 col-sm-12">
 							<form class="search" autocomplete="off">
-								<!-- Social Media Section -->
 								<div class="block">
 									<div class="block-body">
-										<ul class="social trp">
-											<!-- Facebook -->
-											<li>
-												<a href="https://web.facebook.com/people/Global-Ministries-Daily-Bread/61570234694399/?mibextid=rS40aB7S9Ucbxw6v" target="_blank" class="facebook">
-													<svg><rect width="0" height="0"/></svg>
-													<i class="fab fa-facebook"></i> <!-- Facebook Icon -->
-												</a>
-											</li>
-											<!-- TikTok -->
-											<li>
-												<a href="https://www.tiktok.com/@global.ministries4?_t=ZG-8tK8ue6DcEj&_r=1" target="_blank" class="tumblr" >
-													<svg><rect width="0" height="0"/></svg>
-													<i class="fab fa-tiktok"></i> <!-- TikTok Icon -->
-												</a>
-											</li>
-											<!-- YouTube -->
-											<li>
-												<a href="https://www.youtube.com/@globalministries-dailybread" target="_blank" class="youtube">
-													<svg><rect width="0" height="0"/></svg>
-													<i class="fab fa-youtube"></i> <!-- YouTube Icon -->
-												</a>
-											</li>
-											<li>
-												<a href="#" class="twitter">
-													<svg><rect width="0" height="0"/></svg>
-													<i class="fab fa-x-twitter"></i> <!-- YouTube Icon -->
-												</a>
-											</li>
-										</ul>
+										<?php if (is_array($gdmbHeaderPickup)): ?>
+											<div style="color:white; line-height:1.45;">
+												<div style="font-size:12px; text-transform:uppercase; letter-spacing:.04em; opacity:.8;">Pickup Point</div>
+												<strong><?php echo gdmb_e($gdmbHeaderPickup['name'] ?? 'Pickup point'); ?></strong>
+												<div><?php echo gdmb_e(trim(($gdmbHeaderPickup['address'] ?? '') . ', ' . ($gdmbHeaderPickup['city'] ?? '') . ', ' . ($gdmbHeaderPickup['county'] ?? ''), ', ')); ?></div>
+												<?php if (! empty($gdmbHeaderPickup['instructions'])): ?><div style="opacity:.86;"><?php echo gdmb_e($gdmbHeaderPickup['instructions']); ?></div><?php endif; ?>
+												<a href="<?php echo gdmb_e($gdmbHeaderPickupMapUrl); ?>" target="_blank" rel="noopener" style="color:white; text-decoration:underline;">View Map</a>
+											</div>
+										<?php else: ?>
+											<div style="color:white;">Pickup details will be available before checkout.</div>
+										<?php endif; ?>
 									</div>
 								</div>
 								<div class="help-block">
@@ -64,11 +49,16 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 							</form>								
 						</div>
 						<div class="col-md-3 col-sm-12 text-right">
-							<ul class="nav-icons">
-								<li><a href="https://cs2.rcnoc.com:2096/logout/?locale=en" target="_blank" style="color:white;"><i class="ion-chatbox"></i><div>Email</div></a></li>
-								<li><a href="<?php echo gdmb_e($gdmbBackendBase . '/register'); ?>" style="color:white;"><i class="ion-person-add"></i><div>Register</div></a></li>
-								<li><a href="<?php echo gdmb_e($gdmbBackendBase . '/login'); ?>" style="color:white;"><i class="ion-person"></i><div>Login</div></a></li>
-							</ul>
+							<div class="block">
+								<div class="block-body">
+									<ul class="social trp">
+										<li><a href="https://web.facebook.com/people/Global-Ministries-Daily-Bread/61570234694399/?mibextid=rS40aB7S9Ucbxw6v" target="_blank" class="facebook"><svg><rect width="0" height="0"/></svg><i class="fab fa-facebook"></i></a></li>
+										<li><a href="https://www.tiktok.com/@global.ministries4?_t=ZG-8tK8ue6DcEj&_r=1" target="_blank" class="tumblr"><svg><rect width="0" height="0"/></svg><i class="fab fa-tiktok"></i></a></li>
+										<li><a href="https://www.youtube.com/@globalministries-dailybread" target="_blank" class="youtube"><svg><rect width="0" height="0"/></svg><i class="fab fa-youtube"></i></a></li>
+										<li><a href="#" class="twitter"><svg><rect width="0" height="0"/></svg><i class="fab fa-x-twitter"></i></a></li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -87,9 +77,13 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 					<div id="menu-list">
 						<ul class="nav-list">
 							<li class="for-tablet nav-title"><a  >Menu</a></li>
+							<li class="for-tablet"><a href="https://cs2.rcnoc.com:2096/logout/?locale=en" target="_blank">Email</a></li>
 							<li class="for-tablet"><a href="<?php echo gdmb_e($gdmbBackendBase . '/login'); ?>"  >Login</a></li>
 							<li class="for-tablet"><a href="<?php echo gdmb_e($gdmbBackendBase . '/register'); ?>"  >Register</a></li>
 							<li><a href="./" >Home</a></li>
+							<li><a href="https://cs2.rcnoc.com:2096/logout/?locale=en" target="_blank">Email</a></li>
+							<li><a href="<?php echo gdmb_e($gdmbBackendBase . '/login'); ?>">Login</a></li>
+							<li><a href="<?php echo gdmb_e($gdmbBackendBase . '/register'); ?>">Register</a></li>
 							<li class="dropdown magz-dropdown">
 								<a href="./?p=about" >About <i class="ion-ios-arrow-right"></i></a>
 								<ul class="dropdown-menu">
