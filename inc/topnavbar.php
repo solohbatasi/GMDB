@@ -53,7 +53,7 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 									<ul class="social trp">
 										<li><a href="https://web.facebook.com/people/Global-Ministries-Daily-Bread/61570234694399/?mibextid=rS40aB7S9Ucbxw6v" target="_blank" class="facebook"><svg><rect width="0" height="0"/></svg><i class="fab fa-facebook"></i></a></li>
 										<li><a href="https://www.tiktok.com/@global.ministries4?_t=ZG-8tK8ue6DcEj&_r=1" target="_blank" class="tumblr"><svg><rect width="0" height="0"/></svg><i class="fab fa-tiktok"></i></a></li>
-										<li><a href="https://www.youtube.com/@globalministries-dailybread" target="_blank" class="youtube"><svg><rect width="0" height="0"/></svg><i class="fab fa-youtube"></i></a></li>
+										<li><a href="https://www.youtube.com/@globalministriesdailybread" target="_blank" class="youtube"><svg><rect width="0" height="0"/></svg><i class="fab fa-youtube"></i></a></li>
 										<li><a href="#" class="twitter"><svg><rect width="0" height="0"/></svg><i class="fab fa-x-twitter"></i></a></li>
 									</ul>
 									<div style="color:white; margin-top:10px; line-height:1.7; font-size:12px; text-align:left; display:inline-block; font-family:'Raleway', sans-serif; font-weight:700; letter-spacing:.5px;">
