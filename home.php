@@ -214,13 +214,12 @@
 										<input type="hidden" name="action" value="add">
 										<input type="hidden" name="slug" value="<?php echo gdmb_e($book['slug']); ?>">
 										<input type="hidden" name="quantity" value="1">
-										<button class="book-btn book-btn-solid" type="submit"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+										<button class="book-btn book-btn-solid" type="submit"><i class="fas fa-shopping-cart"></i> Purchase</button>
 									</form>
-								<?php endif; ?>
-								<?php if (! empty($book['purchase_url'])): ?>
-									<a href="<?php echo gdmb_e($book['purchase_url']); ?>" target="_blank" rel="noopener" class="book-btn book-btn-solid">
-										<i class="fas fa-shopping-cart"></i> Purchase
-									</a>
+								<?php elseif (! empty($book['purchase_url'])): ?>
+									    <a href="<?php echo gdmb_e($book['purchase_url']); ?>" target="_blank" rel="noopener" class="book-btn book-btn-solid">
+											<i class="fas fa-shopping-cart"></i> Purchase
+										</a>
 								<?php endif; ?>
 							</div>
 						</article>
