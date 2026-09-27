@@ -37,9 +37,6 @@ $priceOptions = $book ? gdmb_book_price_options($book) : [];
                         </ul>
                     </header>
                     <div class="main">
-                        <?php foreach ($priceOptions as $priceOption): ?>
-                            <p><strong><?php echo gdmb_e($priceOption['label']); ?>:</strong> <?php echo gdmb_e($priceOption['formatted']); ?></p>
-                        <?php endforeach; ?>
                         <p><strong>Availability:</strong> <?php echo gdmb_e(str_replace('_', ' ', ucfirst($book['availability']))); ?></p>
                         <?php foreach (preg_split('/\R+/', trim((string) $book['description'])) as $paragraph): ?>
                             <?php if (trim($paragraph) !== ''): ?>
@@ -54,40 +51,11 @@ $priceOptions = $book ? gdmb_book_price_options($book) : [];
                         <div class="title"><i class="fas fa-shopping-cart"></i> Order the Book</div>
                         <ul class="social">
                             <li>
-                                <form method="post" action="./?p=cart">
-                                    <input type="hidden" name="action" value="add">
-                                    <input type="hidden" name="slug" value="<?php echo gdmb_e($book['slug']); ?>">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <?php if (count($priceOptions) > 1): ?>
-                                        <select name="price_option" class="form-control" style="width:auto; min-width:170px; margin-bottom:8px;" aria-label="Choose price">
-                                            <?php foreach ($priceOptions as $value => $option): ?><option value="<?php echo gdmb_e($value); ?>"><?php echo gdmb_e($option['label'].' - '.$option['formatted']); ?></option><?php endforeach; ?>
-                                        </select>
-                                    <?php else: ?>
-                                        <input type="hidden" name="price_option" value="<?php echo gdmb_e(array_key_first($priceOptions)); ?>">
-                                    <?php endif; ?>
-                                    <button class="book-btn book-btn-solid" type="submit"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
-                                </form>
-                            </li>
-                            <li>
-                                <form method="post" action="./?p=cart">
-                                    <input type="hidden" name="action" value="buy_now">
-                                    <input type="hidden" name="slug" value="<?php echo gdmb_e($book['slug']); ?>">
-                                    <input type="hidden" name="quantity" value="1">
-                                    <?php if (count($priceOptions) > 1): ?>
-                                        <select name="price_option" class="form-control" style="width:auto; min-width:170px; margin-bottom:8px;" aria-label="Choose price">
-                                            <?php foreach ($priceOptions as $value => $option): ?><option value="<?php echo gdmb_e($value); ?>"><?php echo gdmb_e($option['label'].' - '.$option['formatted']); ?></option><?php endforeach; ?>
-                                        </select>
-                                    <?php else: ?>
-                                        <input type="hidden" name="price_option" value="<?php echo gdmb_e(array_key_first($priceOptions)); ?>">
-                                    <?php endif; ?>
-                                    <button class="book-btn book-btn-outline" type="submit">Buy Now</button>
-                                </form>
+                                <button type="button" class="book-btn book-btn-solid book-purchase-trigger" data-book-title="<?php echo gdmb_e($book['title']); ?>" data-book-slug="<?php echo gdmb_e($book['slug']); ?>" data-currency="<?php echo gdmb_e($book['currency']); ?>" data-primary-price="<?php echo gdmb_e($book['price'] ?? ''); ?>" data-secondary-price="<?php echo gdmb_e($book['compare_price'] ?? ''); ?>"><i class="fas fa-shopping-cart"></i> Purchase</button>
                             </li>
                         </ul>
                     </div>
-                <?php endif; ?>
-
-                <?php if (! empty($book['purchase_url'])): ?>
+                <?php elseif (! empty($book['purchase_url'])): ?>
                     <div class="sharing">
                         <div class="title">
                             <i class="fas fa-shopping-cart"></i>
@@ -116,3 +84,4 @@ $priceOptions = $book ? gdmb_book_price_options($book) : [];
     </div>
 </section>
 <?php endif; ?>
+<?php require_once 'inc/book_purchase_modal.php'; ?>
