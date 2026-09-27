@@ -21,7 +21,7 @@ class Phase3CartHelperTest extends TestCase
         $this->assertSame(5, gdmb_cart_count());
 
         $this->assertTrue(gdmb_cart_update('book1', 1));
-        $this->assertSame([['slug' => 'book1', 'quantity' => 1]], gdmb_cart_items());
+        $this->assertSame([['slug' => 'book1', 'price_option' => 'primary', 'quantity' => 1]], gdmb_cart_items());
 
         gdmb_cart_remove('book1');
         $this->assertSame(0, gdmb_cart_count());
@@ -43,6 +43,18 @@ class Phase3CartHelperTest extends TestCase
         $this->assertSame(1, gdmb_cart_count());
         gdmb_cart_clear();
         $this->assertSame(0, gdmb_cart_count());
+    }
+
+    public function test_two_price_options_are_kept_as_separate_cart_lines(): void
+    {
+        gdmb_cart_add('book1', 1, 'primary');
+        gdmb_cart_add('book1', 2, 'secondary');
+
+        $this->assertSame(3, gdmb_cart_count());
+        $this->assertSame(['primary', 'secondary'], array_column(gdmb_cart_items(), 'price_option'));
+
+        gdmb_cart_remove('book1', 'secondary');
+        $this->assertSame(1, gdmb_cart_count());
     }
 
     public function test_display_quote_falls_back_to_session_items_when_api_is_unavailable(): void

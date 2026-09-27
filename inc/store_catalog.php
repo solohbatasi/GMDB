@@ -16,6 +16,30 @@ function gdmb_format_price(mixed $price, ?string $currency = 'KES'): string
     return trim(($currency ?: 'KES') . ' ' . number_format((float) $price, 0));
 }
 
+function gdmb_book_price_options(array $book): array
+{
+    $options = [];
+    $currency = $book['currency'] ?? 'KES';
+
+    if (is_numeric($book['price'] ?? null) && (float) $book['price'] > 0) {
+        $options['primary'] = [
+            'label' => 'Price 1',
+            'price' => $book['price'],
+            'formatted' => gdmb_format_price($book['price'], $currency),
+        ];
+    }
+
+    if (is_numeric($book['compare_price'] ?? null) && (float) $book['compare_price'] > 0) {
+        $options['secondary'] = [
+            'label' => 'Price 2',
+            'price' => $book['compare_price'],
+            'formatted' => gdmb_format_price($book['compare_price'], $currency),
+        ];
+    }
+
+    return $options;
+}
+
 function gdmb_pickup_map_url(array $location): string
 {
     $parts = array_filter([

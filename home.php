@@ -193,6 +193,7 @@
 				</div>
 				<div class="owl-carousel owl-theme books-carousel" id="books-carousel">
 					<?php foreach ($books as $book): ?>
+						<?php $priceOptions = gdmb_book_price_options($book); ?>
 						<article class="book-slide">
 							<a class="book-slide-cover" href="./?p=book&amp;slug=<?php echo rawurlencode($book['slug']); ?>">
 								<img src="<?php echo gdmb_e($book['cover']); ?>" loading="lazy" alt="<?php echo gdmb_e($book['title']); ?>">
@@ -203,17 +204,27 @@
 									<span><?php echo gdmb_e($book['published_at']); ?></span>
 								</div>
 								<h2><a href="./?p=book&amp;slug=<?php echo rawurlencode($book['slug']); ?>"><?php echo gdmb_e($book['title']); ?></a></h2>
+								<?php foreach ($priceOptions as $priceOption): ?>
+									<p style="margin-bottom:4px;"><strong><?php echo gdmb_e($priceOption['label']); ?>:</strong> <?php echo gdmb_e($priceOption['formatted']); ?></p>
+								<?php endforeach; ?>
 								<p><?php echo gdmb_e($book['summary']); ?></p>
 							</div>
 							<div class="book-card-actions">
 								<a href="./?p=book&amp;slug=<?php echo rawurlencode($book['slug']); ?>" class="book-btn book-btn-outline">
 									<i class="ion-ios-book-outline"></i> Details
 								</a>
-								<?php if (! empty($book['available']) && is_numeric($book['price']) && (float) $book['price'] > 0): ?>
-									<form method="post" action="./?p=cart" style="display:inline;">
+								<?php if (! empty($book['available']) && $priceOptions): ?>
+									<form method="post" action="./?p=cart" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
 										<input type="hidden" name="action" value="add">
 										<input type="hidden" name="slug" value="<?php echo gdmb_e($book['slug']); ?>">
 										<input type="hidden" name="quantity" value="1">
+										<?php if (count($priceOptions) > 1): ?>
+											<select name="price_option" class="form-control" style="width:auto; min-width:145px;" aria-label="Choose price for <?php echo gdmb_e($book['title']); ?>">
+												<?php foreach ($priceOptions as $value => $option): ?><option value="<?php echo gdmb_e($value); ?>"><?php echo gdmb_e($option['label'].' - '.$option['formatted']); ?></option><?php endforeach; ?>
+											</select>
+										<?php else: ?>
+											<input type="hidden" name="price_option" value="<?php echo gdmb_e(array_key_first($priceOptions)); ?>">
+										<?php endif; ?>
 										<button class="book-btn book-btn-solid" type="submit"><i class="fas fa-shopping-cart"></i> Purchase</button>
 									</form>
 								<?php elseif (! empty($book['purchase_url'])): ?>

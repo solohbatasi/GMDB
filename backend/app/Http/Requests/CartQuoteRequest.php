@@ -17,6 +17,7 @@ class CartQuoteRequest extends FormRequest
             'items' => ['required', 'array', 'min:1', 'max:50'],
             'items.*.slug' => ['required', 'string', 'max:255', 'regex:/\A[A-Za-z0-9_-]+\z/'],
             'items.*.quantity' => ['required', 'integer', 'min:1', 'max:99'],
+            'items.*.price_option' => ['sometimes', 'string', 'in:primary,secondary'],
         ];
     }
 }
