@@ -79,10 +79,7 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 										<li><a href="#" class="twitter"><svg><rect width="0" height="0"/></svg><i class="fab fa-x-twitter"></i></a></li>
 									</ul>
 									<div style="color:white; margin-top:10px; line-height:1.7; font-size:12px; text-align:left; display:inline-block; font-family:'Raleway', sans-serif; font-weight:700; letter-spacing:.5px;">
-										<div><i class="ion-ios-telephone-outline" style="display:inline-block; width:18px;"></i>+254722780410</div>
-										<div><i class="ion-ios-telephone-outline" style="display:inline-block; width:18px;"></i>+254724207817</div>
 										<div><a href="https://wa.me/447727208820" target="_blank" rel="noopener" style="color:white; text-decoration:none;"><i class="ion-social-whatsapp" style="display:inline-block; width:18px;"></i>WhatsApp: +447727208820</a></div>
-										<div><i class="ion-ios-email-outline" style="display:inline-block; width:18px;"></i>info@globalministriesdailybread.org</div>
 									</div>
 								</div>
 							</div>
@@ -226,7 +223,6 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 			</nav>
 			<!-- End nav -->
 		</header>
-		<a href="https://wa.me/447727208820" target="_blank" rel="noopener" class="gdmb-whatsapp-float" aria-label="Chat with us on WhatsApp" title="Chat with us on WhatsApp">
-			<i class="ion-social-whatsapp" aria-hidden="true"></i>
-			<span class="sr-only">Chat with us on WhatsApp</span>
+		<a href="https://wa.me/447727208820" target="_blank" rel="noopener" class="gdmb-whatsapp-float" aria-label="Chat with us on WhatsApp" title="Chat with us on WhatsApp" style="position:fixed; right:20px; bottom:20px; z-index:9999; display:flex; align-items:center; justify-content:center; width:56px; height:56px; padding:0; background:#25D366; color:#fff; border:2px solid #fff; border-radius:50%; box-shadow:0 8px 24px rgba(0,0,0,.28); text-decoration:none;">
+			<i class="ion-social-whatsapp" aria-hidden="true" style="font-size:24px;"></i>
 		</a>
