@@ -202,11 +202,7 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 									</div>
 								</div>
 							</li>
-							<li class="dropdown magz-dropdown"><a href="#">Appointments <i class="ion-ios-arrow-right"></i></a>
-								<ul class="dropdown-menu">
-								
-								</ul>
-							</li>
+						
 							<li class="dropdown magz-dropdown"><a href="#">Donations <i class="ion-ios-arrow-right"></i></a>
 								<ul class="dropdown-menu">
 								
@@ -214,8 +210,6 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 							</li>
 							<li><a href="./?p=videos">Videos</a></li>
 							<li><a href="./?p=contact">Contact us</a></li>
-							<li><a href="https://cs2.rcnoc.com:2096/logout/?locale=en" target="_blank">Email</a></li>
-							<li><a href="<?php echo gdmb_e($gdmbBackendBase . '/login'); ?>">Login</a></li>
 
 						</ul>
 					</div>
