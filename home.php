@@ -1,169 +1,74 @@
-		<section class="home home-hero-section">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-8 col-sm-12 col-xs-12">
-					
-						<?php
-							// Pick a random verse reference (you can expand this list)
-							$references = [
-								"john 3:16",
-								"Philippians 4:13",
-								"psalm 23:1",
-								"romans 8:28",
-								"jeremiah 29:11",
-								"proverbs 3:5",
-								"isaiah 41:10",
-								"Matthew 5:14"
-							];
-							$randomRef = $references[array_rand($references)];
-
-							// Use Bible-API to fetch the verse text
-
-							// Get random image from local folder
-							$images = glob("images/verse/*.{jpg,png,jpeg}", GLOB_BRACE);
-							$image = $images ? $images[array_rand($images)] : "images/default.jpg"; // fallback image
-
-							$randomRef = $references[array_rand($references)];
-							$apiUrl = "https://bible-api.com/" . urlencode($randomRef);
-
-							$ch = curl_init();
-							curl_setopt($ch, CURLOPT_URL, $apiUrl);
-							curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-							curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
-							curl_setopt($ch, CURLOPT_TIMEOUT, 4);
-							$response = curl_exec($ch);
-							curl_close($ch);
-
-							$verseData = json_decode($response, true);
-
-							$verseText = isset($verseData['text']) ? $verseData['text'] : "Verse unavailable at the moment.";
-							$verseReference = isset($verseData['reference']) ? $verseData['reference'] : $randomRef;
-							// Replace Yahweh or all-uppercase LORD with "the Lord"
-							$verseText = str_ireplace(['Yahweh', 'YHWH', 'LORD'], 'Lord', $verseText);
-
-							$eventEndDate = '2026-08-15';
-							$showEventAdvert = date('Y-m-d') <= $eventEndDate;
-						?>
-
-
-						<div class="owl-carousel owl-theme slide" id="featured">
-							<?php if ($showEventAdvert): ?>
-							<div class="item">
-								<article class="featured event-ad">
-									<div class="overlay"></div>
-									<figure>
-										<img src="images/events/empowerment-conference-main.jpeg" loading="lazy" alt="Your Time of Empowerment Conference">
-									</figure>
-									<div class="event-ad-content">
-										<div class="event-ad-copy">
-											<span class="event-ad-kicker">Main Event</span>
-											<h1>Your Time of Empowerment Conference</h1>
-											<p class="event-ad-theme">Called to Purpose</p>
-											<p>
-												Aligning and positioning yourself to answer God's call upon your life.
-											</p>
-											<div class="event-ad-details">
-												<div><i class="ion-calendar"></i> August 14-15, 2026</div>
-												<div><i class="ion-clock"></i> 9:00 AM - 6:00 PM each day</div>
-												<div><i class="ion-location"></i> Jimlizer Hotel, Buru-Buru Nairobi</div>
-											</div>
-											<div class="event-ad-actions">
-												<a href="./?p=events/empowerment-conference" class="event-ad-btn event-ad-btn-primary">
-													<i class="ion-ios-information"></i> More Details
-												</a>
-												
-												<a href="mailto:info@globalministriesdailybread.org" class="event-ad-btn event-ad-btn-light">
-													<i class="ion-ios-email"></i> Email Us
-												</a>
-											</div>
-										</div>
-										<div class="event-ad-poster">
-											<img src="images/events/empowerment-conference-main.jpeg" loading="lazy" alt="Empowerment conference poster">
-										</div>
-									</div>
-								</article>
+		<?php
+			$eventEndDate = '2026-08-15';
+			$showEventAdvert = date('Y-m-d') <= $eventEndDate;
+			$heroSlides = [
+				[
+					'eyebrow' => 'Faith. Word. Purpose.',
+					'title' => "Feeding the World with God's Word.",
+					'copy' => 'Building people and communities through biblical faith, purposeful ministry, and practical empowerment.',
+					'label' => 'Our mission',
+					'url' => './?p=mission',
+					'image' => 'images/2.jpg',
+					'alt' => 'A baptism led by Global Ministries Daily Bread',
+					'position' => '54% center',
+				],
+				[
+					'eyebrow' => 'Biblical Teaching',
+					'title' => 'Truth for Faithful Everyday Living.',
+					'copy' => 'Discover Scripture-centred teaching that strengthens character, deepens faith, and equips every calling.',
+					'label' => 'Explore teachings',
+					'url' => './?p=blogs/faith',
+					'image' => 'images/13.jpg',
+					'alt' => 'A minister delivering a biblical teaching',
+					'position' => '48% center',
+				],
+				[
+					'eyebrow' => 'Books and Resources',
+					'title' => 'Read. Grow. Serve with Purpose.',
+					'copy' => 'Explore practical Christian books for ministry, leadership, relationships, prayer, and spiritual formation.',
+					'label' => 'Browse books',
+					'url' => './?p=books',
+					'image' => 'images/14.jpg',
+					'alt' => 'Ministers teaching from an open Bible',
+					'position' => '50% center',
+				],
+			];
+		?>
+		<section class="gdmb-hero" data-gdmb-hero aria-roledescription="carousel" aria-label="Global Ministries Daily Bread highlights">
+			<div class="gdmb-hero-stage">
+				<?php foreach ($heroSlides as $index => $slide): ?>
+					<article class="gdmb-hero-slide<?php echo $index === 0 ? ' is-active' : ''; ?>" data-hero-slide aria-hidden="<?php echo $index === 0 ? 'false' : 'true'; ?>">
+						<div class="gdmb-hero-copy">
+							<div class="gdmb-hero-copy-inner">
+								<p class="gdmb-hero-eyebrow"><?php echo htmlspecialchars($slide['eyebrow']); ?></p>
+								<h1><?php echo htmlspecialchars($slide['title']); ?></h1>
+								<p class="gdmb-hero-description"><?php echo htmlspecialchars($slide['copy']); ?></p>
+								<a class="gdmb-hero-cta" href="<?php echo htmlspecialchars($slide['url']); ?>"<?php echo $index === 0 ? '' : ' tabindex="-1"'; ?>>
+									<span><?php echo htmlspecialchars($slide['label']); ?></span>
+									<i class="ion-ios-arrow-thin-right" aria-hidden="true"></i>
+								</a>
 							</div>
-							<?php endif; ?>
-							<!-- Event 1 -->
-							<div class="item">
-								<article class="featured">
-									<div class="overlay"></div>
-									<figure>
-										<img src="<?= $image ?>" loading="lazy" alt="Bible Verse of the Day">
-									</figure>
-								
-								</article>
-							</div>
-                          
 						</div>
+						<div class="gdmb-hero-media">
+							<img src="<?php echo htmlspecialchars($slide['image']); ?>" alt="<?php echo htmlspecialchars($slide['alt']); ?>" style="object-position:<?php echo htmlspecialchars($slide['position']); ?>" <?php echo $index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>
+						</div>
+					</article>
+				<?php endforeach; ?>
 
-						
+				<div class="gdmb-hero-controls" aria-label="Choose a hero slide">
+					<div class="gdmb-hero-tabs" role="tablist" aria-label="Highlights">
+						<?php foreach ($heroSlides as $index => $slide): ?>
+							<button type="button" class="gdmb-hero-tab<?php echo $index === 0 ? ' is-active' : ''; ?>" data-hero-go="<?php echo $index; ?>" role="tab" aria-selected="<?php echo $index === 0 ? 'true' : 'false'; ?>" aria-label="Show slide <?php echo $index + 1; ?>: <?php echo htmlspecialchars($slide['eyebrow']); ?>">
+								<span><?php echo str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT); ?></span>
+							</button>
+						<?php endforeach; ?>
 					</div>
-					<div class="col-xs-6 col-md-4 sidebar" id="sidebar">
-						<div class="sidebar-title for-tablet">Sidebar</div>
-						<aside>
-							<div class="aside-body">
-								<div class="featured-author">
-									<div class="featured-author-inner">
-										<div class="featured-author-cover" style="background-image: url('images/18.jpg');">
-											<div class="badges">
-												<div class="badge-item"><i class="ion-star"></i></div>
-											</div>
-											<div class="featured-author-center">
-												<figure class="featured-author-picture">
-													<img src="images/IMG_0785.jpg" loading="lazy" alt="Sample Article">
-												</figure>
-												<div class="featured-author-info">
-													<div class="desc"></div>
-												</div>
-											</div>
-										</div>
-										<div class="featured-author-body">
-											<div class="featured-author-count">
-												<div class="item">
-													<a href="#">
-														<div class="icon">
-															<div>More</div>
-															<i class="ion-chevron-right"></i>
-														</div>														
-													</a>
-												</div>
-											</div>
-											<div class="featured-author-quote">
-												<h6>
-													"We seek to create innovative ways of engagement that bring people and communities together in creative and interactive ways"
-												</h6>
-										    </div>
-											<div class="block">
-												<h2 class="block-title">Our Photos</h2>
-												<div class="block-body">
-													<ul class="item-list-round" data-magnific="gallery">
-														<?php
-														$imageFiles = glob("images/gallery/*.{jpg,jpeg,png}", GLOB_BRACE);
-														$visibleCount = 6; // Number of initially visible images
-														$count = 0;
-
-														foreach ($imageFiles as $index => $image) {
-															$isHidden = $index >= $visibleCount ? 'hidden' : '';
-															$moreText = $index == $visibleCount - 1 && count($imageFiles) > $visibleCount ? "<div class='more'>+" . (count($imageFiles) - $visibleCount) . "</div>" : "";
-															echo "<li class='{$isHidden}'><a href='{$image}' style='background-image: url(\"{$image}\");'>{$moreText}</a></li>";
-														}
-														?>
-													</ul>
-												</div>
-											</div>
-
-											<div class="featured-author-footer">
-												<a href="#">Explore Our Gallery</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</aside>
-					
+					<div class="gdmb-hero-arrows">
+						<button type="button" data-hero-prev aria-label="Previous slide"><i class="ion-ios-arrow-thin-left" aria-hidden="true"></i></button>
+						<button type="button" data-hero-next aria-label="Next slide"><i class="ion-ios-arrow-thin-right" aria-hidden="true"></i></button>
 					</div>
 				</div>
+				<p class="sr-only" data-hero-status aria-live="polite">Slide 1 of <?php echo count($heroSlides); ?></p>
 			</div>
 		</section>
 
