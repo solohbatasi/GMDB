@@ -62,7 +62,7 @@ class CartQuoteService
                 'book_id' => $book->id,
                 'slug' => $book->slug,
                 'price_option' => $resolvedPriceOption,
-                'price_option_label' => $resolvedPriceOption === 'secondary' ? 'Price 2' : 'Price 1',
+                'price_option_label' => $resolvedPriceOption === 'secondary' ? 'Paperback' : 'Hardcover',
                 'title' => $book->title,
                 'author' => $book->author,
                 'cover_url' => $book->cover_url,

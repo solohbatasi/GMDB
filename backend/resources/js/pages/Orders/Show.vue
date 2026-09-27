@@ -19,7 +19,7 @@ defineProps<{ order: any }>();
         </div>
         <section class="rounded-lg border">
             <div class="border-b p-4 font-medium">Items</div>
-            <table class="w-full text-sm"><tbody class="divide-y"><tr v-for="item in order.items" :key="item.id"><td class="p-3">{{ item.title_snapshot }}</td><td class="p-3">{{ item.sku_snapshot ?? '-' }}</td><td class="p-3">{{ item.price_option_snapshot === 'secondary' ? 'Price 2' : 'Price 1' }}</td><td class="p-3">{{ item.quantity }} x {{ item.price_snapshot }}</td><td class="p-3 text-right">{{ item.line_total }}</td></tr></tbody></table>
+            <table class="w-full text-sm"><tbody class="divide-y"><tr v-for="item in order.items" :key="item.id"><td class="p-3">{{ item.title_snapshot }}</td><td class="p-3">{{ item.sku_snapshot ?? '-' }}</td><td class="p-3">{{ item.price_option_snapshot === 'secondary' ? 'Paperback' : 'Hardcover' }}</td><td class="p-3">{{ item.quantity }} x {{ item.price_snapshot }}</td><td class="p-3 text-right">{{ item.line_total }}</td></tr></tbody></table>
             <div class="border-t p-4 text-right font-medium">Total {{ order.currency }} {{ order.total }}</div>
         </section>
         <section class="rounded-lg border">

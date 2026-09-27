@@ -23,7 +23,7 @@ function gdmb_book_price_options(array $book): array
 
     if (is_numeric($book['price'] ?? null) && (float) $book['price'] > 0) {
         $options['primary'] = [
-            'label' => 'Price 1',
+            'label' => 'Hardcover',
             'price' => $book['price'],
             'formatted' => gdmb_format_price($book['price'], $currency),
         ];
@@ -31,7 +31,7 @@ function gdmb_book_price_options(array $book): array
 
     if (is_numeric($book['compare_price'] ?? null) && (float) $book['compare_price'] > 0) {
         $options['secondary'] = [
-            'label' => 'Price 2',
+            'label' => 'Paperback',
             'price' => $book['compare_price'],
             'formatted' => gdmb_format_price($book['compare_price'], $currency),
         ];
