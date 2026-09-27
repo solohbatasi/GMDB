@@ -91,6 +91,12 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 			<!-- Start nav -->
 			<nav class="menu">
 				<div class="container">
+					<div class="gdmb-mobile-nav-brand">
+						<a href="./" aria-label="Global Ministries Daily Bread home">
+							<img src="images/1720010940_church-removebg-preview.png" alt="Global Ministries Daily Bread logo">
+							<span>Global Ministries Daily Bread</span>
+						</a>
+					</div>
 					
 					<div class="mobile-toggle">
 						<a href="#" data-toggle="menu" data-target="#menu-list"><i class="ion-navicon-round"></i></a>

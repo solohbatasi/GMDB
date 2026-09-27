@@ -2423,6 +2423,9 @@ body .event-ad.featured .overlay {
   /* Mega menu support */
   position: relative;
 }
+.gdmb-mobile-nav-brand {
+  display: none;
+}
 .menu .brand {
   display: none;
   float: left;
@@ -3353,7 +3356,51 @@ aside .ads figcaption {
   }
 
   nav.menu {
-    height: 55px;
+    background-color: #112243;
+    border-color: #112243;
+    height: 68px;
+  }
+  nav.menu .container {
+    align-items: center;
+    display: flex;
+    height: 100%;
+  }
+  .gdmb-mobile-nav-brand {
+    display: block;
+    flex: 1;
+    min-width: 0;
+  }
+  .gdmb-mobile-nav-brand a {
+    align-items: center;
+    color: #fff;
+    display: flex;
+    gap: 10px;
+    max-width: 220px;
+    text-decoration: none;
+  }
+  .gdmb-mobile-nav-brand img {
+    flex: 0 0 44px;
+    height: 50px;
+    object-fit: contain;
+    width: 44px;
+  }
+  .gdmb-mobile-nav-brand span {
+    color: #fff;
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+  nav.menu .mobile-toggle {
+    flex: 0 0 auto;
+    margin-left: 16px;
+  }
+  nav.menu .mobile-toggle a {
+    color: #fff;
+  }
+  nav.menu #menu-list {
+    flex: 0 0 0;
   }
   nav.menu .mobile-toggle {
     display: inline-block;
@@ -3447,11 +3494,11 @@ aside .ads figcaption {
   }
 
   header.primary.up {
-    top: -286px;
+    top: 0;
   }
 
   .firstbar {
-    text-align: center;
+    display: none;
   }
   .firstbar .brand {
     float: none;
