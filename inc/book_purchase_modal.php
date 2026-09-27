@@ -4,9 +4,13 @@
         <input type="hidden" name="slug" id="book-purchase-slug" value="">
 
         <div class="book-purchase-dialog-header">
-            <div>
-                <span class="books-eyebrow">Purchase Book</span>
-                <h2 id="book-purchase-title">Choose your edition</h2>
+            <div class="book-purchase-product">
+                <img id="book-purchase-cover" src="" alt="" hidden>
+                <div>
+                    <span class="books-eyebrow">Purchase Book</span>
+                    <h2 id="book-purchase-title">Choose your edition</h2>
+                    <p>Select a format and quantity.</p>
+                </div>
             </div>
             <button type="button" class="book-purchase-close" aria-label="Close purchase dialog" title="Close">
                 <i class="ion-close-round"></i>
@@ -16,16 +20,18 @@
         <div class="book-purchase-dialog-body">
             <fieldset class="book-purchase-formats">
                 <legend>Book format</legend>
-                <label class="book-format-option" data-price-option="primary">
-                    <input type="radio" name="price_option" value="primary" checked>
-                    <span><strong>Hardcover</strong><small data-price-label="primary"></small></span>
-                    <i class="ion-checkmark-round" aria-hidden="true"></i>
-                </label>
-                <label class="book-format-option" data-price-option="secondary">
-                    <input type="radio" name="price_option" value="secondary">
-                    <span><strong>Paperback</strong><small data-price-label="secondary"></small></span>
-                    <i class="ion-checkmark-round" aria-hidden="true"></i>
-                </label>
+                <div class="book-purchase-format-grid">
+                    <label class="book-format-option" data-price-option="primary">
+                        <input type="radio" name="price_option" value="primary" checked>
+                        <span><strong>Hardcover</strong><small data-price-label="primary"></small></span>
+                        <i class="ion-checkmark-round" aria-hidden="true"></i>
+                    </label>
+                    <label class="book-format-option" data-price-option="secondary">
+                        <input type="radio" name="price_option" value="secondary">
+                        <span><strong>Paperback</strong><small data-price-label="secondary"></small></span>
+                        <i class="ion-checkmark-round" aria-hidden="true"></i>
+                    </label>
+                </div>
             </fieldset>
 
             <div class="book-purchase-quantity-row">
@@ -59,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!dialog) return;
 
     var title = document.getElementById('book-purchase-title');
+    var cover = document.getElementById('book-purchase-cover');
     var slug = document.getElementById('book-purchase-slug');
     var quantity = document.getElementById('book-purchase-quantity');
     var total = document.getElementById('book-purchase-total');
@@ -88,30 +95,34 @@ document.addEventListener('DOMContentLoaded', function () {
         else dialog.removeAttribute('open');
     }
 
-    document.querySelectorAll('.book-purchase-trigger').forEach(function (button) {
-        button.addEventListener('click', function () {
-            currentPrices.primary = parseFloat(button.dataset.primaryPrice || '0');
-            currentPrices.secondary = parseFloat(button.dataset.secondaryPrice || '0');
-            currency = button.dataset.currency || 'KES';
-            title.textContent = button.dataset.bookTitle || 'Choose your edition';
-            slug.value = button.dataset.bookSlug || '';
-            quantity.value = '1';
+    document.addEventListener('click', function (event) {
+        var button = event.target.closest('.book-purchase-trigger');
+        if (!button) return;
 
-            dialog.querySelectorAll('[data-price-option]').forEach(function (option) {
-                var key = option.dataset.priceOption;
-                var available = currentPrices[key] > 0;
-                option.hidden = !available;
-                option.querySelector('[data-price-label]').textContent = available ? formatMoney(currentPrices[key]) : '';
-                option.querySelector('input').checked = false;
-            });
+        currentPrices.primary = parseFloat(button.dataset.primaryPrice || '0');
+        currentPrices.secondary = parseFloat(button.dataset.secondaryPrice || '0');
+        currency = button.dataset.currency || 'KES';
+        title.textContent = button.dataset.bookTitle || 'Choose your edition';
+        slug.value = button.dataset.bookSlug || '';
+        quantity.value = '1';
+        cover.src = button.dataset.bookCover || '';
+        cover.alt = button.dataset.bookTitle ? button.dataset.bookTitle + ' cover' : 'Book cover';
+        cover.hidden = !button.dataset.bookCover;
 
-            var firstAvailable = dialog.querySelector('[data-price-option]:not([hidden]) input');
-            if (firstAvailable) firstAvailable.checked = true;
-            updateTotal();
-
-            if (typeof dialog.showModal === 'function') dialog.showModal();
-            else dialog.setAttribute('open', '');
+        dialog.querySelectorAll('[data-price-option]').forEach(function (option) {
+            var key = option.dataset.priceOption;
+            var available = currentPrices[key] > 0;
+            option.hidden = !available;
+            option.querySelector('[data-price-label]').textContent = available ? formatMoney(currentPrices[key]) : '';
+            option.querySelector('input').checked = false;
         });
+
+        var firstAvailable = dialog.querySelector('[data-price-option]:not([hidden]) input');
+        if (firstAvailable) firstAvailable.checked = true;
+        updateTotal();
+
+        if (typeof dialog.showModal === 'function') dialog.showModal();
+        else dialog.setAttribute('open', '');
     });
 
     dialog.querySelectorAll('input[name="price_option"]').forEach(function (input) {

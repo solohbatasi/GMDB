@@ -81,7 +81,7 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 									<div style="color:white; margin-top:10px; line-height:1.7; font-size:12px; text-align:left; display:inline-block; font-family:'Raleway', sans-serif; font-weight:700; letter-spacing:.5px;">
 										<div><i class="ion-ios-telephone-outline" style="display:inline-block; width:18px;"></i>+254722780410</div>
 										<div><i class="ion-ios-telephone-outline" style="display:inline-block; width:18px;"></i>+254724207817</div>
-										<div><a href="https://wa.me/447727208820" target="_blank" rel="noopener" style="color:white; text-decoration:none;"><i class="fab fa-whatsapp" style="display:inline-block; width:18px;"></i>WhatsApp: +447727208820</a></div>
+										<div><a href="https://wa.me/447727208820" target="_blank" rel="noopener" style="color:white; text-decoration:none;"><i class="ion-social-whatsapp" style="display:inline-block; width:18px;"></i>WhatsApp: +447727208820</a></div>
 										<div><i class="ion-ios-email-outline" style="display:inline-block; width:18px;"></i>info@globalministriesdailybread.org</div>
 									</div>
 								</div>
@@ -227,6 +227,6 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 			<!-- End nav -->
 		</header>
 		<a href="https://wa.me/447727208820" target="_blank" rel="noopener" class="gdmb-whatsapp-float" aria-label="Chat with us on WhatsApp" title="Chat with us on WhatsApp">
-			<i class="fab fa-whatsapp" aria-hidden="true"></i>
+			<i class="ion-social-whatsapp" aria-hidden="true"></i>
 			<span class="sr-only">Chat with us on WhatsApp</span>
 		</a>
