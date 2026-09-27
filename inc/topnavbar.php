@@ -50,6 +50,16 @@ $gdmbNavBookColumnTitles = ['Featured Books', 'More Titles', 'Explore More'];
 						<div class="col-md-3 col-sm-12">
 							<div class="block">
 								<div class="block-body" style="padding-top:14px;">
+									<div style="display:flex; width:100%; max-width:220px; gap:8px; margin:0 0 12px;">
+										<a href="<?php echo gdmb_e($gdmbBackendBase . '/login'); ?>" title="Login" style="display:flex; flex:1; min-width:0; min-height:42px; padding:10px 12px; align-items:center; justify-content:center; gap:7px; background:#1D6FDC; color:white; font-family:'Raleway', sans-serif; font-size:12px; font-weight:800; line-height:1; letter-spacing:.5px; text-decoration:none;">
+											<i class="ion-log-in" style="font-size:17px;"></i>
+											<span>LOGIN</span>
+										</a>
+										<a href="https://cs2.rcnoc.com:2096/logout/?locale=en" target="_blank" rel="noopener" title="Open email" style="display:flex; flex:1; min-width:0; min-height:42px; padding:10px 12px; align-items:center; justify-content:center; gap:7px; background:#D83A3A; color:white; font-family:'Raleway', sans-serif; font-size:12px; font-weight:800; line-height:1; letter-spacing:.5px; text-decoration:none;">
+											<i class="ion-ios-email" style="font-size:17px;"></i>
+											<span>EMAIL</span>
+										</a>
+									</div>
 									<div style="color:white; line-height:1.55;">
 										<div style="color:#F8B803; font-size:12px; text-transform:uppercase; letter-spacing:.04em;">Opening Hours</div>
 										<div>Monday - Friday: 9am - 5pm</div>
