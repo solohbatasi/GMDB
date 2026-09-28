@@ -19,6 +19,20 @@ class PayHeroCheckoutService
     public function checkoutAndPay(array $payload, string $checkoutToken): array
     {
         $order = $this->checkout->checkout($payload, $checkoutToken);
+
+        if ($order->payment_status === 'paid') {
+            $payment = Payment::query()
+                ->where('order_id', $order->id)
+                ->where('status', 'paid')
+                ->latest('id')
+                ->firstOrFail();
+
+            return [
+                'order' => $order->refresh()->load('items', 'pickupLocation'),
+                'payment' => $payment,
+            ];
+        }
+
         $payment = $this->payments->initiate($order, $payload['payment']['phone']);
 
         return [

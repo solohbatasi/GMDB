@@ -160,6 +160,29 @@ class Phase3CheckoutTest extends TestCase
         $this->assertSame(1, InventoryReservation::count());
     }
 
+    public function test_stale_checkout_token_creates_one_fresh_order_and_reservation(): void
+    {
+        $book = $this->sellableBook(price: 1000, quantity: 5);
+        $payload = $this->checkoutPayload($book, token: 'stale-checkout-token');
+
+        $this->postJson('/api/store/checkout', $payload)->assertCreated();
+        $stale = Order::where('checkout_token', 'stale-checkout-token')->firstOrFail();
+        $stale->forceFill(['reservation_expires_at' => now()->subMinute()])->save();
+
+        $this->postJson('/api/store/checkout', $payload)
+            ->assertCreated()
+            ->assertJsonPath('data.order_status', 'pending')
+            ->assertJsonPath('data.payment_status', 'pending');
+
+        $fresh = Order::where('checkout_token', 'stale-checkout-token')->firstOrFail();
+        $this->assertNotSame($stale->id, $fresh->id);
+        $this->assertDatabaseHas('orders', ['id' => $stale->id, 'order_status' => 'cancelled']);
+        $this->assertDatabaseHas('inventory_reservations', ['order_id' => $stale->id, 'status' => 'released']);
+        $this->assertDatabaseHas('inventory_reservations', ['order_id' => $fresh->id, 'status' => 'active']);
+        $this->assertDatabaseCount('orders', 2);
+        $this->assertDatabaseCount('inventory_reservations', 2);
+    }
+
     public function test_over_reservation_is_rejected_and_stock_on_hand_remains(): void
     {
         $book = $this->sellableBook(quantity: 1);
