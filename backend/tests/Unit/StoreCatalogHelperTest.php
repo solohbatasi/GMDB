@@ -119,4 +119,26 @@ class StoreCatalogHelperTest extends TestCase
         $this->assertSame('KES 1,500', gdmb_format_price(1500, 'KES'));
         $this->assertSame('', gdmb_format_price(null, 'KES'));
     }
+
+    public function test_pickup_map_url_prefers_saved_url_then_coordinates_then_address(): void
+    {
+        $this->assertSame(
+            'https://maps.app.goo.gl/example',
+            gdmb_pickup_map_url([
+                'map_url' => 'https://maps.app.goo.gl/example',
+                'latitude' => -1.286389,
+                'longitude' => 36.817223,
+            ])
+        );
+
+        $this->assertSame(
+            'https://www.google.com/maps/dir/?api=1&destination=-1.2863890%2C36.8172230',
+            gdmb_pickup_map_url(['latitude' => -1.286389, 'longitude' => 36.817223])
+        );
+
+        $this->assertSame(
+            'https://www.google.com/maps/search/?api=1&query=Office%2C%20Nairobi',
+            gdmb_pickup_map_url(['name' => 'Office', 'city' => 'Nairobi'])
+        );
+    }
 }

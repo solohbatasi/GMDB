@@ -42,6 +42,30 @@ function gdmb_book_price_options(array $book): array
 
 function gdmb_pickup_map_url(array $location): string
 {
+    $savedMapUrl = trim((string) ($location['map_url'] ?? ''));
+
+    if ($savedMapUrl !== '' && filter_var($savedMapUrl, FILTER_VALIDATE_URL)) {
+        $scheme = strtolower((string) parse_url($savedMapUrl, PHP_URL_SCHEME));
+
+        if (in_array($scheme, ['http', 'https'], true)) {
+            return $savedMapUrl;
+        }
+    }
+
+    $latitude = $location['latitude'] ?? null;
+    $longitude = $location['longitude'] ?? null;
+
+    if (is_numeric($latitude) && is_numeric($longitude)) {
+        $latitude = (float) $latitude;
+        $longitude = (float) $longitude;
+
+        if ($latitude >= -90 && $latitude <= 90 && $longitude >= -180 && $longitude <= 180) {
+            $destination = sprintf('%.7F,%.7F', $latitude, $longitude);
+
+            return 'https://www.google.com/maps/dir/?api=1&destination=' . rawurlencode($destination);
+        }
+    }
+
     $parts = array_filter([
         $location['name'] ?? null,
         $location['address'] ?? null,

@@ -16,6 +16,9 @@ class PickupLocationResource extends JsonResource
             'city' => $this->city,
             'county' => $this->county,
             'instructions' => $this->instructions,
+            'map_url' => $this->map_url,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
         ];
     }
 }
