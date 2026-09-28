@@ -20,6 +20,7 @@ class CheckoutController extends Controller
             $result = $checkout->checkoutAndPay($request->validated(), $request->validated('checkout_token'));
             $order = $result['order']->load('items', 'pickupLocation', 'payments', 'reservations');
             $payment = $result['payment'];
+            $alreadyPaid = $order->payment_status === 'paid';
             $statusUrl = route('api.store.payments.payhero.status', [
                 'externalReference' => $payment->external_reference,
                 'token' => $order->public_token,
@@ -32,7 +33,9 @@ class CheckoutController extends Controller
                     'external_reference' => $payment->external_reference,
                     'payhero_reference' => $payment->payhero_reference,
                     'checkout_request_id' => $payment->provider_transaction_id,
-                    'message' => 'Check your phone and enter your M-Pesa PIN to complete payment.',
+                    'message' => $alreadyPaid
+                        ? 'Payment was already received. Your order is confirmed.'
+                        : 'Check your phone and enter your M-Pesa PIN to complete payment.',
                     'status_url' => $statusUrl,
                 ],
             ], 201);

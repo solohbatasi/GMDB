@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\InventoryReservation;
 use App\Models\Order;
 use App\Models\OrderStatusHistory;
 use App\Models\PickupLocation;
@@ -15,11 +16,11 @@ class CheckoutService
     public function __construct(
         private CartQuoteService $quotes,
         private InventoryService $inventory,
-        private MoneyService $money,
         private PhoneNumberService $phones,
         private OrderNumberService $orderNumbers,
     ) {}
 
+    /** @param array<string, mixed> $payload */
     public function checkout(array $payload, string $checkoutToken): Order
     {
         $existing = Order::query()
@@ -27,8 +28,12 @@ class CheckoutService
             ->where('checkout_token', $checkoutToken)
             ->first();
 
-        if ($existing) {
+        if ($existing && ($this->isPayable($existing) || $existing->payment_status === 'paid')) {
             return $existing;
+        }
+
+        if ($existing) {
+            $this->retireStaleCheckout($existing, $checkoutToken);
         }
 
         try {
@@ -125,6 +130,56 @@ class CheckoutService
         }
     }
 
+    private function isPayable(Order $order): bool
+    {
+        return $order->order_status === 'pending'
+            && in_array($order->payment_status, ['unpaid', 'pending'], true)
+            && (! $order->reservation_expires_at || now()->lessThan($order->reservation_expires_at));
+    }
+
+    private function retireStaleCheckout(Order $order, string $checkoutToken): void
+    {
+        DB::transaction(function () use ($order, $checkoutToken) {
+            $locked = Order::whereKey($order->id)->lockForUpdate()->firstOrFail();
+
+            if ($locked->checkout_token !== $checkoutToken || $locked->payment_status === 'paid' || $this->isPayable($locked)) {
+                return;
+            }
+
+            $reservations = InventoryReservation::query()
+                ->where('order_id', $locked->id)
+                ->where('status', 'active')
+                ->get();
+
+            foreach ($reservations as $reservation) {
+                $this->inventory->releaseReservation($reservation);
+            }
+
+            $updates = [
+                'checkout_token' => substr($checkoutToken, 0, 80).':closed:'.$locked->id.':'.Str::lower(Str::random(6)),
+            ];
+
+            if ($locked->order_status === 'pending') {
+                $updates += [
+                    'order_status' => 'cancelled',
+                    'fulfillment_status' => 'cancelled',
+                    'cancelled_at' => $locked->cancelled_at ?: now(),
+                ];
+            }
+
+            $locked->update($updates);
+
+            OrderStatusHistory::create([
+                'order_id' => $locked->id,
+                'type' => 'checkout_restarted',
+                'from_status' => $order->order_status,
+                'to_status' => $updates['order_status'] ?? $locked->order_status,
+                'notes' => 'Stale checkout session was retired so the customer could create a fresh order.',
+                'created_at' => now(),
+            ]);
+        });
+    }
+
     public function releaseExpired(): int
     {
         $count = 0;
@@ -144,7 +199,12 @@ class CheckoutService
                             return;
                         }
 
-                        foreach ($order->reservations()->where('status', 'active')->get() as $reservation) {
+                        $reservations = InventoryReservation::query()
+                            ->where('order_id', $order->id)
+                            ->where('status', 'active')
+                            ->get();
+
+                        foreach ($reservations as $reservation) {
                             $this->inventory->releaseReservation($reservation);
                         }
 
