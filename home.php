@@ -10,7 +10,9 @@
 					'url' => './?p=mission',
 					'image' => 'images/2.jpg',
 					'alt' => 'A baptism led by Global Ministries Daily Bread',
-					'position' => '54% center',
+					'position_desktop' => '56% 42%',
+					'position_tablet' => '54% center',
+					'position_mobile' => '58% center',
 				],
 				[
 					'eyebrow' => 'Biblical Teaching',
@@ -20,7 +22,9 @@
 					'url' => './?p=blogs/faith',
 					'image' => 'images/13.jpg',
 					'alt' => 'A minister delivering a biblical teaching',
-					'position' => '48% center',
+					'position_desktop' => '48% center',
+					'position_tablet' => '48% center',
+					'position_mobile' => '52% center',
 				],
 				[
 					'eyebrow' => 'Books and Resources',
@@ -30,14 +34,17 @@
 					'url' => './?p=books',
 					'image' => 'images/14.jpg',
 					'alt' => 'Ministers teaching from an open Bible',
-					'position' => '50% center',
+					'position_desktop' => '50% center',
+					'position_tablet' => '50% center',
+					'position_mobile' => '54% center',
 				],
 			];
 		?>
 		<section class="gdmb-hero" data-gdmb-hero aria-roledescription="carousel" aria-label="Global Ministries Daily Bread highlights">
+			<div class="gdmb-hero-composition">
 			<div class="gdmb-hero-stage">
 				<?php foreach ($heroSlides as $index => $slide): ?>
-					<article class="gdmb-hero-slide<?php echo $index === 0 ? ' is-active' : ''; ?>" data-hero-slide aria-hidden="<?php echo $index === 0 ? 'false' : 'true'; ?>">
+					<article class="gdmb-hero-slide<?php echo $index === 0 ? ' is-active' : ''; ?>" data-hero-slide aria-hidden="<?php echo $index === 0 ? 'false' : 'true'; ?>" style="--hero-position-desktop:<?php echo htmlspecialchars($slide['position_desktop']); ?>;--hero-position-tablet:<?php echo htmlspecialchars($slide['position_tablet']); ?>;--hero-position-mobile:<?php echo htmlspecialchars($slide['position_mobile']); ?>;">
 						<div class="gdmb-hero-copy">
 							<div class="gdmb-hero-copy-inner">
 								<p class="gdmb-hero-eyebrow"><?php echo htmlspecialchars($slide['eyebrow']); ?></p>
@@ -50,7 +57,7 @@
 							</div>
 						</div>
 						<div class="gdmb-hero-media">
-							<img src="<?php echo htmlspecialchars($slide['image']); ?>" alt="<?php echo htmlspecialchars($slide['alt']); ?>" style="object-position:<?php echo htmlspecialchars($slide['position']); ?>" <?php echo $index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>
+							<img src="<?php echo htmlspecialchars($slide['image']); ?>" alt="<?php echo htmlspecialchars($slide['alt']); ?>" <?php echo $index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>
 						</div>
 					</article>
 				<?php endforeach; ?>
@@ -69,6 +76,28 @@
 					</div>
 				</div>
 				<p class="sr-only" data-hero-status aria-live="polite">Slide 1 of <?php echo count($heroSlides); ?></p>
+			</div>
+			<aside class="gdmb-ministry-panel" aria-labelledby="gdmb-ministry-panel-title">
+				<figure class="gdmb-ministry-panel-image">
+					<img src="images/18.jpg" loading="lazy" alt="Global Ministries Daily Bread gathered with a local community">
+				</figure>
+				<div class="gdmb-ministry-panel-copy">
+					<p class="gdmb-ministry-panel-eyebrow">Our Ministry</p>
+					<h2 id="gdmb-ministry-panel-title">Faith in community</h2>
+					<p>We seek to create innovative ways of engagement that bring people and communities together.</p>
+					<a href="./?p=mission">More about our mission <i class="ion-ios-arrow-thin-right" aria-hidden="true"></i></a>
+				</div>
+				<div class="gdmb-ministry-gallery">
+					<h3>Our Photos</h3>
+					<div class="gdmb-ministry-gallery-grid" data-magnific="gallery">
+						<?php for ($galleryIndex = 1; $galleryIndex <= 4; $galleryIndex++): ?>
+							<a href="images/gallery/<?php echo $galleryIndex; ?>.jpg" aria-label="Open ministry photo <?php echo $galleryIndex; ?>">
+								<img src="images/gallery/<?php echo $galleryIndex; ?>.jpg" loading="lazy" alt="Ministry gallery photo <?php echo $galleryIndex; ?>">
+							</a>
+						<?php endfor; ?>
+					</div>
+				</div>
+			</aside>
 			</div>
 		</section>
 
