@@ -46,7 +46,7 @@
 		<link rel="stylesheet" href="scripts/magnific-popup/dist/magnific-popup.css">
 		<link rel="stylesheet" href="scripts/sweetalert/dist/sweetalert.css">
 		<!-- Custom style -->
-		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/style.css?v=<?php echo rawurlencode((string) filemtime(__DIR__ . '/../css/style.css')); ?>">
 		<link rel="stylesheet" href="css/skins/all.css">
 		<link rel="stylesheet" href="css/demo.css">
 		<link rel="stylesheet" href="css/variable.css">
