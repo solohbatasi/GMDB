@@ -28,7 +28,7 @@ class Phase4PayHeroTest extends TestCase
     public function test_client_uses_basic_auth_and_sends_required_stk_fields(): void
     {
         Http::fake([
-            'https://payhero.test/api/v2/payments/initiate-stk-push' => Http::response($this->queuedPayload('ORDER-P1'), 201),
+            'https://payhero.test/api/v2/payments' => Http::response($this->queuedPayload('ORDER-P1'), 201),
         ]);
 
         $this->app->make(PayHeroClient::class)->initiateStkPush([
@@ -40,8 +40,8 @@ class Phase4PayHeroTest extends TestCase
             'callback_url' => 'https://example.test/backend/api/payments/payhero/callback',
         ]);
 
-        Http::assertSent(fn (Request $request) => $request->url() === 'https://payhero.test/api/v2/payments/initiate-stk-push'
-            && $request->hasHeader('Authorization', 'Basic '.base64_encode('api-user:api-password'))
+        Http::assertSent(fn (Request $request) => $request->url() === 'https://payhero.test/api/v2/payments'
+            && $request->hasHeader('Authorization', 'Basic copied-basic-token')
             && $request['amount'] === 1000
             && $request['phone_number'] === '254712345678'
             && $request['provider'] === 'm-pesa'
@@ -51,7 +51,7 @@ class Phase4PayHeroTest extends TestCase
 
     public function test_missing_credentials_fail_safely(): void
     {
-        config(['payhero.username' => null]);
+        config(['payhero.auth_token' => null]);
 
         $this->expectException(PayHeroRequestException::class);
         $this->expectExceptionMessage('M-Pesa is not configured.');
@@ -198,11 +198,10 @@ class Phase4PayHeroTest extends TestCase
     {
         config([
             'payhero.base_url' => 'https://payhero.test',
-            'payhero.payments_path' => '/api/v2/payments/initiate-stk-push',
+            'payhero.payments_path' => '/api/v2/payments',
             'payhero.status_base_url' => 'https://status.payhero.test',
             'payhero.status_path' => '/api/global/transaction-status',
-            'payhero.username' => 'api-user',
-            'payhero.password' => 'api-password',
+            'payhero.auth_token' => 'copied-basic-token',
             'payhero.channel_id' => 123,
             'payhero.provider' => 'm-pesa',
             'payhero.callback_url' => 'https://example.test/backend/api/payments/payhero/callback',

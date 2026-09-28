@@ -72,17 +72,20 @@ class PayHeroClient
 
     private function request(string $baseUrl): PendingRequest
     {
-        $username = (string) config('payhero.username');
-        $password = (string) config('payhero.password');
+        $authToken = trim((string) config('payhero.auth_token'));
 
-        if ($username === '' || $password === '') {
+        if ($authToken === '') {
             throw new PayHeroRequestException('M-Pesa is not configured. Please contact support.');
+        }
+
+        if (str_starts_with(strtolower($authToken), 'basic ')) {
+            $authToken = trim(substr($authToken, 6));
         }
 
         return Http::baseUrl(rtrim($baseUrl, '/').'/')
             ->acceptJson()
             ->asJson()
-            ->withBasicAuth($username, $password)
+            ->withHeaders(['Authorization' => 'Basic '.$authToken])
             ->connectTimeout((int) config('payhero.connect_timeout', 10))
             ->timeout((int) config('payhero.timeout', 30));
     }

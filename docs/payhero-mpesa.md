@@ -12,17 +12,16 @@ APP_ROUTE_PREFIX=backend
 STOREFRONT_URL=https://globalministriesdailybread.org
 
 PAYHERO_BASE_URL=https://backend.payhero.co.ke
-PAYHERO_PAYMENTS_PATH=/api/v2/payments/initiate-stk-push
+PAYHERO_PAYMENTS_PATH=/api/v2/payments
 PAYHERO_STATUS_BASE_URL=https://api.payhero.africa
 PAYHERO_STATUS_PATH=/api/global/transaction-status
-PAYHERO_USERNAME=your-api-username
-PAYHERO_PASSWORD=your-api-password
+PAYHERO_AUTH_TOKEN=your-basic-authorization-token
 PAYHERO_CHANNEL_ID=your-channel-id
 PAYHERO_PROVIDER=m-pesa
 PAYHERO_CALLBACK_URL=https://globalministriesdailybread.org/backend/api/payments/payhero/callback
 ```
 
-Do not commit live credentials. After changing environment values, run:
+Copy `PAYHERO_AUTH_TOKEN` from Pay Hero's API Keys page. Store the token value only; the client adds the `Basic` scheme to the Authorization header. A value copied with the `Basic ` prefix is also accepted and normalized. Do not commit live credentials. After changing environment values, run:
 
 ```bash
 php artisan optimize:clear
