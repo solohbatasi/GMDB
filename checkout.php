@@ -11,7 +11,9 @@ $pickupResponse = gdmb_store_api_get('pickup-locations');
 $pickupLocations = is_array($pickupResponse['data'] ?? null) ? $pickupResponse['data'] : [];
 $selectedPickupId = (int) ($_POST['pickup_location_id'] ?? ($pickupLocations[0]['id'] ?? 0));
 gdmb_session_start();
-$_SESSION['gdmb_checkout_token'] ??= bin2hex(random_bytes(24));
+if (! isset($_SESSION['gdmb_checkout_token'])) {
+    $_SESSION['gdmb_checkout_token'] = bin2hex(random_bytes(24));
+}
 $checkoutToken = $_SESSION['gdmb_checkout_token'];
 ?>
 <section class="books-page"><div class="container"><?php include_once 'inc/breadcrumbs.php'; ?>

@@ -6,7 +6,9 @@ require_once __DIR__ . '/store_catalog.php';
 function gdmb_cart_boot(): void
 {
     gdmb_session_start();
-    $_SESSION['gdmb_cart'] ??= [];
+    if (! isset($_SESSION['gdmb_cart'])) {
+        $_SESSION['gdmb_cart'] = [];
+    }
 
     $normalized = [];
     foreach ($_SESSION['gdmb_cart'] as $item) {
@@ -103,7 +105,9 @@ function gdmb_cart_items(): array
 
 function gdmb_cart_count(): int
 {
-    return array_sum(array_map(fn ($item) => (int) $item['quantity'], gdmb_cart_items()));
+    return array_sum(array_map(function ($item) {
+        return (int) $item['quantity'];
+    }, gdmb_cart_items()));
 }
 
 function gdmb_cart_handle_request(): void
@@ -177,7 +181,9 @@ function gdmb_checkout_handle_request(): void
         return;
     }
 
-    $_SESSION['gdmb_checkout_token'] ??= bin2hex(random_bytes(24));
+    if (! isset($_SESSION['gdmb_checkout_token'])) {
+        $_SESSION['gdmb_checkout_token'] = bin2hex(random_bytes(24));
+    }
 
     $response = gdmb_store_api_post('checkout', [
         'checkout_token' => $_SESSION['gdmb_checkout_token'],

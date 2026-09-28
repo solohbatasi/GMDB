@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/php_compat.php';
+
 require_once __DIR__ . '/store_config.php';
 
 function gdmb_e(mixed $value): string
@@ -297,6 +299,13 @@ function gdmb_store_internal_api_request(string $method, string $url, ?string $b
         return null;
     }
 
+    // Composer cannot safely load the Laravel application on an older PHP
+    // runtime. Fall back to HTTP/legacy catalog data instead of blanking the
+    // public site with a platform compatibility fatal error.
+    if (PHP_VERSION_ID < 80300) {
+        return null;
+    }
+
     $bootstrap = dirname(__DIR__) . '/backend/bootstrap/app.php';
     $autoload = dirname(__DIR__) . '/backend/vendor/autoload.php';
 
@@ -389,12 +398,16 @@ function gdmb_filter_legacy_books(array $books, array $params): array
 {
     if (! empty($params['search'])) {
         $needle = strtolower((string) $params['search']);
-        $books = array_filter($books, fn (array $book) => str_contains(strtolower($book['title'] . ' ' . $book['summary'] . ' ' . $book['author']), $needle));
+        $books = array_filter($books, function (array $book) use ($needle) {
+            return str_contains(strtolower($book['title'] . ' ' . $book['summary'] . ' ' . $book['author']), $needle);
+        });
     }
 
     if (! empty($params['category'])) {
         $category = strtolower((string) $params['category']);
-        $books = array_filter($books, fn (array $book) => strtolower($book['category_slug']) === $category || strtolower($book['category']) === $category);
+        $books = array_filter($books, function (array $book) use ($category) {
+            return strtolower($book['category_slug']) === $category || strtolower($book['category']) === $category;
+        });
     }
 
     if (isset($params['limit'])) {
