@@ -34,6 +34,10 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(6)->by($request->ip() ?: 'storefront'),
         ]);
 
+        RateLimiter::for('store-payment-status', fn (Request $request) => [
+            Limit::perMinute(60)->by($request->ip() ?: 'storefront'),
+        ]);
+
         $this->configureDefaults();
     }
 

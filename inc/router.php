@@ -18,7 +18,6 @@ function gdmb_public_routes(): array
         'cart' => 'cart.php',
         'checkout' => 'checkout.php',
         'order-confirmation' => 'order-confirmation.php',
-        'payment-return' => 'payment-return.php',
         'store-diagnostics' => 'store-diagnostics.php',
         'books' => 'books/index.php',
         'books/12cs' => 'books/12cs.php',

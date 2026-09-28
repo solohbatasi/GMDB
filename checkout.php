@@ -10,13 +10,16 @@ if (! $error && ! $quote && gdmb_cart_count() > 0) {
 $pickupResponse = gdmb_store_api_get('pickup-locations');
 $pickupLocations = is_array($pickupResponse['data'] ?? null) ? $pickupResponse['data'] : [];
 $selectedPickupId = (int) ($_POST['pickup_location_id'] ?? ($pickupLocations[0]['id'] ?? 0));
+gdmb_session_start();
+$_SESSION['gdmb_checkout_token'] ??= bin2hex(random_bytes(24));
+$checkoutToken = $_SESSION['gdmb_checkout_token'];
 ?>
 <section class="books-page"><div class="container"><?php include_once 'inc/breadcrumbs.php'; ?>
 <div class="books-page-header">
     <div>
         <span class="books-eyebrow">Checkout</span>
         <h1>Guest Checkout</h1>
-        <p>Select a pickup point for your books. Payment is completed after the order is created.</p>
+        <p>Enter your details and M-Pesa number. One click reserves your books and sends the payment prompt.</p>
     </div>
 </div>
 
@@ -34,6 +37,9 @@ $selectedPickupId = (int) ($_POST['pickup_location_id'] ?? ($pickupLocations[0][
             <input name="name" class="form-control" placeholder="Full name" required><br>
             <input name="email" type="email" class="form-control" placeholder="Email" required><br>
             <input name="phone" class="form-control" placeholder="Phone e.g. 0712345678" required><br>
+
+            <h3>M-Pesa Payment</h3>
+            <input name="mpesa_phone" class="form-control" inputmode="tel" autocomplete="tel" placeholder="M-Pesa number e.g. 0712345678" required><br>
 
             <h3>Pickup Point</h3>
             <input type="hidden" name="delivery_method" value="pickup">
@@ -75,7 +81,8 @@ $selectedPickupId = (int) ($_POST['pickup_location_id'] ?? ($pickupLocations[0][
         <p>Subtotal: <?php echo gdmb_e(gdmb_format_price($quote['subtotal'], $quote['currency'])); ?></p>
         <p>Pickup: KES 0</p>
         <h3>Total: <?php echo gdmb_e(gdmb_format_price($quote['total'], $quote['currency'])); ?></h3>
-        <button form="checkout-form" class="book-btn book-btn-solid" style="width:100%; margin-top:12px;" <?php echo empty($quote['valid']) ? 'disabled' : ''; ?>>Create Order</button>
+        <button id="checkout-submit" form="checkout-form" class="book-btn book-btn-solid" style="width:100%; margin-top:12px;" <?php echo empty($quote['valid']) ? 'disabled' : ''; ?>>Pay with M-Pesa</button>
+        <p id="checkout-payment-message" role="status" aria-live="polite" style="margin-top:12px;"></p>
     </div>
 </div>
 
@@ -87,6 +94,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var address = document.getElementById('pickup-detail-address');
     var instructions = document.getElementById('pickup-detail-instructions');
     var map = document.getElementById('pickup-detail-map');
+    var form = document.getElementById('checkout-form');
+    var submit = document.getElementById('checkout-submit');
+    var paymentMessage = document.getElementById('checkout-payment-message');
+    var checkoutUrl = <?php echo json_encode(gdmb_store_api_base_url().'/checkout'); ?>;
+    var checkoutToken = <?php echo json_encode($checkoutToken); ?>;
+    var cartItems = <?php echo json_encode(gdmb_cart_items(), JSON_UNESCAPED_SLASHES); ?>;
+    var pollsRemaining = 100;
 
     function renderPickupDetails() {
         var option = select.options[select.selectedIndex];
@@ -105,6 +119,115 @@ document.addEventListener('DOMContentLoaded', function () {
     if (select) {
         select.addEventListener('change', renderPickupDetails);
         renderPickupDetails();
+    }
+
+    function completeLocalCheckout(orderNumber, token, redirectUrl) {
+        var body = new URLSearchParams({
+            action: 'complete_checkout',
+            order: orderNumber,
+            token: token
+        });
+
+        fetch('./?p=checkout', {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: body.toString()
+        }).finally(function () {
+            window.location.href = redirectUrl;
+        });
+    }
+
+    function pollPayment(statusUrl, order) {
+        fetch(statusUrl, { headers: { 'Accept': 'application/json' } })
+            .then(function (response) { return response.json(); })
+            .then(function (payload) {
+                var status = payload && payload.data;
+                if (!status) {
+                    throw new Error('Payment status is temporarily unavailable.');
+                }
+
+                paymentMessage.textContent = status.message;
+                if (status.status === 'successful') {
+                    completeLocalCheckout(status.order_number, order.public_token, status.redirect_url);
+                    return;
+                }
+
+                if (status.status === 'failed') {
+                    submit.disabled = !status.can_retry;
+                    submit.textContent = status.can_retry ? 'Retry M-Pesa Payment' : 'Payment unavailable';
+                    return;
+                }
+
+                if (--pollsRemaining > 0) {
+                    window.setTimeout(function () { pollPayment(statusUrl, order); }, 3000);
+                } else {
+                    submit.disabled = false;
+                    paymentMessage.textContent = 'Payment is still being checked. You can safely refresh this page.';
+                }
+            })
+            .catch(function () {
+                if (--pollsRemaining > 0) {
+                    window.setTimeout(function () { pollPayment(statusUrl, order); }, 5000);
+                } else {
+                    submit.disabled = false;
+                }
+            });
+    }
+
+    if (form) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            if (!form.reportValidity()) {
+                return;
+            }
+
+            var fields = new FormData(form);
+            submit.disabled = true;
+            submit.textContent = 'Sending M-Pesa prompt...';
+            paymentMessage.textContent = 'Creating your order and reserving your books...';
+            pollsRemaining = 100;
+
+            fetch(checkoutUrl, {
+                method: 'POST',
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    checkout_token: checkoutToken,
+                    items: cartItems,
+                    customer: {
+                        name: fields.get('name'),
+                        email: fields.get('email'),
+                        phone: fields.get('phone')
+                    },
+                    payment: { phone: fields.get('mpesa_phone') },
+                    fulfillment: {
+                        method: 'pickup',
+                        address: null,
+                        city: null,
+                        county: null,
+                        pickup_location_id: Number(fields.get('pickup_location_id'))
+                    },
+                    customer_note: fields.get('customer_note') || null
+                })
+            }).then(function (response) {
+                return response.json().then(function (payload) {
+                    if (!response.ok && response.status !== 202) {
+                        throw new Error(payload.message || 'M-Pesa could not be started. Please try again.');
+                    }
+                    return payload;
+                });
+            }).then(function (payload) {
+                if (!payload.data || !payload.payment || !payload.payment.status_url) {
+                    throw new Error(payload.message || 'The payment request could not be confirmed.');
+                }
+                paymentMessage.textContent = payload.payment.message;
+                submit.textContent = 'Waiting for M-Pesa...';
+                pollPayment(payload.payment.status_url, payload.data);
+            }).catch(function (error) {
+                paymentMessage.textContent = error.message;
+                submit.disabled = false;
+                submit.textContent = 'Retry M-Pesa Payment';
+            });
+        });
     }
 });
 </script>
