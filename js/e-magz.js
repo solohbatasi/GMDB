@@ -33,18 +33,16 @@ $(function(){
 
 	var sectionFirstPadding = function() {
 		if($("header.primary").length) {
-			$("section").eq(0).addClass("first");
-			$("section.first").css({
-				paddingTop: $("header.primary").outerHeight() + 15
-			})			
+			var $firstSection = $("section").eq(0).addClass("first");
+			var updateFirstSectionPadding = function() {
+				var sectionGap = $firstSection.hasClass("gdmb-hero") ? 4 : 15;
+				$firstSection.css({
+					paddingTop: $("header.primary").outerHeight() + sectionGap
+				});
+			};
+			updateFirstSectionPadding();
+			$(window).on("resize", updateFirstSectionPadding);
 		}
-		$(window).on("resize",function(){
-			if($("header.primary").length) {
-				$("section.first").css({
-					paddingTop: $("header.primary").outerHeight() + 15
-				})
-			}
-		});
 	}
 
 	var stickyHeader = function() {	
