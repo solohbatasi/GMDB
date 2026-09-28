@@ -71,6 +71,7 @@
 						<?php endforeach; ?>
 					</div>
 					<div class="gdmb-hero-arrows">
+						<button type="button" data-hero-autoplay aria-label="Pause automatic slide rotation" aria-pressed="false"><i class="ion-pause" aria-hidden="true"></i></button>
 						<button type="button" data-hero-prev aria-label="Previous slide"><i class="ion-ios-arrow-thin-left" aria-hidden="true"></i></button>
 						<button type="button" data-hero-next aria-label="Next slide"><i class="ion-ios-arrow-thin-right" aria-hidden="true"></i></button>
 					</div>
